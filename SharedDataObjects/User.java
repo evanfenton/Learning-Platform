@@ -49,8 +49,7 @@ public class User implements Serializable{
 		this.firstname = firstname;
 		this.lastname = lastname;
 		setEmail(email);
-		logininfo.setPassword(password);
-		logininfo.setUsername(email);
+		setLogininfo(new LoginInfo(email, password));
 	}
 	
 	
@@ -89,6 +88,16 @@ public class User implements Serializable{
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+
+	public LoginInfo getLogininfo() {
+		return logininfo;
+	}
+
+
+	public void setLogininfo(LoginInfo logininfo) {
+		this.logininfo = logininfo;
 	}
 	
 }
