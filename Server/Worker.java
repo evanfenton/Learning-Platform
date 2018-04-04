@@ -5,8 +5,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import SharedDataObjects.Course;
-import SharedDataObjects.ServerMessage;
+import SharedDataObjects.*;
+
 
 /**
  * Worker issued to each client connected to the server.
@@ -72,9 +72,28 @@ public class Worker implements Runnable {
 		{
 			ServerMessage<?> message = (ServerMessage<?>) in.readObject();
 			//Example code to launch a DatabaseHelper function.
-			if(message.getObject().getClass().toString().contains("Course") && message.getMessage().equals("Add"));
+			if(message.getObject().getClass().toString().contains("Course") && message.getMessage().equals("Add"))
 			{
 				database.addCourse((Course) message.getObject());
+			}
+			/**
+			 * code for loging onto the system.
+			 */
+			if(message.getObject().getClass().toString().contains("LoginInfo") && message.getMessage().equals("Login"))
+			{
+				LoginInfo info = (LoginInfo) message.getObject();
+				User user = database.LoginUser(info);
+				System.out.println(user.getLogininfo().getPassword()+ " != " + info.getPassword());
+				if(user.getLogininfo().getPassword().equals(info.getPassword()))
+				{
+					ServerMessage<User> returnmessage = new ServerMessage<User>(user, "");
+					out.writeObject(returnmessage);
+				}
+				else
+				{
+					ServerMessage <User> returnmessage = new ServerMessage<User>(null,"");
+					out.writeObject(returnmessage);
+				}
 			}
 		} 
 		catch (ClassNotFoundException | IOException e) 
