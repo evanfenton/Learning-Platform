@@ -1,5 +1,12 @@
 package frontend.pages;
-  /**
+
+import frontend.ProfessorGUI;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+/**
    *
    * @author Evan Mcphee
    */
@@ -8,8 +15,10 @@ package frontend.pages;
       /**
        * Creates new form ProfHome
        */
-      public ProfHome() {
+      public ProfHome(ProfessorGUI prof) {
+          super(prof);
           initComponents();
+          userLabel.setText("User: Change this to profs name");
           /* Set the Nimbus look and feel */
           //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
           /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -32,6 +41,53 @@ package frontend.pages;
               java.util.logging.Logger.getLogger(ProfHome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
           }
           //</editor-fold>
+
+          //Setting Action Listeners
+          logoutB.addActionListener(new ActionListener() {
+              @Override
+              public void actionPerformed(ActionEvent e) {
+                  System.exit(0);
+              }
+          });
+
+          viewCourseB.addActionListener(new ActionListener() {
+              @Override
+              public void actionPerformed(ActionEvent e) {
+                  //need to make course home get whatever course its displaying
+                  ProfHome.super.getProfessor().addPage(new ProfCourseHome(ProfHome.super.getProfessor()));
+                  setVisible(false);
+              }
+          });
+
+          activateCourseB.addActionListener(new ActionListener() {
+              @Override
+              public void actionPerformed(ActionEvent e) {
+
+              }
+          });
+
+          deActivateCourseB.addActionListener(new ActionListener() {
+              @Override
+              public void actionPerformed(ActionEvent e) {
+
+              }
+          });
+
+          addCourseB.addActionListener(new ActionListener() {
+              @Override
+              public void actionPerformed(ActionEvent e) {
+                  //add some sort of popup
+              }
+          });
+
+          removeCourseB.addActionListener(new ActionListener() {
+              @Override
+              public void actionPerformed(ActionEvent e) {
+
+              }
+          });
+
+
       }
 
       /**
@@ -206,4 +262,5 @@ package frontend.pages;
       private javax.swing.JLabel userLabel;
       private javax.swing.JButton viewCourseB;
       // End of variables declaration
+
   }

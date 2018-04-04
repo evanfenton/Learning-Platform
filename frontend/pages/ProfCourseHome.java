@@ -1,4 +1,7 @@
 package frontend.pages;
+
+import frontend.ProfessorGUI;
+
 /**
  *
  * @author Evan Mcphee
@@ -8,7 +11,8 @@ public class ProfCourseHome extends Page {
     /**
      * Creates new form ProfCourseHome
      */
-    public ProfCourseHome() {
+    public ProfCourseHome(ProfessorGUI prof) {
+        super(prof);
         initComponents();
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
