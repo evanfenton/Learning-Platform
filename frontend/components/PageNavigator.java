@@ -1,25 +1,19 @@
+package frontend.components;
+
+import frontend.pages.Page;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class PageNavigator {
-    private JPanel pageHolder;
-    private CardLayout cardLayout;
+    private Page pageHolder;
 
     public void showPage(String page){
 
     }
 
-    public void addPage(JPanel page, String name){
+    public void addPage(Page page){
 
     }
-
-    public void removePage(String name){
-
-    }
-
-    public JPanel searchPage(String name){
-        return null;
-    }
-
 
 }
