@@ -4,13 +4,11 @@
    * and open the template in the editor.
    */
 
-  import javax.swing.*;
-
   /**
    *
    * @author Evan
    */
-  public class ProfHome extends Page {
+  public class ProfHome extends javax.swing.JFrame {
 
       /**
        * Creates new form ProfHome
@@ -29,15 +27,17 @@
       private void initComponents() {
 
           jPanel2 = new javax.swing.JPanel();
-          jButton3 = new javax.swing.JButton();
-          jButton4 = new javax.swing.JButton();
-          jButton1 = new javax.swing.JButton();
-          jButton2 = new javax.swing.JButton();
+          deActivateCourseB = new javax.swing.JButton();
+          logoutB = new javax.swing.JButton();
+          viewCourseB = new javax.swing.JButton();
+          activateCourseB = new javax.swing.JButton();
           jLabel2 = new javax.swing.JLabel();
           jScrollPane1 = new javax.swing.JScrollPane();
-          jList1 = new javax.swing.JList<>();
+          courseList = new javax.swing.JList<>();
+          addCourseB = new javax.swing.JButton();
+          removeCourseB = new javax.swing.JButton();
           jPanel1 = new javax.swing.JPanel();
-          jLabel1 = new javax.swing.JLabel();
+          userLabel = new javax.swing.JLabel();
           jLabel3 = new javax.swing.JLabel();
 
           setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -47,29 +47,33 @@
 
           jPanel2.setBackground(java.awt.Color.orange);
 
-          jButton3.setText("Deactivate Course");
+          deActivateCourseB.setText("Deactivate Course");
 
-          jButton4.setText("Logout");
+          logoutB.setText("Logout");
 
-          jButton1.setText("View Course");
-          jButton1.addActionListener(new java.awt.event.ActionListener() {
+          viewCourseB.setText("View Course");
+          viewCourseB.addActionListener(new java.awt.event.ActionListener() {
               public void actionPerformed(java.awt.event.ActionEvent evt) {
-                  jButton1ActionPerformed(evt);
+                  viewCourseBActionPerformed(evt);
               }
           });
 
-          jButton2.setText("Activate Course");
+          activateCourseB.setText("Activate Course");
 
           jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
           jLabel2.setText("Your Courses:");
 
-          jList1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-          jList1.setModel(new javax.swing.AbstractListModel<String>() {
+          courseList.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+          courseList.setModel(new javax.swing.AbstractListModel<String>() {
               String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
               public int getSize() { return strings.length; }
               public String getElementAt(int i) { return strings[i]; }
           });
-          jScrollPane1.setViewportView(jList1);
+          jScrollPane1.setViewportView(courseList);
+
+          addCourseB.setText("Add Course");
+
+          removeCourseB.setText("Remove Course");
 
           javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
           jPanel2.setLayout(jPanel2Layout);
@@ -77,23 +81,23 @@
                   jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                           .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                   .addContainerGap()
-                                  .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                          .addGroup(jPanel2Layout.createSequentialGroup()
-                                                  .addGap(0, 0, Short.MAX_VALUE)
-                                                  .addComponent(jButton4)
-                                                  .addGap(135, 135, 135))
-                                          .addGroup(jPanel2Layout.createSequentialGroup()
-                                                  .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                          .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                          .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                          .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                                  .addGap(18, 18, 18)
-                                                  .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 817, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                  .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                  .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                          .addComponent(deActivateCourseB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                          .addComponent(activateCourseB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                          .addComponent(viewCourseB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                          .addComponent(removeCourseB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                          .addComponent(addCourseB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                  .addGap(18, 18, 18)
+                                  .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 817, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                  .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                           .addGroup(jPanel2Layout.createSequentialGroup()
                                   .addGap(461, 461, 461)
                                   .addComponent(jLabel2)
                                   .addGap(0, 0, Short.MAX_VALUE))
+                          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                  .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                  .addComponent(logoutB)
+                                  .addContainerGap())
           );
           jPanel2Layout.setVerticalGroup(
                   jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -101,26 +105,30 @@
                                   .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                           .addGroup(jPanel2Layout.createSequentialGroup()
                                                   .addGap(172, 172, 172)
-                                                  .addComponent(jButton1)
+                                                  .addComponent(viewCourseB)
                                                   .addGap(53, 53, 53)
-                                                  .addComponent(jButton2)
+                                                  .addComponent(activateCourseB)
                                                   .addGap(18, 18, 18)
-                                                  .addComponent(jButton3)
-                                                  .addGap(0, 150, Short.MAX_VALUE))
+                                                  .addComponent(deActivateCourseB)
+                                                  .addGap(68, 68, 68)
+                                                  .addComponent(addCourseB)
+                                                  .addGap(18, 18, 18)
+                                                  .addComponent(removeCourseB)
+                                                  .addGap(0, 12, Short.MAX_VALUE))
                                           .addGroup(jPanel2Layout.createSequentialGroup()
                                                   .addGap(62, 62, 62)
                                                   .addComponent(jLabel2)
                                                   .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                   .addComponent(jScrollPane1)))
-                                  .addGap(48, 48, 48)
-                                  .addComponent(jButton4)
-                                  .addGap(32, 32, 32))
+                                  .addGap(68, 68, 68)
+                                  .addComponent(logoutB)
+                                  .addContainerGap())
           );
 
           jPanel1.setBackground(java.awt.Color.pink);
 
-          jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-          jLabel1.setText("User:");
+          userLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+          userLabel.setText("User:");
 
           jLabel3.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
           jLabel3.setText("Home Page");
@@ -136,7 +144,7 @@
                                                   .addComponent(jLabel3))
                                           .addGroup(jPanel1Layout.createSequentialGroup()
                                                   .addGap(343, 343, 343)
-                                                  .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                  .addComponent(userLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                   .addContainerGap(383, Short.MAX_VALUE))
           );
           jPanel1Layout.setVerticalGroup(
@@ -145,7 +153,7 @@
                                   .addGap(27, 27, 27)
                                   .addComponent(jLabel3)
                                   .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
-                                  .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                  .addComponent(userLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                                   .addGap(25, 25, 25))
           );
 
@@ -167,7 +175,7 @@
           pack();
       }// </editor-fold>
 
-      private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+      private void viewCourseBActionPerformed(java.awt.event.ActionEvent evt) {
           // TODO add your handling code here:
       }
 
@@ -207,17 +215,19 @@
       }
 
       // Variables declaration - do not modify
-      private javax.swing.JButton jButton1;
-      private javax.swing.JButton jButton2;
-      private javax.swing.JButton jButton3;
-      private javax.swing.JButton jButton4;
-      private javax.swing.JLabel jLabel1;
+      private javax.swing.JButton activateCourseB;
+      private javax.swing.JButton addCourseB;
+      private javax.swing.JList<String> courseList;
+      private javax.swing.JButton deActivateCourseB;
       private javax.swing.JLabel jLabel2;
       private javax.swing.JLabel jLabel3;
-      private javax.swing.JList<String> jList1;
       private javax.swing.JPanel jPanel1;
       private javax.swing.JPanel jPanel2;
       private javax.swing.JScrollPane jScrollPane1;
       private javax.swing.JScrollPane jScrollPane2;
+      private javax.swing.JButton logoutB;
+      private javax.swing.JButton removeCourseB;
+      private javax.swing.JLabel userLabel;
+      private javax.swing.JButton viewCourseB;
       // End of variables declaration
   }
