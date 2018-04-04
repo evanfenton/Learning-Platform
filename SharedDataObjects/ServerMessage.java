@@ -25,7 +25,7 @@ public class ServerMessage <T> implements Serializable{
 	 * the message the server reads in order to know the 
 	 * type of object it is being sent as well as what to do with it.
 	 */
-	private String message;
+	private Stricdng message;
 	/**
 	 * Constructor for the message to server.
 	 * @param an object you wish to send.
