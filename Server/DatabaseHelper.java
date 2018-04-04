@@ -3,9 +3,10 @@ package Server;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import SharedDataObjects.Course;
+import SharedDataObjects.*;
 /**
  * helper for the servers database. Has functions to update delete and add
  * objects from multiple tables.
@@ -83,6 +84,31 @@ public class DatabaseHelper {
 			e.printStackTrace();
 		}
 	}
-	
+	synchronized public User LoginUser(LoginInfo info)
+	{
+		String sql = "SELECT * FROM " + "UserTable" + " WHERE EMAIL= '" + info.getUsername() + "'";
+		ResultSet user; 
+		try 
+		{
+			statement = jdbc_connection.prepareStatement(sql);
+			System.out.println("Checking Credentials");
+			user = statement.executeQuery(sql);
+			if(user.next())
+			{
+				return new User(user.getInt("ID"),
+								user.getString("FIRSTNAME"), 
+								user.getString("LASTNAME"), 
+								user.getString("EMAIL"), 
+								user.getString("PASSWORD"),
+								user.getString("TYPE")
+								);			
+			}
+		}
+		catch(SQLException e)
+		{
+			return null;
+		}
+		return null;
+	}
 	
 }

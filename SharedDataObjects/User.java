@@ -34,6 +34,8 @@ public class User implements Serializable{
 	 * email address of the user
 	 */
 	private String email;
+	
+	private String type;
 
 	/**
 	 * Constructor for the User class.
@@ -43,13 +45,14 @@ public class User implements Serializable{
 	 * @param email of the user
 	 * @param password of the user
 	 */
-	public User(int id, String firstname, String lastname, String email, String password )
+	public User(int id, String firstname, String lastname, String email, String password, String type)
 	{
 		this.id = id;
 		this.firstname = firstname;
 		this.lastname = lastname;
 		setEmail(email);
 		setLogininfo(new LoginInfo(email, password));
+		this.setType(type);
 	}
 	
 	
@@ -98,6 +101,16 @@ public class User implements Serializable{
 
 	public void setLogininfo(LoginInfo logininfo) {
 		this.logininfo = logininfo;
+	}
+
+
+	public String getType() {
+		return type;
+	}
+
+
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 }

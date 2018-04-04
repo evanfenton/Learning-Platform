@@ -24,8 +24,7 @@ public class Professor extends User {
 	 * @param password of the professor
 	 */
 	public Professor(int id, String firstname, String lastname, String email, String password) {
-		super(id, firstname, lastname, email, password);
-		setType("P");
+		super(id, firstname, lastname, email, password, "P");
 	}
 	/**
 	 * getters and setters for professor
