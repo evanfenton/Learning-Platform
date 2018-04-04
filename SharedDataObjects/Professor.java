@@ -6,7 +6,7 @@ package SharedDataObjects;
 * @since April 3, 2018
 *
 */
-public class Professor extends User {
+public class Professor extends User{
 	/**
 	 * type of user
 	 */

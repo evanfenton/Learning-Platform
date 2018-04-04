@@ -5,7 +5,7 @@ package SharedDataObjects;
  * @version 1.0
  * @since April 3, 2018
  */
-public class Student extends User {
+public class Student extends User{
 	/**
 	 * type of user
 	 */
