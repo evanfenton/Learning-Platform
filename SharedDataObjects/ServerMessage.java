@@ -18,7 +18,7 @@ public class ServerMessage <T> implements Serializable{
 	 */
 	private static final long serialVersionUID = 1231431L;
 	/**
-	 * The object you want to send the the server
+	 * The object you want to send to the server
 	 */
 	private T object;
 	/**
@@ -28,7 +28,7 @@ public class ServerMessage <T> implements Serializable{
 	private String message;
 	/**
 	 * Constructor for the message to server.
-	 * @param o object you wish to send.
+	 * @param an object you wish to send.
 	 * @param msg you wish to send.
 	 */
 	public ServerMessage(T obj, String msg)

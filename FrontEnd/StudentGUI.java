@@ -1,3 +1,6 @@
+package FrontEnd;
+
+import SharedDataObjects.*;
 
 public class StudentGUI{
 
@@ -13,8 +16,9 @@ public class StudentGUI{
     
     public boolean login(String userID, String password){
         
-        student = client.verifyLogin(userID, password, isProfessor);
-        
+        ServerMessage loginReturn = client.communicate(new ServerMessage(null,
+                                                       "login "+userID+" "+ password+ " "+ isProfessor));
+        student= (Student)loginReturn.getObject();
         if(student == null){
             return false;
         }
