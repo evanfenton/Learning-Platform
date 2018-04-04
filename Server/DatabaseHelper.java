@@ -58,12 +58,20 @@ public class DatabaseHelper {
 	 */
 	synchronized public void addCourse(Course course)
 	{
+		int bit;
+		if(course.isActive())
+		{
+			bit = 1;
+		}
+		else
+		{
+			bit = 0;
+		}
 		String sql = "INSERT INTO " + "CourseTable" +
 				" VALUES ( " + course.getId() + ", '" + 
 				course.getProf_id() + "', '" + 
-				course.getName() + "', '" + 
-				course.isActive() + "'); ";
-		
+				course.getName() + "', b'" + 
+				bit + "'); ";
 		try{
 			
 			statement = jdbc_connection.prepareStatement(sql);
