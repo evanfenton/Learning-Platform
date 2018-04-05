@@ -15,7 +15,7 @@ import java.awt.event.ActionListener;
 public class ProfCourseAssignments extends Page {
 
     /**
-     * Creates new form ProfCourseAssignments
+     * Creates new frame ProfCourseAssignments
      */
     public ProfCourseAssignments(ProfessorGUI prof, Course course) {
         super(prof);

@@ -2,11 +2,12 @@ package FrontEnd.pages;
 
 import SharedDataObjects.Course;
 import FrontEnd.ProfessorGUI;
+import SharedDataObjects.ServerMessage;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
+import java.io.*;
 
 /**
  *
@@ -56,12 +57,29 @@ public class UploadAssignment extends Page {
             }
         });
 
-        fileChooser.addActionListener(new ActionListener() {
+        createB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
                     File filetosend = fileChooser.getSelectedFile();
+                    String fileinfo = filetosend.getName();
+                    System.out.println(fileinfo);
                     System.out.println(filetosend.toPath());
+                    //Start of code to send file, provided by ENSF409 instructor
+                    long length = filetosend.length();
+                    byte[] content = new byte[(int) length]; // Converting Long to Int
+                    try {
+                        FileInputStream fis = new FileInputStream(filetosend);
+                        BufferedInputStream bos = new BufferedInputStream(fis);
+                        bos.read(content, 0, (int)length);
+                        ServerMessage message = new ServerMessage(content,"FileUploadstr-1splitter".concat(fileinfo));
+                        professor.getClient().communicate(message);
+                    } catch (FileNotFoundException g) {
+                        g.printStackTrace();
+                    } catch(IOException f){
+                        f.printStackTrace();
+                    }
+
                 }
             }
         });
