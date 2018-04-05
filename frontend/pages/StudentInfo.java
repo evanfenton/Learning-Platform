@@ -1,4 +1,9 @@
 package frontend.pages;
+
+import SharedDataObjects.Course;
+import SharedDataObjects.Student;
+import frontend.ProfessorGUI;
+
 /**
  *
  * @author Evan Mcphee
@@ -8,8 +13,10 @@ public class StudentInfo extends Page {
     /**
      * Creates new form StudentInfo
      */
-    public StudentInfo() {
+    public StudentInfo(ProfessorGUI prof, Course course, Student student) {
         initComponents();
+        userLabel.setText("User: " + prof.getProfessor().getFirstname() + "   " + prof.getProfessor().getLastname());
+        header.setText(student.getFirstname() + " " + student.getLastname() + " " + student.getId());
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -70,7 +77,7 @@ public class StudentInfo extends Page {
         enrollB = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         userLabel = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        header = new javax.swing.JLabel();
         returnB = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -232,8 +239,8 @@ public class StudentInfo extends Page {
         userLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         userLabel.setText("User:");
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel3.setText("StudentName's Information");
+        header.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        header.setText("StudentName's Information");
 
         returnB.setText("Return to Course Page");
 
@@ -243,7 +250,7 @@ public class StudentInfo extends Page {
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(343, 343, 343)
-                                .addComponent(jLabel3)
+                                .addComponent(header)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addGap(25, 25, 25)
@@ -256,7 +263,7 @@ public class StudentInfo extends Page {
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addContainerGap(36, Short.MAX_VALUE)
-                                .addComponent(jLabel3)
+                                .addComponent(header)
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(userLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -293,7 +300,7 @@ public class StudentInfo extends Page {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel header;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

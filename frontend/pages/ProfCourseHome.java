@@ -3,6 +3,8 @@ package frontend.pages;
 import SharedDataObjects.Course;
 import frontend.ProfessorGUI;
 
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -103,6 +105,13 @@ public class ProfCourseHome extends Page {
                 professor.addPage(new ProfCourseAssignments(professor,course));
                 professor.showPage();
                 setVisible(false);
+            }
+        });
+
+        studentsList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                //get Student object from page and open StudentInfo with it
             }
         });
 
