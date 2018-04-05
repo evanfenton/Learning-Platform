@@ -1,6 +1,7 @@
 package frontend.pages;
 
 import SharedDataObjects.Course;
+import SharedDataObjects.ServerMessage;
 import frontend.ProfessorGUI;
 
 import java.awt.event.ActionEvent;
@@ -65,7 +66,8 @@ public class AddCourse extends Page {
                 String cnumb = courseNumberInput.getText();
                 String profID = profIDInput.getText();
                 Course course = new Course(Integer.parseInt(cnumb),Integer.parseInt(profID),cname);
-                //SEND COURSE TO SERVER
+                ServerMessage<Course> message = new ServerMessage<Course>(course, "Add");
+                professor.getClient().communicate(message);
                 professor.addPage(new ProfHome(AddCourse.super.professor));
                 professor.showPage();
                 setVisible(false);

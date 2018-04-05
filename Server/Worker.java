@@ -74,10 +74,21 @@ public class Worker implements Runnable {
 			while(true)
 			{
 				ServerMessage<?> message = (ServerMessage<?>) in.readObject();
-				//Example code to launch a DatabaseHelper function.
+				/**
+				 * Adds a course
+				 */
 				if(message.getObject().getClass().toString().contains("Course") && message.getMessage().equals("Add"))
 				{
 					database.addCourse((Course) message.getObject());
+					out.writeObject(null);
+				}
+				/**
+				 * deletes a course
+				 */
+				if(message.getObject().getClass().toString().contains("Course") && message.getMessage().equals("Delete"))
+				{
+					database.deleteCourse((Course) message.getObject());
+					out.writeObject(null);
 				}
 				/**
 				 * code for logging onto the system.
@@ -107,6 +118,25 @@ public class Worker implements Runnable {
 					out.writeObject(returnmessage);
 					
 				}
+				/**
+				 * Activates a course
+				 */
+				if(message.getObject().getClass().toString().contains("Course") && message.getMessage().equals("Activate"))
+				{
+					Course course = (Course) message.getObject();
+					database.activateCourse(course);
+					out.writeObject(null);
+				}
+				/**
+				 * Deactivates a course
+				 */
+				if(message.getObject().getClass().toString().contains("Course") && message.getMessage().equals("Deactivate"))
+				{
+					Course course = (Course) message.getObject();
+					database.deactivateCourse(course);
+					out.writeObject(null);
+				}
+				
 			}
 		} 
 		catch (ClassNotFoundException | IOException e) 

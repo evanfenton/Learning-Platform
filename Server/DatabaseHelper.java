@@ -85,6 +85,21 @@ public class DatabaseHelper {
 			e.printStackTrace();
 		}
 	}
+	synchronized public void deleteCourse(Course course)
+	{
+		
+		String sql = "DELETE FROM " + "CourseTable" + " WHERE ID=" + course.getId();
+		try{
+			
+			statement = jdbc_connection.prepareStatement(sql);
+			System.out.println("Attempting to add course...");
+			statement.executeUpdate(sql);
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
 	synchronized public User LoginUser(LoginInfo info)
 	{
 		String sql = "SELECT * FROM " + "UserTable" + " WHERE EMAIL= '" + info.getUsername() + "'";
@@ -111,7 +126,7 @@ public class DatabaseHelper {
 		}
 		return null;
 	}
-	public ArrayList<Course> getProfsCourses(Professor prof) {
+	synchronized public ArrayList<Course> getProfsCourses(Professor prof) {
 		String sql = "SELECT * FROM " + "CourseTable" + " WHERE PROF_ID=" + prof.getId();
 		ResultSet course;
 		ArrayList<Course> courses = new ArrayList<Course>();
@@ -131,5 +146,38 @@ public class DatabaseHelper {
 		} catch (SQLException e) { e.printStackTrace(); }
 		return null;
 	}
+	synchronized public void activateCourse(Course course)
+	{
+		
+		String sql = "UPDATE " + "CourseTable" + " SET ACTIVE = b'1'"
+				+ " WHERE ID = " + course.getId();
+
+		try{
+			
+			statement = jdbc_connection.prepareStatement(sql);
+			statement.executeUpdate(sql);
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	synchronized public void deactivateCourse(Course course)
+	{
+		
+		String sql = "UPDATE " + "CourseTable" + " SET ACTIVE = b'0'"
+				+ " WHERE ID = " + course.getId();
+
+		try{
+			
+			statement = jdbc_connection.prepareStatement(sql);
+			statement.executeUpdate(sql);
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
 	
 }
