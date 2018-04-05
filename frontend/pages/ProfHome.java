@@ -57,7 +57,6 @@ import java.awt.event.ActionListener;
               }
           });
 
-          /** --INCOMPLETE--
           /** --COMEPLETE?--
            * This needs to get whatever course is selected in courseList and create the ProfCourseHome with that info
            * or create a popup if nothing is selected
@@ -66,17 +65,10 @@ import java.awt.event.ActionListener;
               @Override
               public void actionPerformed(ActionEvent e) {
                   //need to make course home get whatever course its displaying
-<<<<<<< HEAD
-                  String coursename = null; // make this get the course name from course object
-                  String coursenumb = null;// make this the course number from course object
-                  getProfessor().addPage(new ProfCourseHome(ProfHome.super.getProfessor(), coursename, coursenumb));
-                  getProfessor().showPage();
-                  setVisible(false);
-=======
             	  if(courseList.getSelectedValue() != null)
             	  {
             		  Course selectedcourse = courseList.getSelectedValue();
-                	  professor.addPage(new ProfCourseHome(ProfHome.super.getProfessor(), selectedcourse));
+                	  professor.addPage(new ProfCourseHome(getProfessor(), selectedcourse));
                 	  professor.showPage();
                       setVisible(false);
             	  }
@@ -85,7 +77,6 @@ import java.awt.event.ActionListener;
             		  JOptionPane.showMessageDialog(new JPanel(), "No Course Selected");
             	  }
             	
->>>>>>> 67ebf2596b3358c8b14f24ab579e2b01d6d47d19
               }
           });
 

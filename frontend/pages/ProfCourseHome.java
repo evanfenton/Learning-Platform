@@ -1,5 +1,6 @@
 package frontend.pages;
 
+import SharedDataObjects.Course;
 import frontend.ProfessorGUI;
 
 import java.awt.event.ActionEvent;
@@ -14,14 +15,10 @@ public class ProfCourseHome extends Page {
     /**
      * Creates new form ProfCourseHome
      */
-<<<<<<< HEAD
-    public ProfCourseHome(ProfessorGUI prof, String coursename, String coursenumb) {
-=======
     public ProfCourseHome(ProfessorGUI prof, Course course) {
->>>>>>> 67ebf2596b3358c8b14f24ab579e2b01d6d47d19
         super(prof);
         initComponents();
-        courseNameHeader.setText(coursename + " " + coursenumb);
+        courseNameHeader.setText(course.getName() + " " + course.getId());
         userLabel.setText("User: " + prof.getProfessor().getFirstname() + "   " + prof.getProfessor().getLastname());
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -69,14 +66,38 @@ public class ProfCourseHome extends Page {
             }
         });
 
+        /** --INCOMPLETE--
+         * Reads what is in the searchParameter text field and what parameter is set in the searchDropDown
+         * then searches the DB and fill the studentList with results
+         */
         searchB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                String searchstr = searchParameter.getText();
+                if(searchDropDown.getSelectedItem().equals("Student ID")){
+                    int searchint = Integer.parseInt(searchstr);
+                    // search db for student id
+                } else {
+                    //search db for student last name
+                }
             }
         });
 
+        /**
+         * --INCOMPLETE--
+         *  refreshes the studentList with all students in the course and clears searchParameter
+         */
         clearB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                searchParameter.setText(null);
+            }
+        });
+
+        /**
+         * Open ProfCourseAssignment frame
+         */
+        assignmentsB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
