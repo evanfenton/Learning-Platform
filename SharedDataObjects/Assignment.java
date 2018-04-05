@@ -18,7 +18,7 @@ public class Assignment implements Serializable {
 	 * id of the assignment
 	 */
 	private int id;
-	/**
+	/*
 	 * id of the course the assignement is for
 	 */
 	private int course_id;

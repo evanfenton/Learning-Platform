@@ -72,7 +72,7 @@ import java.util.ArrayList;
             	  if(courseList.getSelectedValue() != null)
             	  {
             		  Course selectedcourse = courseList.getSelectedValue();
-                	  professor.addPage(new ProfCourseHome(getProfessor(), selectedcourse));
+                	  professor.addPage(new ProfCourseHome(ProfHome.super.getProfessor(), selectedcourse));
                 	  professor.showPage();
                       setVisible(false);
             	  }
@@ -85,7 +85,7 @@ import java.util.ArrayList;
           });
 
           /**
-           * --INCOMPLETE--
+           * --Complete--
            * Sends something to server to set the course to active and then reloads the courseList from server so its updated
            *
            * To get to profGUI use ProfHome.super.getProfessor
@@ -93,11 +93,16 @@ import java.util.ArrayList;
           activateCourseB.addActionListener(new ActionListener() {
               @Override
               public void actionPerformed(ActionEvent e) {
+            	  Course selectedcourse = courseList.getSelectedValue();
+            	  courseList.clearSelection();
+            	  ServerMessage<Course> message = new ServerMessage<Course>(selectedcourse, "Activate"); 
+            	  professor.getClient().communicate(message);
+            	  refreshCourseList();
               }
           });
 
           /**
-           * --INCOMPLETE--
+           * --Complete--
            * Sends something to server to set the course to inactive and then reloads the courseList from server so its updated
            *
            * To get to profGUI use ProfHome.super.getProfessor
@@ -105,19 +110,22 @@ import java.util.ArrayList;
           deActivateCourseB.addActionListener(new ActionListener() {
               @Override
               public void actionPerformed(ActionEvent e) {
-
+            	  Course selectedcourse = courseList.getSelectedValue();
+            	  courseList.clearSelection();
+            	  ServerMessage<Course> message = new ServerMessage<Course>(selectedcourse, "Deactivate"); 
+            	  professor.getClient().communicate(message);
+            	  refreshCourseList();
               }
           });
 
           /**
-           * --INCOMPLETE--
            * Opens up a new frame of AddCourse that handles the rest of the event
            */
           addCourseB.addActionListener(new ActionListener() {
               @Override
               public void actionPerformed(ActionEvent e) {
-                  professor.addPage(new AddCourse(professor));
-                  professor.showPage();
+                  ProfHome.super.professor.addPage(new AddCourse(ProfHome.super.professor));
+                  ProfHome.super.professor.showPage();
                   setVisible(false);
               }
           });
@@ -129,7 +137,11 @@ import java.util.ArrayList;
           removeCourseB.addActionListener(new ActionListener() {
               @Override
               public void actionPerformed(ActionEvent e) {
-
+            	  Course selectedcourse = courseList.getSelectedValue();
+            	  courseList.clearSelection();
+            	  ServerMessage<Course> message = new ServerMessage<Course>(selectedcourse, "Delete");
+            	  professor.getClient().communicate(message);
+            	  refreshCourseList();
               }
           });
 
@@ -288,12 +300,20 @@ import java.util.ArrayList;
 
       private void refreshCourseList()
       {
-    	  ServerMessage<Professor> message = new ServerMessage<Professor>(professor.getProfessor(), "GetCourses");
-    	  ServerMessage<?> recieved = professor.getClient().communicate(message);
-    	  ArrayList<?> list = (ArrayList<?>) recieved.getObject();
-    	  for(int i = 0; i < list.size(); i++)
+    	  try
     	  {
-    		  listmodel.addElement((Course) list.get(i));
+	    	  listmodel.clear();
+    		  ServerMessage<Professor> message = new ServerMessage<Professor>(professor.getProfessor(), "GetCourses");
+	    	  ServerMessage<?> recieved = professor.getClient().communicate(message);
+	    	  ArrayList<?> list = (ArrayList<?>) recieved.getObject();
+	    	  for(int i = 0; i < list.size(); i++)
+	    	  {
+	    		  listmodel.addElement((Course) list.get(i));
+	    	  }
+    	  }
+    	  catch(NullPointerException k)
+    	  {
+    		  courseList.clearSelection();
     	  }
       }
 
