@@ -199,6 +199,52 @@ public class DatabaseHelper {
 		} catch (SQLException e) { e.printStackTrace(); }
 		return null;
 	}
-	
+	synchronized public StudentEnrollment isEnrolled(StudentEnrollment x)
+	{
+		String sql = "SELECT * FROM " + "StudentEnrollmentTable" + " WHERE COURSE_ID=" +
+					  x.getCourse_id() + " AND STUDENT_ID=" + x.getStudent_id() ;
+		ResultSet enrollment;
+		try {
+			statement = jdbc_connection.prepareStatement(sql);
+			enrollment = statement.executeQuery(sql);
+			if(enrollment.next())
+			{
+				return new StudentEnrollment(enrollment.getInt("ID"),
+											 enrollment.getInt("STUDENT_ID"),
+											 enrollment.getInt("COURSE_ID"),
+											 true);
+			}
+		}
+		catch(SQLException e) { e.printStackTrace(); }
+		return null;
+	}
+	synchronized public void enroll(StudentEnrollment x)
+	{
+		String sql = "INSERT INTO " + "StudentEnrollmentTable" +
+				" VALUES ( " + x.getId() + ", '" + 
+				x.getStudent_id() + "', '" + 
+				x.getCourse_id() + "'); ";
+		try{
+			statement = jdbc_connection.prepareStatement(sql);
+			statement.executeUpdate(sql);
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	synchronized public void unenroll(StudentEnrollment x)
+	{
+		String sql = "DELETE FROM " + "StudentEnrollmentTable" + " WHERE STUDENT_ID="
+					+ x.getStudent_id() + " AND COURSE_ID=" + x.getCourse_id();
+		try{
+			statement = jdbc_connection.prepareStatement(sql);
+			statement.executeUpdate(sql);
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
 	
 }

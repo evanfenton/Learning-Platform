@@ -1,11 +1,14 @@
 package FrontEnd.pages;
 
 import SharedDataObjects.Course;
+import SharedDataObjects.ServerMessage;
 import SharedDataObjects.Student;
+import SharedDataObjects.StudentEnrollment;
 import FrontEnd.ProfessorGUI;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 /**
  *
@@ -25,16 +28,17 @@ public class StudentInfo extends Page {
         lName.setText(student.getLastname());
         stuID.setText(Integer.toString(student.getId()));
         cAVG.setText(("Calculate student average"));
-
-        /**
-        -- NEEDS TO CHECK IF STUDENT IS ENROLLED AND CHANGE ACCORDINGLY--
-        ie. if(enrolled)
-        courseStatus.setText("Enrolled")
+        StudentEnrollment enrollment = new StudentEnrollment(1,student.getId(), course.getId(),true);
+        ServerMessage<StudentEnrollment> message = new ServerMessage<StudentEnrollment>(enrollment, "CheckEnroll");
+        ServerMessage<?> enrolled = professor.getClient().communicate(message);
+        
+ 
+        if(enrolled.getObject() != null)
+        	courseStatus.setText("Enrolled");
         else
-        courseStatus.setText("Not Enrolled")
-         */
+        	courseStatus.setText("Not Enrolled");
+         
 
-        courseStatus.setText("Set student Status");
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -81,26 +85,41 @@ public class StudentInfo extends Page {
         });
 
         /**
-         * --INCOMPLETE--
          * sets the students status in the course "course" to enrolled and updates the text field with the new info
          */
         enrollB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //change status
-                courseStatus.setText("Enrolled");
+                if(!courseStatus.getText().equals("Enrolled"))
+                {
+                	Random rand = new Random();
+                	StudentEnrollment enrollment = new StudentEnrollment(rand.nextInt(99999999)+1, 
+                									student.getId(),
+                									course.getId(), true);
+                	ServerMessage<StudentEnrollment> message = new ServerMessage<StudentEnrollment> (enrollment, "Enroll");
+                	professor.getClient().communicate(message);
+                	courseStatus.setText("Enrolled");
+                }
+                
             }
         });
 
         /**
-         * --INCOMPLETE--
          * sets the students status in the course "course" to not enrolled and updates the text field with the new info
          */
         unEnrollB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //change status
-                courseStatus.setText("Not Enrolled");
+            	if(courseStatus.getText().equals("Enrolled"))
+                {
+                	Random rand = new Random();
+                	StudentEnrollment enrollment = new StudentEnrollment(rand.nextInt(99999999)+1, 
+                									student.getId(),
+                									course.getId(), false);
+                	ServerMessage<StudentEnrollment> message = new ServerMessage<StudentEnrollment> (enrollment, "Unenroll");
+                	professor.getClient().communicate(message);
+                	courseStatus.setText("Not Enrolled");
+                }
             }
         });
     }

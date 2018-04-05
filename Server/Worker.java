@@ -142,6 +142,22 @@ public class Worker implements Runnable {
 					ServerMessage<ArrayList<Student>> returnmessage = new ServerMessage<ArrayList<Student>>(list, "");
 					out.writeObject(returnmessage);
 				}
+				if(message.getObject().getClass().toString().contains("StudentEnrollment") && message.getMessage().equals("CheckEnroll"))
+				{
+					StudentEnrollment enrolled = database.isEnrolled((StudentEnrollment) message.getObject());
+					ServerMessage<StudentEnrollment> returnmessage = new ServerMessage<StudentEnrollment>(enrolled, "");
+					out.writeObject(returnmessage);
+				}
+				if(message.getObject().getClass().toString().contains("StudentEnrollment") && message.getMessage().equals("Enroll"))
+				{
+					database.enroll((StudentEnrollment) message.getObject());
+					out.writeObject(null);
+				}
+				if(message.getObject().getClass().toString().contains("StudentEnrollment") && message.getMessage().equals("Unenroll"))
+				{
+					database.unenroll((StudentEnrollment) message.getObject());
+					out.writeObject(null);
+				}
 				
 			}
 		} 
