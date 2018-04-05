@@ -25,6 +25,14 @@ public class Student extends User {
 	public Student(int id, String firstname, String lastname, String email, String password) {
 		super(id, firstname, lastname, email, password, "S");
 	}
+	public Student() {
+		super(0, "", "", "", "", "S");
+	}
+	
+	public String toString()
+	{
+		return  getId() +  " " + getFirstname() + " " + getLastname();
+	}
 	/**
 	 * getters and setters for the student
 	 */

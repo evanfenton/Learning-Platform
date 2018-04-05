@@ -1,12 +1,18 @@
 package frontend.pages;
 
 import SharedDataObjects.Course;
+import SharedDataObjects.Professor;
+import SharedDataObjects.ServerMessage;
+import SharedDataObjects.Student;
 import frontend.ProfessorGUI;
 
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
  *
@@ -20,6 +26,7 @@ public class ProfCourseHome extends Page {
     public ProfCourseHome(ProfessorGUI prof, Course course) {
         super(prof);
         initComponents();
+        refreshStudentList();
         courseNameHeader.setText(course.getName() + " " + course.getId());
         userLabel.setText("User: " + prof.getProfessor().getFirstname() + "   " + prof.getProfessor().getLastname());
         /* Set the Nimbus look and feel */
@@ -108,13 +115,14 @@ public class ProfCourseHome extends Page {
             }
         });
 
-        studentsList.addListSelectionListener(new ListSelectionListener() {
+        studentsList.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                //get Student object from page and open StudentInfo with it
+               
             }
         });
 
+        
     }
 
     /**
@@ -130,7 +138,6 @@ public class ProfCourseHome extends Page {
         returnB = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        studentsList = new javax.swing.JList<>();
         jLabel2 = new javax.swing.JLabel();
         searchParameter = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
@@ -189,11 +196,7 @@ public class ProfCourseHome extends Page {
 
         jPanel2.setBackground(java.awt.Color.orange);
 
-        studentsList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+        
         jScrollPane1.setViewportView(studentsList);
 
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
@@ -318,6 +321,26 @@ public class ProfCourseHome extends Page {
         pack();
     }// </editor-fold>
 
+    private void refreshStudentList()
+    {
+  	  try
+  	  {
+	    	  listmodel.clear();
+	    	  ServerMessage<Student> message = new ServerMessage<Student>(new Student(), "GetAllStudents");
+	    	  ServerMessage<?> recieved = professor.getClient().communicate(message);
+	    	  ArrayList<?> list = (ArrayList<?>) recieved.getObject();
+	    	  for(int i = 0; i < list.size(); i++)
+	    	  {
+	    		  System.out.println((Student) list.get(i));
+	    		  listmodel.addElement((Student) list.get(i));
+	    	  }
+  	  }
+  	  catch(NullPointerException k)
+  	  {
+  		  studentsList.clearSelection();
+  	  }
+    }
+    
     // Variables declaration - do not modify
     private javax.swing.JButton assignmentsB;
     private javax.swing.JButton clearB;
@@ -337,7 +360,10 @@ public class ProfCourseHome extends Page {
     private javax.swing.JButton searchB;
     private javax.swing.JComboBox<String> searchDropDown;
     private javax.swing.JTextField searchParameter;
-    private javax.swing.JList<String> studentsList;
+    private DefaultListModel<Student> listmodel = new DefaultListModel<>();
+    private javax.swing.JList<Student> studentsList = new JList<>(listmodel);
+
+   
     private javax.swing.JLabel userLabel;
     // End of variables declaration
 }

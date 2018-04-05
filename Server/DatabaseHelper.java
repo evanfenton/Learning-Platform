@@ -178,6 +178,27 @@ public class DatabaseHelper {
 			e.printStackTrace();
 		}
 	}
+	synchronized public ArrayList<Student> getAllStudents() {
+		String sql = "SELECT * FROM " + "UserTable" + " WHERE TYPE=" + "'S'";
+		ResultSet student;
+		ArrayList<Student> students = new ArrayList<Student>();
+		try {
+			statement = jdbc_connection.prepareStatement(sql);
+			student = statement.executeQuery(sql);
+			while(student.next())
+			{
+				
+				students.add(new Student(student.getInt("ID"),
+								student.getString("FIRSTNAME"), 
+								student.getString("LASTNAME"), 
+								student.getString("EMAIL"),
+								student.getString("PASSWORD")
+								));			
+			}
+		return students;
+		} catch (SQLException e) { e.printStackTrace(); }
+		return null;
+	}
 	
 	
 }
