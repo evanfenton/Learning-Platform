@@ -72,7 +72,7 @@ import java.util.ArrayList;
             	  if(courseList.getSelectedValue() != null)
             	  {
             		  Course selectedcourse = courseList.getSelectedValue();
-                	  professor.addPage(new ProfCourseHome(ProfHome.super.getProfessor(), selectedcourse));
+                	  professor.addPage(new ProfCourseHome(getProfessor(), selectedcourse));
                 	  professor.showPage();
                       setVisible(false);
             	  }
@@ -116,8 +116,8 @@ import java.util.ArrayList;
           addCourseB.addActionListener(new ActionListener() {
               @Override
               public void actionPerformed(ActionEvent e) {
-                  ProfHome.super.professor.addPage(new AddCourse(ProfHome.super.professor));
-                  ProfHome.super.professor.showPage();
+                  professor.addPage(new AddCourse(professor));
+                  professor.showPage();
                   setVisible(false);
               }
           });

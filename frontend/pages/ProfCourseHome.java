@@ -100,7 +100,9 @@ public class ProfCourseHome extends Page {
         assignmentsB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                professor.addPage(new ProfCourseAssignments(professor,course));
+                professor.showPage();
+                setVisible(false);
             }
         });
 
