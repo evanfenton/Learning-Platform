@@ -57,7 +57,7 @@ import java.awt.event.ActionListener;
               }
           });
 
-          /** --INCOMPLETE--
+          /** --COMEPLETE?--
            * This needs to get whatever course is selected in courseList and create the ProfCourseHome with that info
            * or create a popup if nothing is selected
            */
@@ -65,9 +65,18 @@ import java.awt.event.ActionListener;
               @Override
               public void actionPerformed(ActionEvent e) {
                   //need to make course home get whatever course its displaying
-                  ProfHome.super.getProfessor().addPage(new ProfCourseHome(ProfHome.super.getProfessor()));
-                  ProfHome.super.getProfessor().showPage();
-                  setVisible(false);
+            	  if(courseList.getSelectedValue() != null)
+            	  {
+            		  Course selectedcourse = courseList.getSelectedValue();
+                	  professor.addPage(new ProfCourseHome(ProfHome.super.getProfessor(), selectedcourse));
+                	  professor.showPage();
+                      setVisible(false);
+            	  }
+            	  else
+            	  {
+            		  JOptionPane.showMessageDialog(new JPanel(), "No Course Selected");
+            	  }
+            	
               }
           });
 
@@ -139,7 +148,6 @@ import java.awt.event.ActionListener;
           activateCourseB = new JButton();
           jLabel2 = new JLabel();
           jScrollPane1 = new JScrollPane();
-          courseList = new JList<>();
           addCourseB = new JButton();
           removeCourseB = new JButton();
           jPanel1 = new JPanel();
@@ -165,11 +173,8 @@ import java.awt.event.ActionListener;
           jLabel2.setText("Your Courses:");
 
           courseList.setBorder(BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-          courseList.setModel(new AbstractListModel<Course>() {
-              Course[] courses;
-              public int getSize() { return 0; }
-              public Course getElementAt(int i) { return courses[i]; }
-          });
+          
+          
           jScrollPane1.setViewportView(courseList);
 
           addCourseB.setText("Add Course");
@@ -282,7 +287,8 @@ import java.awt.event.ActionListener;
       // Variables declaration - do not modify
       private JButton activateCourseB;
       private JButton addCourseB;
-      private JList<Course> courseList;
+      private DefaultListModel<Course> listmodel = new DefaultListModel<>();
+      private JList<Course> courseList = new JList<>(listmodel);
       private JButton deActivateCourseB;
       private JLabel jLabel2;
       private JLabel jLabel3;

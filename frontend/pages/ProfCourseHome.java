@@ -12,7 +12,7 @@ public class ProfCourseHome extends Page {
     /**
      * Creates new form ProfCourseHome
      */
-    public ProfCourseHome(ProfessorGUI prof) {
+    public ProfCourseHome(ProfessorGUI prof, Course course) {
         super(prof);
         initComponents();
         /* Set the Nimbus look and feel */
