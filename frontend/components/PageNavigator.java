@@ -8,7 +8,7 @@ import java.awt.*;
 public class PageNavigator {
     private Page pageHolder;
 
-    public void showPage(String page){
+    public void showPage(){
         pageHolder.setVisible(true);
     }
 

@@ -1,5 +1,6 @@
 package frontend.pages;
 
+import SharedDataObjects.Course;
 import frontend.ProfessorGUI;
 
 /**
