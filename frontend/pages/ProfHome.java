@@ -1,6 +1,6 @@
-package frontend.pages;
+package FrontEnd.pages;
 
-import frontend.ProfessorGUI;
+import FrontEnd.ProfessorGUI;
 
 import javax.swing.*;
 
@@ -19,7 +19,7 @@ import java.util.ArrayList;
   public class ProfHome extends Page {
 
       /**
-       * Creates new form ProfHome
+       * Creates new frame ProfHome
        */
       public ProfHome(ProfessorGUI prof) {
           super(prof);

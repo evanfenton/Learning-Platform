@@ -1,9 +1,9 @@
-package frontend;
+package FrontEnd;
 
 import SharedDataObjects.Professor;
 import SharedDataObjects.User;
-import frontend.components.PageNavigator;
-import frontend.pages.ProfHome;
+import FrontEnd.components.PageNavigator;
+import FrontEnd.pages.ProfHome;
 
 public class ProfessorGUI extends PageNavigator {
     private Client client;

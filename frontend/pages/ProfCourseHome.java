@@ -1,7 +1,8 @@
-package frontend.pages;
+package FrontEnd.pages;
 
 import SharedDataObjects.Course;
-import frontend.ProfessorGUI;
+import FrontEnd.ProfessorGUI;
+import SharedDataObjects.Student;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -15,7 +16,7 @@ import java.awt.event.ActionListener;
 public class ProfCourseHome extends Page {
 
     /**
-     * Creates new form ProfCourseHome
+     * Creates new frame ProfCourseHome
      */
     public ProfCourseHome(ProfessorGUI prof, Course course) {
         super(prof);
@@ -112,6 +113,11 @@ public class ProfCourseHome extends Page {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 //get Student object from page and open StudentInfo with it
+                //For some reason this opens two student info frames?
+                Student student = new Student(1,"Evan","Mcphee","test","password");
+                professor.addPage(new StudentInfo(professor,course,student));
+                professor.showPage();
+                setVisible(false);
             }
         });
 
