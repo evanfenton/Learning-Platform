@@ -44,7 +44,6 @@ public class LoginWindow extends JFrame{
         add(fields);
         add(buttons);
 
-        pack();
         setLocationRelativeTo(null);
 
         setVisible(true);
@@ -112,7 +111,7 @@ public class LoginWindow extends JFrame{
     	else if(user.getType().equals("P"))
     	{
     		//Create the prof GUI
-            ProfessorGUI profgui = new ProfessorGUI(user);
+            ProfessorGUI profgui = new ProfessorGUI(user, client);
     		System.out.println("Prof GUI Created");
     		setVisible(false);
     	}

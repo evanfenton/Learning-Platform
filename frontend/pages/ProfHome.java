@@ -3,6 +3,9 @@ package frontend.pages;
 import frontend.ProfessorGUI;
 
 import javax.swing.*;
+
+import SharedDataObjects.Course;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -162,10 +165,10 @@ import java.awt.event.ActionListener;
           jLabel2.setText("Your Courses:");
 
           courseList.setBorder(BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-          courseList.setModel(new AbstractListModel<String>() {
-              String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-              public int getSize() { return strings.length; }
-              public String getElementAt(int i) { return strings[i]; }
+          courseList.setModel(new AbstractListModel<Course>() {
+              Course[] courses;
+              public int getSize() { return 0; }
+              public Course getElementAt(int i) { return courses[i]; }
           });
           jScrollPane1.setViewportView(courseList);
 
@@ -279,7 +282,7 @@ import java.awt.event.ActionListener;
       // Variables declaration - do not modify
       private JButton activateCourseB;
       private JButton addCourseB;
-      private JList<String> courseList;
+      private JList<Course> courseList;
       private JButton deActivateCourseB;
       private JLabel jLabel2;
       private JLabel jLabel3;
