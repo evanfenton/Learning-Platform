@@ -1,8 +1,11 @@
-package frontend.pages;
+package FrontEnd.pages;
 
 import SharedDataObjects.Course;
 import SharedDataObjects.Student;
-import frontend.ProfessorGUI;
+import FrontEnd.ProfessorGUI;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  *
@@ -14,9 +17,15 @@ public class StudentInfo extends Page {
      * Creates new form StudentInfo
      */
     public StudentInfo(ProfessorGUI prof, Course course, Student student) {
+        super(prof);
         initComponents();
         userLabel.setText("User: " + prof.getProfessor().getFirstname() + "   " + prof.getProfessor().getLastname());
         header.setText(student.getFirstname() + " " + student.getLastname() + " " + student.getId());
+        fName.setText(student.getFirstname());
+        lName.setText(student.getLastname());
+        stuID.setText(Integer.toString(student.getId()));
+        cAVG.setText(("Calculate student average"));
+        courseStatus.setText("Set student Status");
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -39,6 +48,28 @@ public class StudentInfo extends Page {
             java.util.logging.Logger.getLogger(StudentInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+
+        /**
+         * Logout button event handler, just terminates the program when pressed
+         */
+        logoutB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+
+        /**
+         * Closes this frame and reopens the ProfCourseHome page
+         */
+        returnB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                professor.addPage(new ProfCourseHome(professor,course));
+                professor.showPage();
+                setVisible(false);
+            }
+        });
     }
 
     /**
@@ -83,6 +114,12 @@ public class StudentInfo extends Page {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel2.setBackground(java.awt.Color.orange);
+
+        fName.setEditable(false);
+        lName.setEditable(false);
+        stuID.setEditable(false);
+        cAVG.setEditable(false);
+        courseStatus.setEditable(false);
 
         logoutB.setText("Logout");
 

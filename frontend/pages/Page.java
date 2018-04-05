@@ -1,6 +1,6 @@
-package frontend.pages;
+package FrontEnd.pages;
 
-import frontend.ProfessorGUI;
+import FrontEnd.ProfessorGUI;
 
 public class Page extends javax.swing.JFrame{
    protected boolean isProfesor;

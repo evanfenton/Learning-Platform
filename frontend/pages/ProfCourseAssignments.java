@@ -1,7 +1,7 @@
-package frontend.pages;
+package FrontEnd.pages;
 
 import SharedDataObjects.Course;
-import frontend.ProfessorGUI;
+import FrontEnd.ProfessorGUI;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;

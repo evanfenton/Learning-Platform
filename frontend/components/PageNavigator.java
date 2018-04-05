@@ -1,9 +1,6 @@
-package frontend.components;
+package FrontEnd.components;
 
-import frontend.pages.Page;
-
-import javax.swing.*;
-import java.awt.*;
+import FrontEnd.pages.Page;
 
 public class PageNavigator {
     private Page pageHolder;
