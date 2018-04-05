@@ -86,8 +86,18 @@ public class ProfCourseHome extends Page {
                 if(searchDropDown.getSelectedItem().equals("Student ID")){
                     int searchint = Integer.parseInt(searchstr);
                     // search db for student id
+                    ServerMessage<Course> message= new ServerMessage<>(course, "SearchID "+ searchint);
+                    ServerMessage<?> returned= ProfCourseHome.super.getProfessor().getClient().communicate(message);
+                    
+                    //FINISH RETURN MESSAGE OUTPUT
+                    
                 } else {
                     //search db for student last name
+                    String lastName = searchstr;
+                    ServerMessage<Course> message= new ServerMessage<>(course, "SearchName "+ lastName);
+                    ServerMessage<?> returned= ProfCourseHome.super.getProfessor().getClient().communicate(message);
+                    
+                    //FINISH RETURN MESSAGE OUTPUT
                 }
             }
         });

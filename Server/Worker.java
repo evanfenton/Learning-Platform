@@ -158,6 +158,26 @@ public class Worker implements Runnable {
 					database.unenroll((StudentEnrollment) message.getObject());
 					out.writeObject(null);
 				}
+                /**
+                 * Searches a course for a student by ID
+                 */
+                if(message.getObject().getClass().toString().contains("Course") && message.getMessage().contains("SearchID")){
+                    Course course = (Course) message.getObject();
+                    int searchID= Integer.parseInt(message.getMessage().split(" ")[1]);
+                    Student student= database.searchCourseByID(searchID);
+                    ServerMessage<Student> returnMessage= new ServerMessage<>(student, "");
+                    out.writeObject(returnMessage);
+                }
+                /**
+                 * Searches a course for a student by last name
+                 */
+                if(message.getObject().getClass().toString().contains("Course") && message.getMessage().contains("SearchID")){
+                    Course course = (Course) message.getObject();
+                    String searchName= message.getMessage().split(" ")[1];
+                    ArrayList<Student> students= database.searchCourseByLastName(searchName);
+                    ServerMessage<ArrayList<Student>> returnMessage= new ServerMessage<>(students, "");
+                    out.writeObject(returnMessage);
+                }
 				
 			}
 		} 
