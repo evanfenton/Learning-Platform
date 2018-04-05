@@ -3,6 +3,12 @@ package frontend.pages;
 import SharedDataObjects.Course;
 import frontend.ProfessorGUI;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+
 /**
  *
  * @author Evan Mcphee
@@ -39,6 +45,30 @@ public class UploadAssignment extends Page {
         }
         //</editor-fold>
 
+        /**
+         * Cancel button Closes the frame and reopens the ProfCourseAssignments frame
+         */
+        cancelB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                professor.addPage(new ProfCourseAssignments(professor,course));
+                professor.showPage();
+                setVisible(false);
+            }
+        });
+
+        fileChooser.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
+                    File filetosend = fileChooser.getSelectedFile();
+                    System.out.println(filetosend.toPath());
+                }
+            }
+        });
+
+
+
     }
 
     /**
@@ -54,8 +84,8 @@ public class UploadAssignment extends Page {
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         fileChooser = new javax.swing.JFileChooser();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        createB = new javax.swing.JButton();
+        cancelB = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         dueDateInput = new javax.swing.JTextField();
 
@@ -97,9 +127,9 @@ public class UploadAssignment extends Page {
 
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
 
-        jButton1.setText("Create");
+        createB.setText("Create");
 
-        jButton2.setText("Cancel");
+        cancelB.setText("Cancel");
 
         jLabel1.setText("Due Date:");
 
@@ -121,9 +151,9 @@ public class UploadAssignment extends Page {
                                                 .addComponent(jLabel1))
                                         .addGroup(jPanel2Layout.createSequentialGroup()
                                                 .addGap(18, 18, 18)
-                                                .addComponent(jButton1)
+                                                .addComponent(createB)
                                                 .addGap(18, 18, 18)
-                                                .addComponent(jButton2)))
+                                                .addComponent(cancelB)))
                                 .addContainerGap(26, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -143,8 +173,8 @@ public class UploadAssignment extends Page {
                                                                 .addComponent(dueDateInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addGap(48, 48, 48)
                                                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                                        .addComponent(jButton1)
-                                                                        .addComponent(jButton2))
+                                                                        .addComponent(createB)
+                                                                        .addComponent(cancelB))
                                                                 .addGap(10, 10, 10))
                                                         .addComponent(fileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addContainerGap(20, Short.MAX_VALUE))
@@ -172,8 +202,8 @@ public class UploadAssignment extends Page {
     // Variables declaration - do not modify
     private javax.swing.JTextField dueDateInput;
     private javax.swing.JFileChooser fileChooser;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton createB;
+    private javax.swing.JButton cancelB;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
