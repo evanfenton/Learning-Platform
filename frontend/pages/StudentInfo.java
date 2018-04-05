@@ -25,6 +25,15 @@ public class StudentInfo extends Page {
         lName.setText(student.getLastname());
         stuID.setText(Integer.toString(student.getId()));
         cAVG.setText(("Calculate student average"));
+
+        /**
+        -- NEEDS TO CHECK IF STUDENT IS ENROLLED AND CHANGE ACCORDINGLY--
+        ie. if(enrolled)
+        courseStatus.setText("Enrolled")
+        else
+        courseStatus.setText("Not Enrolled")
+         */
+
         courseStatus.setText("Set student Status");
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -68,6 +77,30 @@ public class StudentInfo extends Page {
                 professor.addPage(new ProfCourseHome(professor,course));
                 professor.showPage();
                 setVisible(false);
+            }
+        });
+
+        /**
+         * --INCOMPLETE--
+         * sets the students status in the course "course" to enrolled and updates the text field with the new info
+         */
+        enrollB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //change status
+                courseStatus.setText("Enrolled");
+            }
+        });
+
+        /**
+         * --INCOMPLETE--
+         * sets the students status in the course "course" to not enrolled and updates the text field with the new info
+         */
+        unEnrollB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //change status
+                courseStatus.setText("Not Enrolled");
             }
         });
     }
@@ -132,7 +165,7 @@ public class StudentInfo extends Page {
         jLabel6.setText("Current AVG:");
 
         gradesList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            String[] strings = { "Add Grades Here" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });

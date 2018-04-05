@@ -15,4 +15,7 @@ public class PageNavigator {
         page.setLocationRelativeTo(null);
     }
 
+    public Page getPageHolder() {
+        return pageHolder;
+    }
 }
