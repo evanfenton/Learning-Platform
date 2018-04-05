@@ -1,5 +1,18 @@
 package frontend.pages;
-  /**
+
+import frontend.ProfessorGUI;
+
+import javax.swing.*;
+
+import SharedDataObjects.Course;
+import SharedDataObjects.Professor;
+import SharedDataObjects.ServerMessage;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+/**
    *
    * @author Evan Mcphee
    */
@@ -8,17 +21,20 @@ package frontend.pages;
       /**
        * Creates new form ProfHome
        */
-      public ProfHome() {
+      public ProfHome(ProfessorGUI prof) {
+          super(prof);
           initComponents();
+          refreshCourseList();
+          userLabel.setText("User: " + prof.getProfessor().getFirstname() + "   " + prof.getProfessor().getLastname());
           /* Set the Nimbus look and feel */
           //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
           /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
            * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
            */
           try {
-              for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+              for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                   if ("Nimbus".equals(info.getName())) {
-                      javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                      UIManager.setLookAndFeel(info.getClassName());
                       break;
                   }
               }
@@ -28,10 +44,108 @@ package frontend.pages;
               java.util.logging.Logger.getLogger(ProfHome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
           } catch (IllegalAccessException ex) {
               java.util.logging.Logger.getLogger(ProfHome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-          } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+          } catch (UnsupportedLookAndFeelException ex) {
               java.util.logging.Logger.getLogger(ProfHome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
           }
           //</editor-fold>
+
+
+          /**
+           * Logout button event handler, just terminates the program when pressed
+           * we should probably make it have an are you sure popup just in case
+           */
+          logoutB.addActionListener(new ActionListener() {
+              @Override
+              public void actionPerformed(ActionEvent e) {
+                  System.exit(0);
+              }
+          });
+
+          /** --COMEPLETE?--
+           * This needs to get whatever course is selected in courseList and create the ProfCourseHome with that info
+           * or create a popup if nothing is selected
+           */
+          viewCourseB.addActionListener(new ActionListener() {
+              @Override
+              public void actionPerformed(ActionEvent e) {
+                  //need to make course home get whatever course its displaying
+            	  if(courseList.getSelectedValue() != null)
+            	  {
+            		  Course selectedcourse = courseList.getSelectedValue();
+                	  professor.addPage(new ProfCourseHome(ProfHome.super.getProfessor(), selectedcourse));
+                	  professor.showPage();
+                      setVisible(false);
+            	  }
+            	  else
+            	  {
+            		  JOptionPane.showMessageDialog(new JPanel(), "No Course Selected");
+            	  }
+            	
+              }
+          });
+
+          /**
+           * --Complete--
+           * Sends something to server to set the course to active and then reloads the courseList from server so its updated
+           *
+           * To get to profGUI use ProfHome.super.getProfessor
+           */
+          activateCourseB.addActionListener(new ActionListener() {
+              @Override
+              public void actionPerformed(ActionEvent e) {
+            	  Course selectedcourse = courseList.getSelectedValue();
+            	  courseList.clearSelection();
+            	  ServerMessage<Course> message = new ServerMessage<Course>(selectedcourse, "Activate"); 
+            	  professor.getClient().communicate(message);
+            	  refreshCourseList();
+              }
+          });
+
+          /**
+           * --Complete--
+           * Sends something to server to set the course to inactive and then reloads the courseList from server so its updated
+           *
+           * To get to profGUI use ProfHome.super.getProfessor
+           */
+          deActivateCourseB.addActionListener(new ActionListener() {
+              @Override
+              public void actionPerformed(ActionEvent e) {
+            	  Course selectedcourse = courseList.getSelectedValue();
+            	  courseList.clearSelection();
+            	  ServerMessage<Course> message = new ServerMessage<Course>(selectedcourse, "Deactivate"); 
+            	  professor.getClient().communicate(message);
+            	  refreshCourseList();
+              }
+          });
+
+          /**
+           * Opens up a new frame of AddCourse that handles the rest of the event
+           */
+          addCourseB.addActionListener(new ActionListener() {
+              @Override
+              public void actionPerformed(ActionEvent e) {
+                  ProfHome.super.professor.addPage(new AddCourse(ProfHome.super.professor));
+                  ProfHome.super.professor.showPage();
+                  setVisible(false);
+              }
+          });
+
+          /**
+           * --INCOMPLETE--
+           * Sends something to server to delete the course and then updates courseList
+           */
+          removeCourseB.addActionListener(new ActionListener() {
+              @Override
+              public void actionPerformed(ActionEvent e) {
+            	  Course selectedcourse = courseList.getSelectedValue();
+            	  courseList.clearSelection();
+            	  ServerMessage<Course> message = new ServerMessage<Course>(selectedcourse, "Delete");
+            	  professor.getClient().communicate(message);
+            	  refreshCourseList();
+              }
+          });
+
+
       }
 
       /**
@@ -39,25 +153,24 @@ package frontend.pages;
        * WARNING: Do NOT modify this code. The content of this method is always
        * regenerated by the Form Editor.
        */
-      @SuppressWarnings("unchecked")
+     
       // <editor-fold defaultstate="collapsed" desc="Generated Code">
       private void initComponents() {
 
-          jPanel2 = new javax.swing.JPanel();
-          deActivateCourseB = new javax.swing.JButton();
-          logoutB = new javax.swing.JButton();
-          viewCourseB = new javax.swing.JButton();
-          activateCourseB = new javax.swing.JButton();
-          jLabel2 = new javax.swing.JLabel();
-          jScrollPane1 = new javax.swing.JScrollPane();
-          courseList = new javax.swing.JList<>();
-          addCourseB = new javax.swing.JButton();
-          removeCourseB = new javax.swing.JButton();
-          jPanel1 = new javax.swing.JPanel();
-          userLabel = new javax.swing.JLabel();
-          jLabel3 = new javax.swing.JLabel();
+          jPanel2 = new JPanel();
+          deActivateCourseB = new JButton();
+          logoutB = new JButton();
+          viewCourseB = new JButton();
+          activateCourseB = new JButton();
+          jLabel2 = new JLabel();
+          jScrollPane1 = new JScrollPane();
+          addCourseB = new JButton();
+          removeCourseB = new JButton();
+          jPanel1 = new JPanel();
+          userLabel = new JLabel();
+          jLabel3 = new JLabel();
 
-          setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+          setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
           setTitle("HomePage");
           setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
           setName("HomePage"); // NOI18N
@@ -75,46 +188,43 @@ package frontend.pages;
           jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
           jLabel2.setText("Your Courses:");
 
-          courseList.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-          courseList.setModel(new javax.swing.AbstractListModel<String>() {
-              String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-              public int getSize() { return strings.length; }
-              public String getElementAt(int i) { return strings[i]; }
-          });
+          courseList.setBorder(BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+          
+          
           jScrollPane1.setViewportView(courseList);
 
           addCourseB.setText("Add Course");
 
           removeCourseB.setText("Remove Course");
 
-          javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+          GroupLayout jPanel2Layout = new GroupLayout(jPanel2);
           jPanel2.setLayout(jPanel2Layout);
           jPanel2Layout.setHorizontalGroup(
-                  jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                  jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                          .addGroup(GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                   .addContainerGap()
-                                  .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                          .addComponent(deActivateCourseB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                          .addComponent(activateCourseB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                          .addComponent(viewCourseB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                          .addComponent(removeCourseB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                          .addComponent(addCourseB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                  .addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                                          .addComponent(deActivateCourseB, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                          .addComponent(activateCourseB, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                          .addComponent(viewCourseB, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                          .addComponent(removeCourseB, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                          .addComponent(addCourseB, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                   .addGap(18, 18, 18)
-                                  .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 817, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                  .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                  .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 817, GroupLayout.PREFERRED_SIZE)
+                                  .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                           .addGroup(jPanel2Layout.createSequentialGroup()
                                   .addGap(461, 461, 461)
                                   .addComponent(jLabel2)
                                   .addGap(0, 0, Short.MAX_VALUE))
-                          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                  .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                          .addGroup(GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                  .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                   .addComponent(logoutB)
                                   .addContainerGap())
           );
           jPanel2Layout.setVerticalGroup(
-                  jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                  jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                           .addGroup(jPanel2Layout.createSequentialGroup()
-                                  .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                  .addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                           .addGroup(jPanel2Layout.createSequentialGroup()
                                                   .addGap(172, 172, 172)
                                                   .addComponent(viewCourseB)
@@ -130,7 +240,7 @@ package frontend.pages;
                                           .addGroup(jPanel2Layout.createSequentialGroup()
                                                   .addGap(62, 62, 62)
                                                   .addComponent(jLabel2)
-                                                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                  .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                                   .addComponent(jScrollPane1)))
                                   .addGap(68, 68, 68)
                                   .addComponent(logoutB)
@@ -145,65 +255,84 @@ package frontend.pages;
           jLabel3.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
           jLabel3.setText("Home Page");
 
-          javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+          GroupLayout jPanel1Layout = new GroupLayout(jPanel1);
           jPanel1.setLayout(jPanel1Layout);
           jPanel1Layout.setHorizontalGroup(
-                  jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                  jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                           .addGroup(jPanel1Layout.createSequentialGroup()
-                                  .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                  .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                           .addGroup(jPanel1Layout.createSequentialGroup()
                                                   .addGap(453, 453, 453)
                                                   .addComponent(jLabel3))
                                           .addGroup(jPanel1Layout.createSequentialGroup()
                                                   .addGap(343, 343, 343)
-                                                  .addComponent(userLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                  .addComponent(userLabel, GroupLayout.PREFERRED_SIZE, 342, GroupLayout.PREFERRED_SIZE)))
                                   .addContainerGap(383, Short.MAX_VALUE))
           );
           jPanel1Layout.setVerticalGroup(
-                  jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                  jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                          .addGroup(GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                   .addGap(27, 27, 27)
                                   .addComponent(jLabel3)
-                                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
-                                  .addComponent(userLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                  .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                                  .addComponent(userLabel, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
                                   .addGap(25, 25, 25))
           );
 
-          javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+          GroupLayout layout = new GroupLayout(getContentPane());
           getContentPane().setLayout(layout);
           layout.setHorizontalGroup(
-                  layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                          .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                          .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                  layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                          .addComponent(jPanel1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                          .addComponent(jPanel2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
           );
           layout.setVerticalGroup(
-                  layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                  .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                  .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                  layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                          .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                  .addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                  .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                  .addComponent(jPanel2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
           );
 
           pack();
       }// </editor-fold>
 
 
-
+      private void refreshCourseList()
+      {
+    	  try
+    	  {
+	    	  listmodel.clear();
+    		  ServerMessage<Professor> message = new ServerMessage<Professor>(professor.getProfessor(), "GetCourses");
+	    	  ServerMessage<?> recieved = professor.getClient().communicate(message);
+	    	  ArrayList<?> list = (ArrayList<?>) recieved.getObject();
+	    	  for(int i = 0; i < list.size(); i++)
+	    	  {
+	    		  listmodel.addElement((Course) list.get(i));
+	    	  }
+    	  }
+    	  catch(NullPointerException k)
+    	  {
+    		  courseList.clearSelection();
+    	  }
+      }
 
       // Variables declaration - do not modify
-      private javax.swing.JButton activateCourseB;
-      private javax.swing.JButton addCourseB;
-      private javax.swing.JList<String> courseList;
-      private javax.swing.JButton deActivateCourseB;
-      private javax.swing.JLabel jLabel2;
-      private javax.swing.JLabel jLabel3;
-      private javax.swing.JPanel jPanel1;
-      private javax.swing.JPanel jPanel2;
-      private javax.swing.JScrollPane jScrollPane1;
-      private javax.swing.JScrollPane jScrollPane2;
-      private javax.swing.JButton logoutB;
-      private javax.swing.JButton removeCourseB;
-      private javax.swing.JLabel userLabel;
-      private javax.swing.JButton viewCourseB;
+      private JButton activateCourseB;
+      private JButton addCourseB;
+      private DefaultListModel<Course> listmodel = new DefaultListModel<>();
+      private JList<Course> courseList = new JList<>(listmodel);
+      private JButton deActivateCourseB;
+      private JLabel jLabel2;
+      private JLabel jLabel3;
+      private JPanel jPanel1;
+      private JPanel jPanel2;
+      private JScrollPane jScrollPane1;
+     // private JScrollPane jScrollPane2;
+      private JButton logoutB;
+      private JButton removeCourseB;
+      private JLabel userLabel;
+      private JButton viewCourseB;
       // End of variables declaration
+
   }

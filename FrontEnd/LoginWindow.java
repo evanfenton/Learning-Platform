@@ -1,8 +1,9 @@
-package FrontEnd;
+package frontend;
 
 import javax.swing.*;
 
 import SharedDataObjects.LoginInfo;
+import SharedDataObjects.Professor;
 import SharedDataObjects.ServerMessage;
 import SharedDataObjects.User;
 
@@ -42,6 +43,8 @@ public class LoginWindow extends JFrame{
 
         add(fields);
         add(buttons);
+
+        setLocationRelativeTo(null);
 
         setVisible(true);
         
@@ -108,8 +111,9 @@ public class LoginWindow extends JFrame{
     	else if(user.getType().equals("P"))
     	{
     		//Create the prof GUI
+            ProfessorGUI profgui = new ProfessorGUI(user, client);
     		System.out.println("Prof GUI Created");
-    		this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+    		setVisible(false);
     	}
     	else
     	{

@@ -8,4 +8,16 @@ public class Page extends javax.swing.JFrame{
     //itemDisplay?
     protected ProfessorGUI professor;
     //StudentGui
+    public Page(ProfessorGUI prof){
+        professor = prof;
+        isProfesor = true;
+    }
+
+    public Page(){
+        //default ctor for inheritance for now
+    }
+
+    public ProfessorGUI getProfessor() {
+        return professor;
+    }
 }
