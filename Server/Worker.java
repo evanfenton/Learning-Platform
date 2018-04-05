@@ -158,6 +158,11 @@ public class Worker implements Runnable {
 					database.unenroll((StudentEnrollment) message.getObject());
 					out.writeObject(null);
 				}
+				if(message.getMessage().contains("FileUpload")){
+					byte[] input = (byte[]) message.getObject();
+					filemanager.uploadFile(input,message.getMessage());
+					out.writeObject(null);
+				}
 				
 			}
 		} 
