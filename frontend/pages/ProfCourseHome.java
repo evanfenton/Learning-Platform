@@ -341,7 +341,6 @@ public class ProfCourseHome extends Page {
 	    	  ArrayList<?> list = (ArrayList<?>) recieved.getObject();
 	    	  for(int i = 0; i < list.size(); i++)
 	    	  {
-	    		  System.out.println((Student) list.get(i));
 	    		  listmodel.addElement((Student) list.get(i));
 	    	  }
   	  }
