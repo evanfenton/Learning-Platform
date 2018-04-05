@@ -14,7 +14,11 @@ public class ProfCourseHome extends Page {
     /**
      * Creates new form ProfCourseHome
      */
+<<<<<<< HEAD
     public ProfCourseHome(ProfessorGUI prof, String coursename, String coursenumb) {
+=======
+    public ProfCourseHome(ProfessorGUI prof, Course course) {
+>>>>>>> 67ebf2596b3358c8b14f24ab579e2b01d6d47d19
         super(prof);
         initComponents();
         courseNameHeader.setText(coursename + " " + coursenumb);

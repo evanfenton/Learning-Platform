@@ -3,6 +3,9 @@ package frontend.pages;
 import frontend.ProfessorGUI;
 
 import javax.swing.*;
+
+import SharedDataObjects.Course;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -55,6 +58,7 @@ import java.awt.event.ActionListener;
           });
 
           /** --INCOMPLETE--
+          /** --COMEPLETE?--
            * This needs to get whatever course is selected in courseList and create the ProfCourseHome with that info
            * or create a popup if nothing is selected
            */
@@ -62,11 +66,26 @@ import java.awt.event.ActionListener;
               @Override
               public void actionPerformed(ActionEvent e) {
                   //need to make course home get whatever course its displaying
+<<<<<<< HEAD
                   String coursename = null; // make this get the course name from course object
                   String coursenumb = null;// make this the course number from course object
                   getProfessor().addPage(new ProfCourseHome(ProfHome.super.getProfessor(), coursename, coursenumb));
                   getProfessor().showPage();
                   setVisible(false);
+=======
+            	  if(courseList.getSelectedValue() != null)
+            	  {
+            		  Course selectedcourse = courseList.getSelectedValue();
+                	  professor.addPage(new ProfCourseHome(ProfHome.super.getProfessor(), selectedcourse));
+                	  professor.showPage();
+                      setVisible(false);
+            	  }
+            	  else
+            	  {
+            		  JOptionPane.showMessageDialog(new JPanel(), "No Course Selected");
+            	  }
+            	
+>>>>>>> 67ebf2596b3358c8b14f24ab579e2b01d6d47d19
               }
           });
 
@@ -136,7 +155,6 @@ import java.awt.event.ActionListener;
           activateCourseB = new JButton();
           jLabel2 = new JLabel();
           jScrollPane1 = new JScrollPane();
-          courseList = new JList<>();
           addCourseB = new JButton();
           removeCourseB = new JButton();
           jPanel1 = new JPanel();
@@ -162,11 +180,8 @@ import java.awt.event.ActionListener;
           jLabel2.setText("Your Courses:");
 
           courseList.setBorder(BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-          courseList.setModel(new AbstractListModel<String>() {
-              String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-              public int getSize() { return strings.length; }
-              public String getElementAt(int i) { return strings[i]; }
-          });
+          
+          
           jScrollPane1.setViewportView(courseList);
 
           addCourseB.setText("Add Course");
@@ -279,7 +294,8 @@ import java.awt.event.ActionListener;
       // Variables declaration - do not modify
       private JButton activateCourseB;
       private JButton addCourseB;
-      private JList<String> courseList;
+      private DefaultListModel<Course> listmodel = new DefaultListModel<>();
+      private JList<Course> courseList = new JList<>(listmodel);
       private JButton deActivateCourseB;
       private JLabel jLabel2;
       private JLabel jLabel3;
