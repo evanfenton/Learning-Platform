@@ -1,8 +1,11 @@
-package frontend.pages;
+package FrontEnd.pages;
 
 import SharedDataObjects.Course;
 import SharedDataObjects.Student;
-import frontend.ProfessorGUI;
+import FrontEnd.ProfessorGUI;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  *
@@ -14,9 +17,24 @@ public class StudentInfo extends Page {
      * Creates new form StudentInfo
      */
     public StudentInfo(ProfessorGUI prof, Course course, Student student) {
+        super(prof);
         initComponents();
         userLabel.setText("User: " + prof.getProfessor().getFirstname() + "   " + prof.getProfessor().getLastname());
         header.setText(student.getFirstname() + " " + student.getLastname() + " " + student.getId());
+        fName.setText(student.getFirstname());
+        lName.setText(student.getLastname());
+        stuID.setText(Integer.toString(student.getId()));
+        cAVG.setText(("Calculate student average"));
+
+        /**
+        -- NEEDS TO CHECK IF STUDENT IS ENROLLED AND CHANGE ACCORDINGLY--
+        ie. if(enrolled)
+        courseStatus.setText("Enrolled")
+        else
+        courseStatus.setText("Not Enrolled")
+         */
+
+        courseStatus.setText("Set student Status");
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -39,6 +57,52 @@ public class StudentInfo extends Page {
             java.util.logging.Logger.getLogger(StudentInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+
+        /**
+         * Logout button event handler, just terminates the program when pressed
+         */
+        logoutB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+
+        /**
+         * Closes this frame and reopens the ProfCourseHome page
+         */
+        returnB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                professor.addPage(new ProfCourseHome(professor,course));
+                professor.showPage();
+                setVisible(false);
+            }
+        });
+
+        /**
+         * --INCOMPLETE--
+         * sets the students status in the course "course" to enrolled and updates the text field with the new info
+         */
+        enrollB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //change status
+                courseStatus.setText("Enrolled");
+            }
+        });
+
+        /**
+         * --INCOMPLETE--
+         * sets the students status in the course "course" to not enrolled and updates the text field with the new info
+         */
+        unEnrollB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //change status
+                courseStatus.setText("Not Enrolled");
+            }
+        });
     }
 
     /**
@@ -84,6 +148,12 @@ public class StudentInfo extends Page {
 
         jPanel2.setBackground(java.awt.Color.orange);
 
+        fName.setEditable(false);
+        lName.setEditable(false);
+        stuID.setEditable(false);
+        cAVG.setEditable(false);
+        courseStatus.setEditable(false);
+
         logoutB.setText("Logout");
 
         jLabel2.setText("First Name:");
@@ -95,7 +165,7 @@ public class StudentInfo extends Page {
         jLabel6.setText("Current AVG:");
 
         gradesList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            String[] strings = { "Add Grades Here" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });

@@ -1,9 +1,8 @@
-package frontend;
+package FrontEnd;
 
 import javax.swing.*;
 
 import SharedDataObjects.LoginInfo;
-import SharedDataObjects.Professor;
 import SharedDataObjects.ServerMessage;
 import SharedDataObjects.User;
 

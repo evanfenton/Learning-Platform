@@ -1,8 +1,8 @@
-package frontend.pages;
+package FrontEnd.pages;
 
 import SharedDataObjects.Course;
 import SharedDataObjects.ServerMessage;
-import frontend.ProfessorGUI;
+import FrontEnd.ProfessorGUI;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

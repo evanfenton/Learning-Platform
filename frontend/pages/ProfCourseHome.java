@@ -1,11 +1,11 @@
-package frontend.pages;
+package FrontEnd.pages;
 
 import SharedDataObjects.Course;
 import SharedDataObjects.Professor;
 import SharedDataObjects.ServerMessage;
 import SharedDataObjects.Student;
-import frontend.ProfessorGUI;
-
+import FrontEnd.ProfessorGUI;
+import SharedDataObjects.Student;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.event.ListSelectionEvent;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class ProfCourseHome extends Page {
 
     /**
-     * Creates new form ProfCourseHome
+     * Creates new frame ProfCourseHome
      */
     public ProfCourseHome(ProfessorGUI prof, Course course) {
         super(prof);
@@ -115,10 +115,20 @@ public class ProfCourseHome extends Page {
             }
         });
 
+        /**
+         * Reads which student from the selection model was pressed on and opens a StudentInfo frame with that students information
+         */
         studentsList.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-               
+                //get Student object from page and open StudentInfo with it
+                Student student = studentsList.getSelectedValue();
+                StudentInfo studentinfopage = new StudentInfo(professor,course,student);
+                if(professor.getPageHolder().getClass() != studentinfopage.getClass()) {
+                    professor.addPage(new StudentInfo(professor, course, student));
+                    professor.showPage();
+                }
+                setVisible(false);
             }
         });
 
@@ -361,7 +371,7 @@ public class ProfCourseHome extends Page {
     private javax.swing.JComboBox<String> searchDropDown;
     private javax.swing.JTextField searchParameter;
     private DefaultListModel<Student> listmodel = new DefaultListModel<>();
-    private javax.swing.JList<Student> studentsList = new JList<>(listmodel);
+    private JList<Student> studentsList = new JList<>(listmodel);
 
    
     private javax.swing.JLabel userLabel;
