@@ -27,7 +27,7 @@ public class Course implements Serializable{
 	 */
 	private String name;
 	/**
-	 * boolean to tell whether the course is active or not.
+	 * boolean to tell wether the course is active or not.
 	 */
 	private boolean active;
 	/**
@@ -44,6 +44,25 @@ public class Course implements Serializable{
 		this.prof_id = prof_id;
 		this.name = name;
 		active = false;
+	}
+	
+	public Course(int id, int prof_id, String name, boolean active) {
+		this.id = id;
+		this.prof_id = prof_id;
+		this.name = name;
+		this.active = active;
+	}
+
+	public String toString()
+	{
+		if(active)
+		{
+			return id + " " + name + " Active";  
+		}
+		else
+		{
+			return id + " " + name + " InActive";  
+		}
 	}
 	
 	/**

@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import SharedDataObjects.*;
 /**
@@ -108,6 +109,26 @@ public class DatabaseHelper {
 		{
 			return null;
 		}
+		return null;
+	}
+	public ArrayList<Course> getProfsCourses(Professor prof) {
+		String sql = "SELECT * FROM " + "CourseTable" + " WHERE PROF_ID=" + prof.getId();
+		ResultSet course;
+		ArrayList<Course> courses = new ArrayList<Course>();
+		try {
+			statement = jdbc_connection.prepareStatement(sql);
+			course = statement.executeQuery(sql);
+			while(course.next())
+			{
+				
+				courses.add(new Course(course.getInt("ID"),
+								course.getInt("PROF_ID"), 
+								course.getString("NAME"), 
+								course.getBoolean("ACTIVE") 
+								));			
+			}
+		return courses;
+		} catch (SQLException e) { e.printStackTrace(); }
 		return null;
 	}
 	

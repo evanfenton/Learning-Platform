@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import SharedDataObjects.*;
 
@@ -70,29 +71,41 @@ public class Worker implements Runnable {
 	public void run() {
 		try 
 		{
-			ServerMessage<?> message = (ServerMessage<?>) in.readObject();
-			//Example code to launch a DatabaseHelper function.
-			if(message.getObject().getClass().toString().contains("Course") && message.getMessage().equals("Add"))
+			while(true)
 			{
-				database.addCourse((Course) message.getObject());
-			}
-			/**
-			 * code for loging onto the system.
-			 */
-			if(message.getObject().getClass().toString().contains("LoginInfo") && message.getMessage().equals("Login"))
-			{
-				LoginInfo info = (LoginInfo) message.getObject();
-				User user = database.LoginUser(info);
-				System.out.println(user.getLogininfo().getPassword()+ " != " + info.getPassword());
-				if(user.getLogininfo().getPassword().equals(info.getPassword()))
+				ServerMessage<?> message = (ServerMessage<?>) in.readObject();
+				//Example code to launch a DatabaseHelper function.
+				if(message.getObject().getClass().toString().contains("Course") && message.getMessage().equals("Add"))
 				{
-					ServerMessage<User> returnmessage = new ServerMessage<User>(user, "");
-					out.writeObject(returnmessage);
+					database.addCourse((Course) message.getObject());
 				}
-				else
+				/**
+				 * code for logging onto the system.
+				 */
+				if(message.getObject().getClass().toString().contains("LoginInfo") && message.getMessage().equals("Login"))
 				{
-					ServerMessage <User> returnmessage = new ServerMessage<User>(null,"");
+					LoginInfo info = (LoginInfo) message.getObject();
+					User user = database.LoginUser(info);
+					if(user.getLogininfo().getPassword().equals(info.getPassword()))
+					{
+						ServerMessage<User> returnmessage = new ServerMessage<User>(user, "");
+						out.writeObject(returnmessage);
+					}
+					else
+					{
+						ServerMessage <User> returnmessage = new ServerMessage<User>(null,"");
+						out.writeObject(returnmessage);
+					}
+				}
+				/**
+				 * Code that returns all courses that correspond with a specific profs ID
+				 */
+				if(message.getObject().getClass().toString().contains("Professor") && message.getMessage().equals("GetCourses"))
+				{
+					ArrayList<Course> list = database.getProfsCourses((Professor) message.getObject());
+					ServerMessage<ArrayList<Course>> returnmessage = new ServerMessage<ArrayList<Course>>(list, "");
 					out.writeObject(returnmessage);
+					
 				}
 			}
 		} 
