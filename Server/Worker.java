@@ -136,6 +136,12 @@ public class Worker implements Runnable {
 					database.deactivateCourse(course);
 					out.writeObject(null);
 				}
+				if(message.getObject().getClass().toString().contains("Student") && message.getMessage().equals("GetAllStudents"))
+				{
+					ArrayList<Student> list = database.getAllStudents();
+					ServerMessage<ArrayList<Student>> returnmessage = new ServerMessage<ArrayList<Student>>(list, "");
+					out.writeObject(returnmessage);
+				}
 				
 			}
 		} 
