@@ -4,9 +4,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
-import SharedDataObjects.Course;
-import SharedDataObjects.ServerMessage;
+import SharedDataObjects.*;
+
 
 /**
  * Worker issued to each client connected to the server.
@@ -70,11 +71,72 @@ public class Worker implements Runnable {
 	public void run() {
 		try 
 		{
-			ServerMessage<?> message = (ServerMessage<?>) in.readObject();
-			//Example code to launch a DatabaseHelper function.
-			if(message.getObject().getClass().toString().contains("Course") && message.getMessage().equals("Add"));
+			while(true)
 			{
-				database.addCourse((Course) message.getObject());
+				ServerMessage<?> message = (ServerMessage<?>) in.readObject();
+				/**
+				 * Adds a course
+				 */
+				if(message.getObject().getClass().toString().contains("Course") && message.getMessage().equals("Add"))
+				{
+					database.addCourse((Course) message.getObject());
+					out.writeObject(null);
+				}
+				/**
+				 * deletes a course
+				 */
+				if(message.getObject().getClass().toString().contains("Course") && message.getMessage().equals("Delete"))
+				{
+					database.deleteCourse((Course) message.getObject());
+					out.writeObject(null);
+				}
+				/**
+				 * code for logging onto the system.
+				 */
+				if(message.getObject().getClass().toString().contains("LoginInfo") && message.getMessage().equals("Login"))
+				{
+					LoginInfo info = (LoginInfo) message.getObject();
+					User user = database.LoginUser(info);
+					if(user.getLogininfo().getPassword().equals(info.getPassword()))
+					{
+						ServerMessage<User> returnmessage = new ServerMessage<User>(user, "");
+						out.writeObject(returnmessage);
+					}
+					else
+					{
+						ServerMessage <User> returnmessage = new ServerMessage<User>(null,"");
+						out.writeObject(returnmessage);
+					}
+				}
+				/**
+				 * Code that returns all courses that correspond with a specific profs ID
+				 */
+				if(message.getObject().getClass().toString().contains("Professor") && message.getMessage().equals("GetCourses"))
+				{
+					ArrayList<Course> list = database.getProfsCourses((Professor) message.getObject());
+					ServerMessage<ArrayList<Course>> returnmessage = new ServerMessage<ArrayList<Course>>(list, "");
+					out.writeObject(returnmessage);
+					
+				}
+				/**
+				 * Activates a course
+				 */
+				if(message.getObject().getClass().toString().contains("Course") && message.getMessage().equals("Activate"))
+				{
+					Course course = (Course) message.getObject();
+					database.activateCourse(course);
+					out.writeObject(null);
+				}
+				/**
+				 * Deactivates a course
+				 */
+				if(message.getObject().getClass().toString().contains("Course") && message.getMessage().equals("Deactivate"))
+				{
+					Course course = (Course) message.getObject();
+					database.deactivateCourse(course);
+					out.writeObject(null);
+				}
+				
 			}
 		} 
 		catch (ClassNotFoundException | IOException e) 

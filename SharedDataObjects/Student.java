@@ -23,8 +23,7 @@ public class Student extends User {
 	 * @param students system password
 	 */
 	public Student(int id, String firstname, String lastname, String email, String password) {
-		super(id, firstname, lastname, email, password);
-		setType("S");
+		super(id, firstname, lastname, email, password, "S");
 	}
 	/**
 	 * getters and setters for the student

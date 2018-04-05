@@ -46,6 +46,25 @@ public class Course implements Serializable{
 		active = false;
 	}
 	
+	public Course(int id, int prof_id, String name, boolean active) {
+		this.id = id;
+		this.prof_id = prof_id;
+		this.name = name;
+		this.active = active;
+	}
+
+	public String toString()
+	{
+		if(active)
+		{
+			return id + " " + name + " Active";  
+		}
+		else
+		{
+			return id + " " + name + " InActive";  
+		}
+	}
+	
 	/**
 	 * getters and setters for the class.
 	 */
