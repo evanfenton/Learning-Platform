@@ -27,7 +27,7 @@ public class Course implements Serializable{
 	 */
 	private String name;
 	/**
-	 * boolean to tell wether the course is active or not.
+	 * boolean to tell whether the course is active or not.
 	 */
 	private boolean active;
 	/**

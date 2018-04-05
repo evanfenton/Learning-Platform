@@ -44,7 +44,6 @@ public class LoginWindow extends JFrame{
         add(fields);
         add(buttons);
 
-        pack();
         setLocationRelativeTo(null);
 
         setVisible(true);

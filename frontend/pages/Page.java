@@ -11,7 +11,6 @@ public class Page extends javax.swing.JFrame{
     public Page(ProfessorGUI prof){
         professor = prof;
         isProfesor = true;
-        System.out.println("Page has ProfessorGUI in it, constructed");
     }
 
     public Page(){
