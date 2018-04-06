@@ -183,7 +183,39 @@ public class Worker implements Runnable {
                     ServerMessage<ArrayList<Student>> returnMessage= new ServerMessage<>(students, "");
                     out.writeObject(returnMessage);
                 }
-				
+                if(message.getObject().getClass().toString().contains("Course") && message.getMessage().equals("GetCourseAssignments"))
+                {
+                	ArrayList<Assignment> list = database.getCourseAssignments((Course) message.getObject());
+					ServerMessage<ArrayList<Assignment>> returnmessage = new ServerMessage<ArrayList<Assignment>>(list, "");
+					out.writeObject(returnmessage);
+                }
+                /**
+				 * Activates an Assignment
+				 */
+				if(message.getObject().getClass().toString().contains("Assignment") && message.getMessage().equals("Activate"))
+				{
+					Assignment assignment = (Assignment) message.getObject();
+					database.activateAssignment(assignment);
+					out.writeObject(null);
+				}
+				/**
+				 * Deactivates an Assignment
+				 */
+				if(message.getObject().getClass().toString().contains("Assignment") && message.getMessage().equals("Deactivate"))
+				{
+					Assignment assignment = (Assignment) message.getObject();
+					database.deactivateAssignment(assignment);
+					out.writeObject(null);
+				}
+				/**
+				 * deletes an assignment
+				 */
+				if(message.getObject().getClass().toString().contains("Assignment") && message.getMessage().equals("Delete"))
+				{
+					Assignment assignment = (Assignment) message.getObject();
+					database.deleteAssignment(assignment);
+					out.writeObject(null);
+				}
 			}
 		} 
 				

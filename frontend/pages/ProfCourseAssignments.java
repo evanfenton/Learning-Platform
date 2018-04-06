@@ -1,12 +1,19 @@
 package FrontEnd.pages;
 
+import SharedDataObjects.Assignment;
 import SharedDataObjects.Course;
+import SharedDataObjects.ServerMessage;
+import SharedDataObjects.Student;
 import FrontEnd.ProfessorGUI;
 
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 /**
  *
@@ -22,6 +29,8 @@ public class ProfCourseAssignments extends Page {
         initComponents();
         header.setText(course.getName() + " " + course.getId() + " - Assignments");
         userLabel.setText("User: " + prof.getProfessor().getFirstname() + "   " + prof.getProfessor().getLastname());
+        this.course = course;
+        refreshAssignmentList();
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -68,49 +77,61 @@ public class ProfCourseAssignments extends Page {
         });
 
         /**
-         * --INCOMPLETE--
          * Sets the Assignment to Active and updates list of Assignments
          */
         activateAssignmentB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+            	ServerMessage<Assignment> message = new ServerMessage<Assignment>(assignmentList.getSelectedValue(), "Activate");
+            	professor.getClient().communicate(message);
+            	refreshAssignmentList();
             }
         });
 
         /**
-         * --INCOMPLETE--
          * Sets the Assignment to Not Active and updates list of Assignments
          */
         deActivateAssignmentB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+            	ServerMessage<Assignment> message = new ServerMessage<Assignment>(assignmentList.getSelectedValue(), "Deactivate");
+            	professor.getClient().communicate(message);
+            	refreshAssignmentList();
             }
         });
 
         /**
-         * --INCOMPLETE--
          * Fill the corresponding textfield with info from the object selected in the list
          */
-        assignmentList.addListSelectionListener(new ListSelectionListener() {
+        assignmentList.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                assignName.setText("info from object");
-                assignUpDate.setText("info from object");
-                assignCloseDate.setText("info from object");
-                assignStatus.setText("info from object");
+                try
+                {
+	            	Assignment assign = assignmentList.getSelectedValue();
+	            	assignName.setText(assign.getTitle());
+	                assignCloseDate.setText(assign.getDue_date());
+	                if(assign.isActive())
+	                	assignStatus.setText("Active");
+	                else
+	                	assignStatus.setText("Inactive");
+                }
+                catch(NullPointerException z)
+                {
+                	assignmentList.clearSelection();
+                }
             }
         });
 
         /**
-         * --INCOMPLETE--
          * Remove Assignment from DB and refresh assignmentList
          */
         removeAssignB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+            	ServerMessage<Assignment> message = new ServerMessage<Assignment>(assignmentList.getSelectedValue(), "Delete");
+            	professor.getClient().communicate(message);
+            	refreshAssignmentList();
             }
         });
 
@@ -144,7 +165,6 @@ public class ProfCourseAssignments extends Page {
         returnB = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        assignmentList = new javax.swing.JList<>();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         logoutB = new javax.swing.JButton();
@@ -158,7 +178,7 @@ public class ProfCourseAssignments extends Page {
         removeAssignB = new javax.swing.JButton();
         dropboxB = new javax.swing.JButton();
         assignName = new javax.swing.JTextField();
-        assignUpDate = new javax.swing.JTextField();
+  //      assignUpDate = new javax.swing.JTextField();
         assignCloseDate = new javax.swing.JTextField();
         assignStatus = new javax.swing.JTextField();
         uploadAssignB = new javax.swing.JButton();
@@ -203,11 +223,7 @@ public class ProfCourseAssignments extends Page {
 
         jPanel2.setBackground(java.awt.Color.orange);
 
-        assignmentList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+      
         jScrollPane1.setViewportView(assignmentList);
 
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
@@ -221,7 +237,7 @@ public class ProfCourseAssignments extends Page {
 
         jLabel5.setText("Assignment:");
 
-        jLabel6.setText("Date Uploaded:");
+        //jLabel6.setText("Date Uploaded:");
 
         jLabel8.setText("Drop Box Closed:");
 
@@ -237,7 +253,7 @@ public class ProfCourseAssignments extends Page {
 
         assignName.setEditable(false);
 
-        assignUpDate.setEditable(false);
+       // assignUpDate.setEditable(false);
 
         assignCloseDate.setEditable(false);
 
@@ -268,7 +284,7 @@ public class ProfCourseAssignments extends Page {
                                                         .addGroup(jPanel2Layout.createSequentialGroup()
                                                                 .addGap(95, 95, 95)
                                                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                        .addComponent(assignUpDate, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+          //                                                      .addComponent(assignUpDate, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                         .addComponent(assignName, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                         .addComponent(assignCloseDate, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                         .addComponent(assignStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -319,7 +335,7 @@ public class ProfCourseAssignments extends Page {
                                                 .addComponent(jLabel4)
                                                 .addGap(28, 28, 28)
                                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(assignUpDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+           //                                             .addComponent(assignUpDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(jLabel6))
                                                 .addGap(28, 28, 28)
                                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -358,15 +374,33 @@ public class ProfCourseAssignments extends Page {
         pack();
     }// </editor-fold>
 
-
+    private void refreshAssignmentList()
+    {
+    	try
+    	{
+    		listmodel.clear();
+    		ServerMessage<Course> message = new ServerMessage<Course>(course, "GetCourseAssignments");
+    		ServerMessage<?> recieved = professor.getClient().communicate(message);
+    		ArrayList<?> list = (ArrayList<?>) recieved.getObject();
+    		for(int i = 0; i < list.size(); i++)
+	    	  {
+	    		  listmodel.addElement((Assignment) list.get(i));
+	    	  }
+    	}
+    	catch(NullPointerException k)
+    	{
+    		assignmentList.clearSelection();
+    	}
+    }
 
     // Variables declaration - do not modify
     private javax.swing.JButton activateAssignmentB;
     private javax.swing.JTextField assignCloseDate;
     private javax.swing.JTextField assignName;
     private javax.swing.JTextField assignStatus;
-    private javax.swing.JTextField assignUpDate;
-    private javax.swing.JList<String> assignmentList;
+    //private javax.swing.JTextField assignUpDate;
+    private DefaultListModel<Assignment>listmodel = new DefaultListModel<Assignment>();
+    private javax.swing.JList<Assignment> assignmentList = new JList<>(listmodel);
     private javax.swing.JButton deActivateAssignmentB;
     private javax.swing.JButton dropboxB;
     private javax.swing.JLabel jLabel2;
@@ -385,5 +419,6 @@ public class ProfCourseAssignments extends Page {
     private javax.swing.JButton returnB;
     private javax.swing.JButton uploadAssignB;
     private javax.swing.JLabel userLabel;
+    private Course course;
     // End of variables declaration
 }

@@ -55,6 +55,19 @@ public class Assignment implements Serializable {
 		this.due_date = due_date;
 		active = false;
 	}
+	public Assignment(int id, int course_id, String title, String path, boolean active, String due_date)
+	{
+		this.id = id;
+		this.course_id = course_id;
+		this.title = title;
+		this.path = path;
+		this.due_date = due_date;
+		this.active = active;
+	}
+	public String toString()
+	{
+		return title;				
+	}
 	/**
 	 * getters and setters for the class
 	 */

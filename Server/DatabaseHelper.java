@@ -92,7 +92,6 @@ public class DatabaseHelper {
 		try{
 			
 			statement = jdbc_connection.prepareStatement(sql);
-			System.out.println("Attempting to add course...");
 			statement.executeUpdate(sql);
 		}
 		catch(SQLException e)
@@ -304,5 +303,73 @@ public class DatabaseHelper {
         
         return students;
     }
+	synchronized public ArrayList<Assignment> getCourseAssignments(Course course) {
+		String sql = "SELECT * FROM " + "AssignmentTable" + " WHERE COURSE_ID=" + course.getId();
+		ResultSet assignment;
+		ArrayList<Assignment> assignments = new ArrayList<Assignment>();
+		try {
+			statement = jdbc_connection.prepareStatement(sql);
+			assignment = statement.executeQuery(sql);
+			while(assignment.next())
+			{
+				
+				assignments.add(new Assignment(assignment.getInt("ID"),
+								assignment.getInt("COURSE_ID"), 
+								assignment.getString("TITLE"), 
+								assignment.getString("PATH"),
+								assignment.getBoolean("ACTIVE"),
+								assignment.getString("DUE_DATE")
+								));			
+			}
+		return assignments;
+		} catch (SQLException e) { e.printStackTrace(); }
+	
+		return null;
+	}
+	synchronized public void activateAssignment(Assignment assignment)
+	{
+		
+		String sql = "UPDATE " + "AssignmentTable" + " SET ACTIVE = b'1'"
+				+ " WHERE ID = " + assignment.getId();
+
+		try{
+			
+			statement = jdbc_connection.prepareStatement(sql);
+			statement.executeUpdate(sql);
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	synchronized public void deactivateAssignment(Assignment assignment)
+	{
+		
+		String sql = "UPDATE " + "AssignmentTable" + " SET ACTIVE = b'0'"
+				+ " WHERE ID = " + assignment.getId();
+
+		try{
+			
+			statement = jdbc_connection.prepareStatement(sql);
+			statement.executeUpdate(sql);
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	synchronized public void deleteAssignment(Assignment assignment) {
+		String sql = "DELETE FROM " + "AssignmentTable" + " WHERE ID=" + assignment.getId();
+		try{
+			
+			statement = jdbc_connection.prepareStatement(sql);
+			statement.executeUpdate(sql);
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+	}
 	
 }

@@ -19,6 +19,8 @@ public class AddCourse extends Page {
     public AddCourse(ProfessorGUI prof) {
         super(prof);
         initComponents();
+        profIDInput.setEditable(false);
+        profIDInput.setText("" +prof.getProfessor().getId());
         userLabel.setText("User: " + prof.getProfessor().getFirstname() + "    " + prof.getProfessor().getLastname());
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -56,7 +58,6 @@ public class AddCourse extends Page {
         });
 
         /**
-         * --INCOMPLETE--
          * sends the new course to server and then closes frame and reopens the ProfHome frame
          */
         addCourseB.addActionListener(new ActionListener() {
