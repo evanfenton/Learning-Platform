@@ -246,5 +246,63 @@ public class DatabaseHelper {
 			e.printStackTrace();
 		}
 	}
+	synchronized public Student searchCourseByID(int id)
+    {
+        ResultSet sqlResult;
+        
+        try{
+            
+            String sql = "SELECT * FROM " + "UserTable" + " WHERE ID= " + id+" AND TYPE= 'S'"+";";
+            
+            statement = jdbc_connection.prepareStatement(sql);
+            sqlResult = statement.executeQuery(sql);
+            
+            if(sqlResult.next())
+            {
+                return new Student(sqlResult.getInt("ID"),
+                                   sqlResult.getString("FIRSTNAME"),
+                                   sqlResult.getString("LASTNAME"),
+                                   sqlResult.getString("EMAIL"),
+                                   sqlResult.getString("PASSWORD"));
+            }
+            
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
+    
+    synchronized public ArrayList <Student> searchStudentsByLastName(String name)
+    {
+        ResultSet sqlResult;
+        ArrayList<Student> students= new ArrayList<>();
+        
+        try{
+            
+            String sql = "SELECT * FROM " + "UserTable" + " WHERE LASTNAME= '" + name+"' AND TYPE= 'S'"+";";
+            
+            statement = jdbc_connection.prepareStatement(sql);
+            sqlResult = statement.executeQuery(sql);
+            
+            while(sqlResult.next())
+            {
+                students.add(new Student(sqlResult.getInt("ID"),
+                                         sqlResult.getString("FIRSTNAME"),
+                                         sqlResult.getString("LASTNAME"),
+                                         sqlResult.getString("EMAIL"),
+                                         sqlResult.getString("PASSWORD")));
+            }
+            
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        
+        return students;
+    }
 	
 }

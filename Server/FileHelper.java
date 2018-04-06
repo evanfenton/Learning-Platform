@@ -9,7 +9,7 @@ public class FileHelper {
     private String serverfilepath;
 
     public FileHelper(){
-        serverfilepath = "C:\\Users\\evanm\\Desktop\\ENSF409 PROJECT SERVER FILE FOLDER\\"; //Change this to your file path used to save server files
+        serverfilepath = "D:\\Users\\Gibson\\Desktop\\Project\\"; //Change this to your file path used to save server files
     }
 
     public void uploadFile(byte[] input, String message){

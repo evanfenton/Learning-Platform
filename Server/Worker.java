@@ -163,9 +163,32 @@ public class Worker implements Runnable {
 					filemanager.uploadFile(input,message.getMessage());
 					out.writeObject(null);
 				}
+				 /**
+                 * Searches a course for a student by ID
+                 */
+                if(message.getObject().getClass().toString().contains("Course") && message.getMessage().contains("SearchID")){
+                    
+                    int searchID= Integer.parseInt(message.getMessage().split(" ")[1]);
+                    Student student= database.searchCourseByID(searchID);
+                    ServerMessage<Student> returnMessage= new ServerMessage<>(student, "");
+                    out.writeObject(returnMessage);
+                }
+                /**
+                 * Searches a course for a student by last name
+                 */
+                if(message.getObject().getClass().toString().contains("Course") && message.getMessage().contains("SearchName")){
+                    Course course = (Course) message.getObject();
+                    String searchName= message.getMessage().split(" ")[1];
+                    ArrayList<Student> students= database.searchStudentsByLastName(searchName);
+                    ServerMessage<ArrayList<Student>> returnMessage= new ServerMessage<>(students, "");
+                    out.writeObject(returnMessage);
+                }
 				
 			}
 		} 
+				
+			
+		
 		catch (ClassNotFoundException | IOException e) 
 		{
 			e.printStackTrace();
