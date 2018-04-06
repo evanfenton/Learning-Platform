@@ -136,28 +136,43 @@ public class Worker implements Runnable {
 					database.deactivateCourse(course);
 					out.writeObject(null);
 				}
+				/**
+				 * Gets all students from DB and returns them
+				 */
 				if(message.getObject().getClass().toString().contains("Student") && message.getMessage().equals("GetAllStudents"))
 				{
 					ArrayList<Student> list = database.getAllStudents();
 					ServerMessage<ArrayList<Student>> returnmessage = new ServerMessage<ArrayList<Student>>(list, "");
 					out.writeObject(returnmessage);
 				}
+				/**
+				 * checks enrollment of a student
+				 */
 				if(message.getObject().getClass().toString().contains("StudentEnrollment") && message.getMessage().equals("CheckEnroll"))
 				{
 					StudentEnrollment enrolled = database.isEnrolled((StudentEnrollment) message.getObject());
 					ServerMessage<StudentEnrollment> returnmessage = new ServerMessage<StudentEnrollment>(enrolled, "");
 					out.writeObject(returnmessage);
 				}
+				/**
+				 * enrolls a student to a class
+				 */
 				if(message.getObject().getClass().toString().contains("StudentEnrollment") && message.getMessage().equals("Enroll"))
 				{
 					database.enroll((StudentEnrollment) message.getObject());
 					out.writeObject(null);
 				}
+				/**
+				 * unenrolls a student from a class
+				 */
 				if(message.getObject().getClass().toString().contains("StudentEnrollment") && message.getMessage().equals("Unenroll"))
 				{
 					database.unenroll((StudentEnrollment) message.getObject());
 					out.writeObject(null);
 				}
+				/**
+				 * uploads a file
+				 */
 				if(message.getMessage().contains("FileUpload")){
 					byte[] input = (byte[]) message.getObject();
 					filemanager.uploadFile(input,message.getMessage());

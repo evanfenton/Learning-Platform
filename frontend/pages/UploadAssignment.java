@@ -23,7 +23,7 @@ public class UploadAssignment extends Page {
     public UploadAssignment(ProfessorGUI prof, Course course) {
         super(prof);
         initComponents();
-        userLabel.setText("User: " + prof.getProfessor().getFirstname() + "  " + prof.getProfessor().getLastname());
+        userLabel.setText("User: " + prof.getProfessor().getFirstname() + "   " + prof.getProfessor().getLastname());
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -75,7 +75,7 @@ public class UploadAssignment extends Page {
                         BufferedInputStream bos = new BufferedInputStream(fis);
                         bos.read(content, 0, (int)length);
                         @SuppressWarnings("unchecked")
-                        ServerMessage message = new ServerMessage(content,"FileUploadstr-1splitter".concat(fileinfo));
+						ServerMessage message = new ServerMessage(content,"FileUploadstr-1splitter".concat(fileinfo));
                         professor.getClient().communicate(message);
                         
                     } catch (FileNotFoundException g) {
@@ -84,7 +84,6 @@ public class UploadAssignment extends Page {
                         f.printStackTrace();
                     }
                     String [] filesplit = fileinfo.split("\\.(?=[^\\.]+$)");
-                    System.out.println(filesplit[0]);
                     Random rand = new Random();
                     Assignment assignment = new Assignment(rand.nextInt(99999999)+1,course.getId(),filesplit[0],"path doesnt exist",dueDateInput.getText());
                     ServerMessage<Assignment> message = new ServerMessage<Assignment>(assignment, "Add");
@@ -109,7 +108,7 @@ public class UploadAssignment extends Page {
 
         jPanel1 = new JPanel();
         userLabel = new JLabel();
-        courseNameHeader = new JLabel();
+        jLabel3 = new JLabel();
         jPanel2 = new JPanel();
         jLabel4 = new JLabel();
         fileChooser = new JFileChooser();
@@ -125,28 +124,31 @@ public class UploadAssignment extends Page {
         userLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         userLabel.setText("User:");
 
-        courseNameHeader.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        courseNameHeader.setText("CourseName Assignments");
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel3.setText("CourseName Assignments");
 
         GroupLayout jPanel1Layout = new GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(268, 268, 268)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(userLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(courseNameHeader))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(221, 221, 221)
+                                                .addComponent(jLabel3))
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(203, 203, 203)
+                                                .addComponent(userLabel, GroupLayout.PREFERRED_SIZE, 342, GroupLayout.PREFERRED_SIZE)))
+                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(36, 36, 36)
-                                .addComponent(courseNameHeader)
-                                .addGap(18, 18, Short.MAX_VALUE)
-                                .addComponent(userLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(25, 25, 25))
+                jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addContainerGap(36, Short.MAX_VALUE)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(userLabel, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
+                                .addGap(31, 31, 31))
         );
 
         jPanel2.setBackground(java.awt.Color.orange);
@@ -231,7 +233,7 @@ public class UploadAssignment extends Page {
     private JButton createB;
     private JButton cancelB;
     private JLabel jLabel1;
-    private JLabel courseNameHeader;
+    private JLabel jLabel3;
     private JLabel jLabel4;
     private JPanel jPanel1;
     private JPanel jPanel2;

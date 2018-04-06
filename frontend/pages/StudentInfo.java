@@ -22,7 +22,7 @@ public class StudentInfo extends Page {
     public StudentInfo(ProfessorGUI prof, Course course, Student student) {
         super(prof);
         initComponents();
-        userLabel.setText("User: " + prof.getProfessor().getFirstname() + "  " + prof.getProfessor().getLastname());
+        userLabel.setText("User: " + prof.getProfessor().getFirstname() + "   " + prof.getProfessor().getLastname());
         header.setText(student.getFirstname() + " " + student.getLastname() + " " + student.getId());
         fName.setText(student.getFirstname());
         lName.setText(student.getLastname());
