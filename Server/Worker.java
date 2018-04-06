@@ -136,33 +136,53 @@ public class Worker implements Runnable {
 					database.deactivateCourse(course);
 					out.writeObject(null);
 				}
+				/**
+				 * Gets all students from DB and returns them
+				 */
 				if(message.getObject().getClass().toString().contains("Student") && message.getMessage().equals("GetAllStudents"))
 				{
 					ArrayList<Student> list = database.getAllStudents();
 					ServerMessage<ArrayList<Student>> returnmessage = new ServerMessage<ArrayList<Student>>(list, "");
 					out.writeObject(returnmessage);
 				}
+				/**
+				 * checks enrollment of a student
+				 */
 				if(message.getObject().getClass().toString().contains("StudentEnrollment") && message.getMessage().equals("CheckEnroll"))
 				{
 					StudentEnrollment enrolled = database.isEnrolled((StudentEnrollment) message.getObject());
 					ServerMessage<StudentEnrollment> returnmessage = new ServerMessage<StudentEnrollment>(enrolled, "");
 					out.writeObject(returnmessage);
 				}
+				/**
+				 * enrolls a student to a class
+				 */
 				if(message.getObject().getClass().toString().contains("StudentEnrollment") && message.getMessage().equals("Enroll"))
 				{
 					database.enroll((StudentEnrollment) message.getObject());
 					out.writeObject(null);
 				}
+				/**
+				 * unenrolls a student from a class
+				 */
 				if(message.getObject().getClass().toString().contains("StudentEnrollment") && message.getMessage().equals("Unenroll"))
 				{
 					database.unenroll((StudentEnrollment) message.getObject());
 					out.writeObject(null);
 				}
-                /**
+				/**
+				 * uploads a file
+				 */
+				if(message.getMessage().contains("FileUpload")){
+					byte[] input = (byte[]) message.getObject();
+					filemanager.uploadFile(input,message.getMessage());
+					out.writeObject(null);
+				}
+				 /**
                  * Searches a course for a student by ID
                  */
                 if(message.getObject().getClass().toString().contains("Course") && message.getMessage().contains("SearchID")){
-                    Course course = (Course) message.getObject();
+                    
                     int searchID= Integer.parseInt(message.getMessage().split(" ")[1]);
                     Student student= database.searchCourseByID(searchID);
                     ServerMessage<Student> returnMessage= new ServerMessage<>(student, "");
@@ -171,16 +191,60 @@ public class Worker implements Runnable {
                 /**
                  * Searches a course for a student by last name
                  */
-                if(message.getObject().getClass().toString().contains("Course") && message.getMessage().contains("SearchID")){
+                if(message.getObject().getClass().toString().contains("Course") && message.getMessage().contains("SearchName")){
                     Course course = (Course) message.getObject();
                     String searchName= message.getMessage().split(" ")[1];
-                    ArrayList<Student> students= database.searchCourseByLastName(searchName);
+                    ArrayList<Student> students= database.searchStudentsByLastName(searchName);
                     ServerMessage<ArrayList<Student>> returnMessage= new ServerMessage<>(students, "");
                     out.writeObject(returnMessage);
                 }
-				
+                if(message.getObject().getClass().toString().contains("Course") && message.getMessage().equals("GetCourseAssignments"))
+                {
+                	ArrayList<Assignment> list = database.getCourseAssignments((Course) message.getObject());
+					ServerMessage<ArrayList<Assignment>> returnmessage = new ServerMessage<ArrayList<Assignment>>(list, "");
+					out.writeObject(returnmessage);
+                }
+                /**
+				 * Activates an Assignment
+				 */
+				if(message.getObject().getClass().toString().contains("Assignment") && message.getMessage().equals("Activate"))
+				{
+					Assignment assignment = (Assignment) message.getObject();
+					database.activateAssignment(assignment);
+					out.writeObject(null);
+				}
+				/**
+				 * Deactivates an Assignment
+				 */
+				if(message.getObject().getClass().toString().contains("Assignment") && message.getMessage().equals("Deactivate"))
+				{
+					Assignment assignment = (Assignment) message.getObject();
+					database.deactivateAssignment(assignment);
+					out.writeObject(null);
+				}
+				/**
+				 * deletes an assignment
+				 */
+				if(message.getObject().getClass().toString().contains("Assignment") && message.getMessage().equals("Delete"))
+				{
+					Assignment assignment = (Assignment) message.getObject();
+					database.deleteAssignment(assignment);
+					out.writeObject(null);
+				}
+				/**
+				 * adds an assignment
+				 */
+				if(message.getObject().getClass().toString().contains("Assignment") && message.getMessage().equals("Add"))
+				{
+					Assignment assignment = (Assignment) message.getObject();
+					database.addAssignment(assignment);
+					out.writeObject(null);
+				}
 			}
 		} 
+				
+			
+		
 		catch (ClassNotFoundException | IOException e) 
 		{
 			e.printStackTrace();

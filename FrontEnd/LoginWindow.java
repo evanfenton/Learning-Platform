@@ -21,7 +21,9 @@ public class LoginWindow extends JFrame{
     private JButton loginButton, cancelButton;
     private JPanel fields, buttons;
     private Client client;
-    
+    /**
+     * Creates the login window with client connection.
+     */
     public LoginWindow(){
         super();
         client = new Client("localhost", 9091);
@@ -119,7 +121,9 @@ public class LoginWindow extends JFrame{
     		this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     	}
     }
-    
+    /**
+     * Clears all text in the loginwindow
+     */
     private void clearLoginWindow(){
         userIDInput.setText("");
         passwordInput.setText("");

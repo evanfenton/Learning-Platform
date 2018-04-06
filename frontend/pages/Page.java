@@ -1,7 +1,10 @@
 package FrontEnd.pages;
 
 import FrontEnd.ProfessorGUI;
-
+	/**
+	 * Class that contains methods and fields for all pages.
+	 *
+	 */
 public class Page extends javax.swing.JFrame{
    protected boolean isProfesor;
    //itemList?

@@ -4,7 +4,10 @@ import SharedDataObjects.Professor;
 import SharedDataObjects.User;
 import FrontEnd.components.PageNavigator;
 import FrontEnd.pages.ProfHome;
-
+/**
+ * The Class that gets launched when a professor logs onto the system.
+ *
+ */
 public class ProfessorGUI extends PageNavigator {
     private Client client;
     private Professor professor;

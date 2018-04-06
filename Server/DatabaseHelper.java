@@ -85,6 +85,10 @@ public class DatabaseHelper {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * deletes a course from the database.
+	 * @param course
+	 */
 	synchronized public void deleteCourse(Course course)
 	{
 		
@@ -92,7 +96,6 @@ public class DatabaseHelper {
 		try{
 			
 			statement = jdbc_connection.prepareStatement(sql);
-			System.out.println("Attempting to add course...");
 			statement.executeUpdate(sql);
 		}
 		catch(SQLException e)
@@ -100,6 +103,11 @@ public class DatabaseHelper {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * Returns user that fits email from login info.
+	 * @param info
+	 * @return User
+	 */
 	synchronized public User LoginUser(LoginInfo info)
 	{
 		String sql = "SELECT * FROM " + "UserTable" + " WHERE EMAIL= '" + info.getUsername() + "'";
@@ -126,6 +134,11 @@ public class DatabaseHelper {
 		}
 		return null;
 	}
+	/**
+	 * Gets all courses that corrispond to a profs ID
+	 * @param prof
+	 * @return courses
+	 */
 	synchronized public ArrayList<Course> getProfsCourses(Professor prof) {
 		String sql = "SELECT * FROM " + "CourseTable" + " WHERE PROF_ID=" + prof.getId();
 		ResultSet course;
@@ -146,6 +159,10 @@ public class DatabaseHelper {
 		} catch (SQLException e) { e.printStackTrace(); }
 		return null;
 	}
+	/**
+	 * Activates specific course
+	 * @param course
+	 */
 	synchronized public void activateCourse(Course course)
 	{
 		
@@ -162,6 +179,10 @@ public class DatabaseHelper {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * deactivates specific course
+	 * @param course
+	 */
 	synchronized public void deactivateCourse(Course course)
 	{
 		
@@ -178,6 +199,10 @@ public class DatabaseHelper {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * gets all students attending the university
+	 * @return all students
+	 */
 	synchronized public ArrayList<Student> getAllStudents() {
 		String sql = "SELECT * FROM " + "UserTable" + " WHERE TYPE=" + "'S'";
 		ResultSet student;
@@ -199,6 +224,11 @@ public class DatabaseHelper {
 		} catch (SQLException e) { e.printStackTrace(); }
 		return null;
 	}
+	/**
+	 * checks to see if a student enrollment is in the table.
+	 * @param Enrollment
+	 * @return Enrollment
+	 */
 	synchronized public StudentEnrollment isEnrolled(StudentEnrollment x)
 	{
 		String sql = "SELECT * FROM " + "StudentEnrollmentTable" + " WHERE COURSE_ID=" +
@@ -218,6 +248,10 @@ public class DatabaseHelper {
 		catch(SQLException e) { e.printStackTrace(); }
 		return null;
 	}
+	/**
+	 * Enrolls student in a course.
+	 * @param x
+	 */
 	synchronized public void enroll(StudentEnrollment x)
 	{
 		String sql = "INSERT INTO " + "StudentEnrollmentTable" +
@@ -233,6 +267,10 @@ public class DatabaseHelper {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * unEnrolls student from course
+	 * @param x
+	 */
 	synchronized public void unenroll(StudentEnrollment x)
 	{
 		String sql = "DELETE FROM " + "StudentEnrollmentTable" + " WHERE STUDENT_ID="
@@ -246,7 +284,12 @@ public class DatabaseHelper {
 			e.printStackTrace();
 		}
 	}
-    synchronized public Student searchCourseByID(int id)
+	/**
+	 * Searches students with certain ID
+	 * @param id
+	 * @return student
+	 */
+	synchronized public Student searchCourseByID(int id)
     {
         ResultSet sqlResult;
         
@@ -274,15 +317,19 @@ public class DatabaseHelper {
         
         return null;
     }
-    
-    synchronized public ArrayList <Student> searchCourseByLastName(String name)
+    /**
+     * search Students by last name
+     * @param name
+     * @return students
+     */
+    synchronized public ArrayList <Student> searchStudentsByLastName(String name)
     {
         ResultSet sqlResult;
         ArrayList<Student> students= new ArrayList<>();
         
         try{
             
-            String sql = "SELECT * FROM " + "UserTable" + " WHERE LASTNAME= " + name+" AND TYPE= 'S'"+";";
+            String sql = "SELECT * FROM " + "UserTable" + " WHERE LASTNAME= '" + name+"' AND TYPE= 'S'"+";";
             
             statement = jdbc_connection.prepareStatement(sql);
             sqlResult = statement.executeQuery(sql);
@@ -304,5 +351,123 @@ public class DatabaseHelper {
         
         return students;
     }
+    /**
+     * gets all assignments for specific course
+     * @param course
+     * @return all assignments
+     */
+	synchronized public ArrayList<Assignment> getCourseAssignments(Course course) {
+		String sql = "SELECT * FROM " + "AssignmentTable" + " WHERE COURSE_ID=" + course.getId();
+		ResultSet assignment;
+		ArrayList<Assignment> assignments = new ArrayList<Assignment>();
+		try {
+			statement = jdbc_connection.prepareStatement(sql);
+			assignment = statement.executeQuery(sql);
+			while(assignment.next())
+			{
+				
+				assignments.add(new Assignment(assignment.getInt("ID"),
+								assignment.getInt("COURSE_ID"), 
+								assignment.getString("TITLE"), 
+								assignment.getString("PATH"),
+								assignment.getBoolean("ACTIVE"),
+								assignment.getString("DUE_DATE")
+								));			
+			}
+		return assignments;
+		} catch (SQLException e) { e.printStackTrace(); }
+	
+		return null;
+	}
+	/**
+	 * activates specific assignment
+	 * @param assignment
+	 */
+	synchronized public void activateAssignment(Assignment assignment)
+	{
+		
+		String sql = "UPDATE " + "AssignmentTable" + " SET ACTIVE = b'1'"
+				+ " WHERE ID = " + assignment.getId();
+
+		try{
+			
+			statement = jdbc_connection.prepareStatement(sql);
+			statement.executeUpdate(sql);
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * deactivates specific assignment
+	 * @param assignment
+	 */
+	synchronized public void deactivateAssignment(Assignment assignment)
+	{
+		
+		String sql = "UPDATE " + "AssignmentTable" + " SET ACTIVE = b'0'"
+				+ " WHERE ID = " + assignment.getId();
+
+		try{
+			
+			statement = jdbc_connection.prepareStatement(sql);
+			statement.executeUpdate(sql);
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * deletes specific assignment
+	 * @param assignment
+	 */
+	synchronized public void deleteAssignment(Assignment assignment) {
+		String sql = "DELETE FROM " + "AssignmentTable" + " WHERE ID=" + assignment.getId();
+		try{
+			
+			statement = jdbc_connection.prepareStatement(sql);
+			statement.executeUpdate(sql);
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+	}
+	/**
+	 * adds specific assignment
+	 * @param assignment
+	 */
+	public void addAssignment(Assignment assignment) {
+		int bit;
+		if(assignment.isActive())
+		{
+			bit = 1;
+		}
+		else
+		{
+			bit = 0;
+		}
+		String sql = "INSERT INTO " + "AssignmentTable" +
+				" VALUES ( " + assignment.getId() + ", '" + 
+				assignment.getCourse_id() + "', '" + 
+				assignment.getTitle() + "', '" + 
+				assignment.getPath() + "', b'" + 
+				bit + "', '" + 
+				assignment.getDue_date()
+				+ "'); ";
+		try{
+			
+			statement = jdbc_connection.prepareStatement(sql);
+			statement.executeUpdate(sql);
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+	}
 	
 }

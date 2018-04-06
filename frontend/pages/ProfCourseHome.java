@@ -75,7 +75,7 @@ public class ProfCourseHome extends Page {
             }
         });
 
-        /** --INCOMPLETE--
+        /** 
          * Reads what is in the searchParameter text field and what parameter is set in the searchDropDown
          * then searches the DB and fill the studentList with results
          */
@@ -84,32 +84,38 @@ public class ProfCourseHome extends Page {
             public void actionPerformed(ActionEvent e) {
                 String searchstr = searchParameter.getText();
                 if(searchDropDown.getSelectedItem().equals("Student ID")){
-                    int searchint = Integer.parseInt(searchstr);
+                	int searchint = Integer.parseInt(searchstr);
                     // search db for student id
                     ServerMessage<Course> message= new ServerMessage<>(course, "SearchID "+ searchint);
                     ServerMessage<?> returned= ProfCourseHome.super.getProfessor().getClient().communicate(message);
-                    
-                    //FINISH RETURN MESSAGE OUTPUT
+                    listmodel.clear();
+                    listmodel.addElement((Student) returned.getObject());
                     
                 } else {
                     //search db for student last name
                     String lastName = searchstr;
                     ServerMessage<Course> message= new ServerMessage<>(course, "SearchName "+ lastName);
                     ServerMessage<?> returned= ProfCourseHome.super.getProfessor().getClient().communicate(message);
+                    ArrayList<?> students = (ArrayList<?>) returned.getObject();
+                    listmodel.clear();
                     
-                    //FINISH RETURN MESSAGE OUTPUT
+                    for(int i = 0; i < students.size(); i++)
+                    {
+                    	listmodel.addElement((Student) students.get(i));
+                    }
                 }
             }
+
         });
 
         /**
-         * --INCOMPLETE--
          *  refreshes the studentList with all students in the course and clears searchParameter
          */
         clearB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 searchParameter.setText(null);
+                refreshStudentList();
             }
         });
 

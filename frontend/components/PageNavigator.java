@@ -1,7 +1,9 @@
 package FrontEnd.components;
 
 import FrontEnd.pages.Page;
-
+/**
+ * Navigator that contains methods for professorGUI
+ */
 public class PageNavigator {
     private Page pageHolder;
 
