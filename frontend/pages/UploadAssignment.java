@@ -74,7 +74,8 @@ public class UploadAssignment extends Page {
                         FileInputStream fis = new FileInputStream(filetosend);
                         BufferedInputStream bos = new BufferedInputStream(fis);
                         bos.read(content, 0, (int)length);
-                        ServerMessage message = new ServerMessage(content,"FileUploadstr-1splitter".concat(fileinfo));
+                        @SuppressWarnings("unchecked")
+						ServerMessage message = new ServerMessage(content,"FileUploadstr-1splitter".concat(fileinfo));
                         professor.getClient().communicate(message);
                         
                     } catch (FileNotFoundException g) {
@@ -83,9 +84,10 @@ public class UploadAssignment extends Page {
                         f.printStackTrace();
                     }
                     String [] filesplit = fileinfo.split("\\.(?=[^\\.]+$)");
-                    System.out.println(filesplit[0]);
                     Random rand = new Random();
                     Assignment assignment = new Assignment(rand.nextInt(99999999)+1,course.getId(),filesplit[0],"path doesnt exist",dueDateInput.getText());
+                    ServerMessage<Assignment> message = new ServerMessage<Assignment>(assignment, "Add");
+                    professor.getClient().communicate(message);
                     professor.addPage(new ProfCourseAssignments(professor,course));
                     professor.showPage();
                     setVisible(false);

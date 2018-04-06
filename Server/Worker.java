@@ -216,6 +216,15 @@ public class Worker implements Runnable {
 					database.deleteAssignment(assignment);
 					out.writeObject(null);
 				}
+				/**
+				 * adds an assignment
+				 */
+				if(message.getObject().getClass().toString().contains("Assignment") && message.getMessage().equals("Add"))
+				{
+					Assignment assignment = (Assignment) message.getObject();
+					database.addAssignment(assignment);
+					out.writeObject(null);
+				}
 			}
 		} 
 				

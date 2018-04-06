@@ -371,5 +371,34 @@ public class DatabaseHelper {
 		}
 		
 	}
+	public void addAssignment(Assignment assignment) {
+		int bit;
+		if(assignment.isActive())
+		{
+			bit = 1;
+		}
+		else
+		{
+			bit = 0;
+		}
+		String sql = "INSERT INTO " + "AssignmentTable" +
+				" VALUES ( " + assignment.getId() + ", '" + 
+				assignment.getCourse_id() + "', '" + 
+				assignment.getTitle() + "', '" + 
+				assignment.getPath() + "', b'" + 
+				bit + "', '" + 
+				assignment.getDue_date()
+				+ "'); ";
+		try{
+			
+			statement = jdbc_connection.prepareStatement(sql);
+			statement.executeUpdate(sql);
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+	}
 	
 }
