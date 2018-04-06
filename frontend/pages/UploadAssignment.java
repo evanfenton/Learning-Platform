@@ -1,5 +1,6 @@
 package FrontEnd.pages;
 
+import SharedDataObjects.Assignment;
 import SharedDataObjects.Course;
 import FrontEnd.ProfessorGUI;
 import SharedDataObjects.ServerMessage;
@@ -8,6 +9,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.util.Random;
 
 /**
  *
@@ -80,7 +82,13 @@ public class UploadAssignment extends Page {
                     } catch(IOException f){
                         f.printStackTrace();
                     }
-
+                    String [] filesplit = fileinfo.split("\\.(?=[^\\.]+$)");
+                    System.out.println(filesplit[0]);
+                    Random rand = new Random();
+                    Assignment assignment = new Assignment(rand.nextInt(99999999)+1,course.getId(),filesplit[0],"path doesnt exist",dueDateInput.getText());
+                    professor.addPage(new ProfCourseAssignments(professor,course));
+                    professor.showPage();
+                    setVisible(false);
                 }
             }
         });

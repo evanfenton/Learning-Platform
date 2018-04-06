@@ -400,7 +400,7 @@ public class ProfCourseAssignments extends Page {
     private javax.swing.JTextField assignStatus;
     //private javax.swing.JTextField assignUpDate;
     private DefaultListModel<Assignment>listmodel = new DefaultListModel<Assignment>();
-    private javax.swing.JList<Assignment> assignmentList = new JList<>(listmodel);
+    private JList<Assignment> assignmentList = new JList<>(listmodel);
     private javax.swing.JButton deActivateAssignmentB;
     private javax.swing.JButton dropboxB;
     private javax.swing.JLabel jLabel2;
