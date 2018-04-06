@@ -25,7 +25,7 @@ import java.util.ArrayList;
           super(prof);
           initComponents();
           refreshCourseList();
-          userLabel.setText("User: " + prof.getProfessor().getFirstname() + "   " + prof.getProfessor().getLastname());
+          userLabel.setText("User: " + prof.getProfessor().getFirstname() + "  " + prof.getProfessor().getLastname());
           /* Set the Nimbus look and feel */
           //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
           /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -258,25 +258,22 @@ import java.util.ArrayList;
           GroupLayout jPanel1Layout = new GroupLayout(jPanel1);
           jPanel1.setLayout(jPanel1Layout);
           jPanel1Layout.setHorizontalGroup(
-                  jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                  jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                           .addGroup(jPanel1Layout.createSequentialGroup()
-                                  .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                          .addGroup(jPanel1Layout.createSequentialGroup()
-                                                  .addGap(453, 453, 453)
-                                                  .addComponent(jLabel3))
-                                          .addGroup(jPanel1Layout.createSequentialGroup()
-                                                  .addGap(343, 343, 343)
-                                                  .addComponent(userLabel, GroupLayout.PREFERRED_SIZE, 342, GroupLayout.PREFERRED_SIZE)))
-                                  .addContainerGap(383, Short.MAX_VALUE))
+                                  .addGap(407, 407, 407)
+                                  .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                          .addComponent(userLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                          .addComponent(jLabel3))
+                                  .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
           );
           jPanel1Layout.setVerticalGroup(
-                  jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                          .addGroup(GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                  jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                   .addGap(27, 27, 27)
                                   .addComponent(jLabel3)
-                                  .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
-                                  .addComponent(userLabel, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
-                                  .addGap(25, 25, 25))
+                                  .addGap(18, 18, 18)
+                                  .addComponent(userLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                  .addContainerGap(34, Short.MAX_VALUE))
           );
 
           GroupLayout layout = new GroupLayout(getContentPane());

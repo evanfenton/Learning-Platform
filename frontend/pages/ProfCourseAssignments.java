@@ -28,7 +28,7 @@ public class ProfCourseAssignments extends Page {
         super(prof);
         initComponents();
         header.setText(course.getName() + " " + course.getId() + " - Assignments");
-        userLabel.setText("User: " + prof.getProfessor().getFirstname() + "   " + prof.getProfessor().getLastname());
+        userLabel.setText("User: " + prof.getProfessor().getFirstname() + "  " + prof.getProfessor().getLastname());
         this.course = course;
         refreshAssignmentList();
         /* Set the Nimbus look and feel */
