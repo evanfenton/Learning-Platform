@@ -9,12 +9,12 @@ import FrontEnd.pages.ProfHome;
  *
  */
 public class ProfessorGUI extends PageNavigator {
-    private Client client;
+
     private Professor professor;
     private boolean isProfessor;
 
     public ProfessorGUI(User prof, Client client){
-        super();
+        super(null, client);
         this.setClient(client);
         professor = new Professor(prof.getId(),prof.getFirstname(),prof.getLastname(),prof.getEmail(),prof.getType());
         isProfessor = true;

@@ -20,7 +20,7 @@ public class StudentInfo extends Page {
      * Creates new form StudentInfo
      */
     public StudentInfo(ProfessorGUI prof, Course course, Student student) {
-        super(prof);
+        super(prof, true);
         initComponents();
         userLabel.setText("User: " + prof.getProfessor().getFirstname() + "   " + prof.getProfessor().getLastname());
         header.setText(student.getFirstname() + " " + student.getLastname() + " " + student.getId());
@@ -30,7 +30,7 @@ public class StudentInfo extends Page {
         cAVG.setText(("Calculate student average"));
         StudentEnrollment enrollment = new StudentEnrollment(1,student.getId(), course.getId(),true);
         ServerMessage<StudentEnrollment> message = new ServerMessage<StudentEnrollment>(enrollment, "CheckEnroll");
-        ServerMessage<?> enrolled = professor.getClient().communicate(message);
+        ServerMessage<?> enrolled = professorGUI.getClient().communicate(message);
         
  
         if(enrolled.getObject() != null)
@@ -78,8 +78,8 @@ public class StudentInfo extends Page {
         returnB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                professor.addPage(new ProfCourseHome(professor,course));
-                professor.showPage();
+                professorGUI.addPage(new ProfCourseHome(professorGUI,course));
+                professorGUI.showPage();
                 setVisible(false);
             }
         });
@@ -97,7 +97,7 @@ public class StudentInfo extends Page {
                 									student.getId(),
                 									course.getId(), true);
                 	ServerMessage<StudentEnrollment> message = new ServerMessage<StudentEnrollment> (enrollment, "Enroll");
-                	professor.getClient().communicate(message);
+                	professorGUI.getClient().communicate(message);
                 	courseStatus.setText("Enrolled");
                 }
                 
@@ -117,7 +117,7 @@ public class StudentInfo extends Page {
                 									student.getId(),
                 									course.getId(), false);
                 	ServerMessage<StudentEnrollment> message = new ServerMessage<StudentEnrollment> (enrollment, "Unenroll");
-                	professor.getClient().communicate(message);
+                	professorGUI.getClient().communicate(message);
                 	courseStatus.setText("Not Enrolled");
                 }
             }

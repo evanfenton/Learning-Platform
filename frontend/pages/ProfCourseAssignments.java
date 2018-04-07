@@ -25,7 +25,7 @@ public class ProfCourseAssignments extends Page {
      * Creates new frame ProfCourseAssignments
      */
     public ProfCourseAssignments(ProfessorGUI prof, Course course) {
-        super(prof);
+        super(prof, true);
         initComponents();
         header.setText(course.getName() + " " + course.getId() + " - Assignments");
         userLabel.setText("User: " + prof.getProfessor().getFirstname() + "   " + prof.getProfessor().getLastname());
@@ -70,8 +70,8 @@ public class ProfCourseAssignments extends Page {
         returnB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                professor.addPage(new ProfCourseHome(prof,course));
-                professor.showPage();
+                professorGUI.addPage(new ProfCourseHome(prof,course));
+                professorGUI.showPage();
                 setVisible(false);
             }
         });
@@ -83,7 +83,7 @@ public class ProfCourseAssignments extends Page {
             @Override
             public void actionPerformed(ActionEvent e) {
             	ServerMessage<Assignment> message = new ServerMessage<Assignment>(assignmentList.getSelectedValue(), "Activate");
-            	professor.getClient().communicate(message);
+            	professorGUI.getClient().communicate(message);
             	refreshAssignmentList();
             }
         });
@@ -95,7 +95,7 @@ public class ProfCourseAssignments extends Page {
             @Override
             public void actionPerformed(ActionEvent e) {
             	ServerMessage<Assignment> message = new ServerMessage<Assignment>(assignmentList.getSelectedValue(), "Deactivate");
-            	professor.getClient().communicate(message);
+            	professorGUI.getClient().communicate(message);
             	refreshAssignmentList();
             }
         });
@@ -130,7 +130,7 @@ public class ProfCourseAssignments extends Page {
             @Override
             public void actionPerformed(ActionEvent e) {
             	ServerMessage<Assignment> message = new ServerMessage<Assignment>(assignmentList.getSelectedValue(), "Delete");
-            	professor.getClient().communicate(message);
+            	professorGUI.getClient().communicate(message);
             	refreshAssignmentList();
             }
         });
@@ -141,8 +141,8 @@ public class ProfCourseAssignments extends Page {
         uploadAssignB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                professor.addPage(new UploadAssignment(prof,course));
-                professor.showPage();
+                professorGUI.addPage(new UploadAssignment(prof,course));
+                professorGUI.showPage();
                 setVisible(false);
             }
         });
@@ -380,7 +380,7 @@ public class ProfCourseAssignments extends Page {
     	{
     		listmodel.clear();
     		ServerMessage<Course> message = new ServerMessage<Course>(course, "GetCourseAssignments");
-    		ServerMessage<?> recieved = professor.getClient().communicate(message);
+    		ServerMessage<?> recieved = professorGUI.getClient().communicate(message);
     		ArrayList<?> list = (ArrayList<?>) recieved.getObject();
     		for(int i = 0; i < list.size(); i++)
 	    	  {
