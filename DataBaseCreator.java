@@ -41,7 +41,6 @@ public class DataBaseCreator {
 	{
 		try 
 		{
-			
 			Class.forName("com.mysql.jdbc.Driver");
 						
 			jdbc_connection = DriverManager.getConnection(connectionInfo, login, password);

@@ -115,7 +115,10 @@ public class LoginWindow extends JFrame{
             ProfessorGUI profgui = new ProfessorGUI(user, client);
     		System.out.println("Prof GUI Created");
     		setVisible(false);
-    	}
+    	} else if(user.getType().equals("S")){
+    	    StudentGUI stugui = new StudentGUI(user,client);
+    	    setVisible(false);
+        }
     	else
     	{
     		this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
