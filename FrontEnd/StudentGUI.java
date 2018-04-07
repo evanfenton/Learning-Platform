@@ -1,7 +1,7 @@
 package FrontEnd;
 
 import FrontEnd.components.PageNavigator;
-import FrontEnd.pages.StudHome;
+import FrontEnd.pages.StudentHome;
 import SharedDataObjects.Student;
 import SharedDataObjects.User;
 
@@ -11,11 +11,11 @@ public class StudentGUI extends PageNavigator{
     private boolean isProfessor;
 
     public StudentGUI(User stud, Client client){
+
         super(null, client);
-        this.setClient(client);
         student = new Student(stud.getId(),stud.getFirstname(),stud.getLastname(),stud.getEmail(),stud.getType());
         isProfessor = false;
-        addPage(new StudHome(this));
+        addPage(new StudentHome(this));
         showPage();
     }
 
@@ -31,7 +31,4 @@ public class StudentGUI extends PageNavigator{
         this.student = student;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
-    }
 }

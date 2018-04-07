@@ -15,7 +15,6 @@ public class ProfessorGUI extends PageNavigator {
 
     public ProfessorGUI(User prof, Client client){
         super(null, client);
-        this.setClient(client);
         professor = new Professor(prof.getId(),prof.getFirstname(),prof.getLastname(),prof.getEmail(),prof.getType());
         isProfessor = true;
         addPage(new ProfHome(this));
@@ -34,11 +33,4 @@ public class ProfessorGUI extends PageNavigator {
         this.professor = professor;
     }
 
-	public Client getClient() {
-		return client;
-	}
-
-	public void setClient(Client client) {
-		this.client = client;
-	}
 }
