@@ -44,6 +44,13 @@ public class StudentHome extends Page {
         logoutB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+
+        viewCourseB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
                 Course course = new Course(1,123,"Course", true);
                 getNavigator().addPage(new StudentCourseHome(stu,course));
                 getNavigator().showPage();
