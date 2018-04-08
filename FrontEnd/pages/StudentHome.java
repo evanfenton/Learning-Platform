@@ -1,9 +1,16 @@
 package FrontEnd.pages;
 import FrontEnd.StudentGUI;
 import SharedDataObjects.Course;
+import SharedDataObjects.Professor;
+import SharedDataObjects.ServerMessage;
+import SharedDataObjects.Student;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 
 /**
  *
@@ -17,6 +24,7 @@ public class StudentHome extends Page {
     public StudentHome(StudentGUI stu) {
         super(stu, false);
         initComponents();
+        refreshCourseList();
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -74,7 +82,6 @@ public class StudentHome extends Page {
         viewCourseB = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        courseList = new javax.swing.JList<>();
         jPanel1 = new javax.swing.JPanel();
         userLabel = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -91,11 +98,7 @@ public class StudentHome extends Page {
         jLabel2.setText("Your Courses:");
 
         courseList.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        courseList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+     
 
         jScrollPane1.setViewportView(courseList);
 
@@ -184,9 +187,28 @@ public class StudentHome extends Page {
         pack();
     }// </editor-fold>
 
-
+    public void refreshCourseList()
+    {
+    	try
+  	  {
+	    	  listmodel.clear();
+	    	  ServerMessage<Student> message = new ServerMessage<Student>(studentGUI.getStudent(), "GetCourses");
+	    	  ServerMessage<?> recieved = studentGUI.getClient().communicate(message);
+	    	  ArrayList<?> list = (ArrayList<?>) recieved.getObject();
+	    	  for(int i = 0; i < list.size(); i++)
+	    	  {
+	    		  listmodel.addElement((Course) list.get(i));
+	    	  }
+  	  }
+  	  catch(NullPointerException k)
+  	  {
+  		  courseList.clearSelection();
+  	  }
+    }
+    
     // Variables declaration - do not modify
-    private javax.swing.JList<String> courseList;
+    private DefaultListModel<Course> listmodel = new DefaultListModel<>();
+    private JList<Course> courseList = new JList<>(listmodel);
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
