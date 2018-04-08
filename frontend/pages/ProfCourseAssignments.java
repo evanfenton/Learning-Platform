@@ -65,6 +65,16 @@ public class ProfCourseAssignments extends Page {
         });
 
         /**
+         * Closes this frame and opens the dropbox frame for the currently selected assignment
+         */
+        dropboxB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        /**
          * Closes this frame and reopens the ProfCourseHome page
          */
         returnB.addActionListener(new ActionListener() {

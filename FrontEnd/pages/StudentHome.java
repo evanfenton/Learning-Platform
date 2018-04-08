@@ -47,8 +47,11 @@ public class StudentHome extends Page {
             java.util.logging.Logger.getLogger(StudentHome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        userLabel.setText("User: " + studentGUI.getStudent().getFirstname()  + "  " + studentGUI.getStudent().getLastname());
 
-        userLabel.setText(studentGUI.getStudent().getFirstname()  + "  " + studentGUI.getStudent().getLastname());
+        /**
+         * logout button event handler, just terminates the program
+         */
         logoutB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -59,7 +62,7 @@ public class StudentHome extends Page {
         viewCourseB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Course course = new Course(1,123,"Course", true);
+                Course course = courseList.getSelectedValue();
                 getNavigator().addPage(new StudentCourseHome(stu,course));
                 getNavigator().showPage();
                 setVisible(false);
