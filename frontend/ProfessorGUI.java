@@ -9,13 +9,12 @@ import FrontEnd.pages.ProfHome;
  *
  */
 public class ProfessorGUI extends PageNavigator {
-    private Client client;
+
     private Professor professor;
     private boolean isProfessor;
 
     public ProfessorGUI(User prof, Client client){
-        super();
-        this.setClient(client);
+        super(null, client);
         professor = new Professor(prof.getId(),prof.getFirstname(),prof.getLastname(),prof.getEmail(),prof.getType());
         isProfessor = true;
         addPage(new ProfHome(this));
@@ -34,11 +33,4 @@ public class ProfessorGUI extends PageNavigator {
         this.professor = professor;
     }
 
-	public Client getClient() {
-		return client;
-	}
-
-	public void setClient(Client client) {
-		this.client = client;
-	}
 }

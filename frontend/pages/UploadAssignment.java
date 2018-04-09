@@ -21,7 +21,7 @@ public class UploadAssignment extends Page {
      * Creates new form UploadAssignment
      */
     public UploadAssignment(ProfessorGUI prof, Course course) {
-        super(prof);
+        super(prof, true);
         initComponents();
         userLabel.setText("User: " + prof.getProfessor().getFirstname() + "  " + prof.getProfessor().getLastname());
         /* Set the Nimbus look and feel */
@@ -53,8 +53,8 @@ public class UploadAssignment extends Page {
         cancelB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                professor.addPage(new ProfCourseAssignments(professor,course));
-                professor.showPage();
+                professorGUI.addPage(new ProfCourseAssignments(professorGUI,course));
+                professorGUI.showPage();
                 setVisible(false);
             }
         });
@@ -88,9 +88,9 @@ public class UploadAssignment extends Page {
                     Random rand = new Random();
                     Assignment assignment = new Assignment(rand.nextInt(99999999)+1,course.getId(),filesplit[0],"path doesnt exist",dueDateInput.getText());
                     ServerMessage<Assignment> message = new ServerMessage<Assignment>(assignment, "Add");
-                    professor.getClient().communicate(message);
-                    professor.addPage(new ProfCourseAssignments(professor,course));
-                    professor.showPage();
+                    professorGUI.getClient().communicate(message);
+                    professorGUI.addPage(new ProfCourseAssignments(professorGUI,course));
+                    professorGUI.showPage();
                     setVisible(false);
                 }
             }

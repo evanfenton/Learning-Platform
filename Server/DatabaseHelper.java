@@ -469,5 +469,31 @@ public class DatabaseHelper {
 		}
 		
 	}
+	public ArrayList<Course> getStudentsCourses(Student stud) {
+		String sql = "SELECT * FROM " + "StudentEnrollmentTable" + " WHERE STUDENT_ID=" + stud.getId();
+		ResultSet enrollments;
+		ResultSet course;
+		ArrayList<Course> courses = new ArrayList<Course>();
+		try {
+			statement = jdbc_connection.prepareStatement(sql);
+			enrollments = statement.executeQuery(sql);
+			while(enrollments.next())
+			{
+				sql = "SELECT * FROM " + "CourseTable" + " WHERE ID=" + enrollments.getInt("COURSE_ID") + " AND ACTIVE= b'1'";
+				statement = jdbc_connection.prepareStatement(sql);
+				course = statement.executeQuery(sql);
+				if(course.next())
+				{
+				courses.add(new Course(course.getInt("ID"),
+								course.getInt("PROF_ID"), 
+								course.getString("NAME"), 
+								course.getBoolean("ACTIVE") 
+								));			
+				}
+			}
+		return courses;
+		} catch (SQLException e) { e.printStackTrace(); }
+		return null;
+	}
 	
 }

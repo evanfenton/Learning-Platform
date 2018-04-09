@@ -11,8 +11,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 
+/**
+ * @author Evan Fenton
+ */
 public class LoginWindow extends JFrame{
-
 
 	private static final long serialVersionUID = 1231231L;
 	private JTextField userIDInput;
@@ -105,6 +107,7 @@ public class LoginWindow extends JFrame{
     	ServerMessage<LoginInfo> message = new ServerMessage<LoginInfo>(info, "Login");
     	ServerMessage<?> recieve = client.communicate(message);
     	User user = (User) recieve.getObject();
+
     	if(user == null)
     	{
     		JOptionPane.showMessageDialog(this,"Incorrect Login Info");
@@ -121,7 +124,10 @@ public class LoginWindow extends JFrame{
         }
     	else
     	{
-    		this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+    	    //Create the student GUI
+    	    StudentGUI studgui= new StudentGUI(user, client);
+            System.out.println("Stud GUI Created");
+            setVisible(false);
     	}
     }
     /**

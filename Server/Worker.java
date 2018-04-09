@@ -240,6 +240,16 @@ public class Worker implements Runnable {
 					database.addAssignment(assignment);
 					out.writeObject(null);
 				}
+				/**
+				 * Gets all courses a student is taking.
+				 */
+				if(message.getObject().getClass().toString().contains("Student") && message.getMessage().equals("GetCourses"))
+				{
+					ArrayList<Course> list = database.getStudentsCourses((Student) message.getObject());
+					ServerMessage<ArrayList<Course>> returnmessage = new ServerMessage<ArrayList<Course>>(list, "");
+					out.writeObject(returnmessage);
+					
+				}
 			}
 		} 
 				

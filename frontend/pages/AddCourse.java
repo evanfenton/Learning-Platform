@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Frame used to add course to professorGUI
+ * Frame used to add course to professorGUIGUI
  * @author Evan
  */
 public class AddCourse extends Page {
@@ -17,7 +17,7 @@ public class AddCourse extends Page {
      * Creates new frame AddCourse
      */
     public AddCourse(ProfessorGUI prof) {
-        super(prof);
+        super(prof, true);
         initComponents();
         profIDInput.setEditable(false);
         profIDInput.setText("" +prof.getProfessor().getId());
@@ -51,8 +51,8 @@ public class AddCourse extends Page {
         cancelB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AddCourse.super.professor.addPage(new ProfHome(AddCourse.super.professor));
-                AddCourse.super.professor.showPage();
+                AddCourse.super.professorGUI.addPage(new ProfHome(AddCourse.super.professorGUI));
+                AddCourse.super.professorGUI.showPage();
                 setVisible(false);
             }
         });
@@ -68,9 +68,9 @@ public class AddCourse extends Page {
                 String profID = profIDInput.getText();
                 Course course = new Course(Integer.parseInt(cnumb),Integer.parseInt(profID),cname);
                 ServerMessage<Course> message = new ServerMessage<Course>(course, "Add");
-                professor.getClient().communicate(message);
-                professor.addPage(new ProfHome(AddCourse.super.professor));
-                professor.showPage();
+                professorGUI.getClient().communicate(message);
+                professorGUI.addPage(new ProfHome(AddCourse.super.professorGUI));
+                professorGUI.showPage();
                 setVisible(false);
             }
         });

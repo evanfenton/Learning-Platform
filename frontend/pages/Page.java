@@ -2,34 +2,41 @@ package FrontEnd.pages;
 
 import FrontEnd.ProfessorGUI;
 import FrontEnd.StudentGUI;
+import FrontEnd.components.PageNavigator;
 
 /**
-	 * Class that contains methods and fields for all pages.
-	 *
-	 */
+ * Class that contains methods and fields for all pages.
+ */
 public class Page extends javax.swing.JFrame{
-   protected boolean isProfesor;
-    protected ProfessorGUI professor;
-    protected StudentGUI student;
 
-    public Page(ProfessorGUI prof){
-        professor = prof;
-        isProfesor = true;
-        student = null;
-    }
+    protected boolean isProfessor;
+    protected ProfessorGUI professorGUI;
+    protected StudentGUI studentGUI;
 
-    public Page(StudentGUI stu){
-        student = stu;
-        professor = null;
-        isProfesor = false;
+    public Page(PageNavigator user, boolean isProf){
+        isProfessor= isProf;
+        if(isProfessor) {
+            professorGUI = (ProfessorGUI) user;
+            studentGUI= null;
+        }
+        else{
+            studentGUI= (StudentGUI) user;
+            professorGUI= null;
+        }
+
     }
 
     public Page(){
         //default ctor for inheritance for now
     }
 
-    public ProfessorGUI getProfessor() {
-        return professor;
+    public PageNavigator getNavigator() {
+        if(isProfessor) {
+            return professorGUI;
+        }
+        else{
+            return studentGUI;
+        }
     }
 
     public StudentGUI getStudent() {

@@ -57,7 +57,7 @@ public class Course implements Serializable{
 	{
 		if(active)
 		{
-			return id + " " + name + " Active";  
+			return id + " " + name;  
 		}
 		else
 		{
