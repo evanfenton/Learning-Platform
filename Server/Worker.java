@@ -139,7 +139,7 @@ public class Worker implements Runnable {
 				/**
 				 * Gets all students from DB and returns them
 				 */
-				if(message.getObject().getClass().toString().contains("Student") && message.getMessage().equals("GetAllStudents"))
+				if(message.getMessage().equals("GetAllStudents"))
 				{
 					ArrayList<Student> list = database.getAllStudents();
 					ServerMessage<ArrayList<Student>> returnmessage = new ServerMessage<ArrayList<Student>>(list, "");
@@ -248,6 +248,24 @@ public class Worker implements Runnable {
 					ArrayList<Course> list = database.getStudentsCourses((Student) message.getObject());
 					ServerMessage<ArrayList<Course>> returnmessage = new ServerMessage<ArrayList<Course>>(list, "");
 					out.writeObject(returnmessage);
+					
+				}
+				/**
+				 * Gets all active course assignments.
+				 */
+				if(message.getObject().getClass().toString().contains("Course") && message.getMessage().equals("GetActiveCourseAssignments"))
+                {
+                	ArrayList<Assignment> list = database.getActiveCourseAssignments((Course) message.getObject());
+					ServerMessage<ArrayList<Assignment>> returnmessage = new ServerMessage<ArrayList<Assignment>>(list, "");
+					out.writeObject(returnmessage);
+                }
+				if(message.getObject().getClass().toString().contains("Grade") && message.getMessage().equals("Add"))
+				{
+					Grade grade = (Grade) message.getObject();
+					database.addGrade(grade);
+					out.writeObject(null);
+					
+						
 					
 				}
 			}

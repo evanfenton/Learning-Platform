@@ -1,21 +1,31 @@
 package FrontEnd.pages;
 
 import FrontEnd.StudentGUI;
+import SharedDataObjects.Assignment;
 import SharedDataObjects.Course;
+import SharedDataObjects.ServerMessage;
+import SharedDataObjects.Student;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 /**
  *
  * @author Evan
  */
 public class StudentCourseHome extends Page{
-
+	Course course;
     /**
      * Creates new form StudentCourseHome
      */
     public StudentCourseHome(StudentGUI stu, Course course) {
         super(stu, false);
+        this.course = course;
         initComponents();
+        refreshAssignmentList();
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -81,22 +91,28 @@ public class StudentCourseHome extends Page{
         returnB = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        assignmentList = new javax.swing.JList<>();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         logoutB = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
         dropboxB = new javax.swing.JButton();
         assignName = new javax.swing.JTextField();
+        assignUpDate = new javax.swing.JTextField();
         assignCloseDate = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        assignStatus = new javax.swing.JTextField();
         assignGrade = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        commentTextArea = new javax.swing.JTextArea();
         jLabel11 = new javax.swing.JLabel();
         profNamefield = new javax.swing.JTextField();
         profMessageB = new javax.swing.JButton();
-
+      
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(java.awt.Color.pink);
@@ -108,7 +124,6 @@ public class StudentCourseHome extends Page{
         header.setText("CourseName");
 
         returnB.setText("Return to Home Page");
-
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -136,6 +151,8 @@ public class StudentCourseHome extends Page{
         );
 
         jPanel2.setBackground(java.awt.Color.orange);
+
+        
         jScrollPane1.setViewportView(assignmentList);
 
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
@@ -149,17 +166,32 @@ public class StudentCourseHome extends Page{
 
         jLabel5.setText("Assignment:");
 
+        jLabel6.setText("Date Uploaded:");
+
         jLabel8.setText("Drop Box Closed:");
+
+        jLabel9.setText("Active:");
 
         dropboxB.setText("Assignment DropBox");
 
         assignName.setEditable(false);
 
+        assignUpDate.setEditable(false);
+
         assignCloseDate.setEditable(false);
 
         jLabel1.setText("Grade:");
 
+        jLabel10.setText("Comments:");
+
+        assignStatus.setEditable(false);
+
         assignGrade.setEditable(false);
+
+        commentTextArea.setEditable(false);
+        commentTextArea.setColumns(20);
+        commentTextArea.setRows(5);
+        jScrollPane2.setViewportView(commentTextArea);
 
         jLabel11.setText("Professor:");
 
@@ -172,31 +204,45 @@ public class StudentCourseHome extends Page{
         jPanel2Layout.setHorizontalGroup(
                 jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                                                .addGap(115, 115, 115)
-                                                                .addComponent(jLabel4))
-                                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                                                .addGap(105, 105, 105)
-                                                                .addComponent(dropboxB, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                                        .addGap(115, 115, 115)
+                                                        .addComponent(jLabel4)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                                                        .addComponent(jLabel7)
+                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                                                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                .addComponent(jLabel6)
+                                                                                                .addComponent(jLabel5)
+                                                                                                .addComponent(jLabel8)
+                                                                                                .addComponent(jLabel9)
+                                                                                                .addComponent(jLabel1)
+                                                                                                .addComponent(jLabel10))
+                                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                .addComponent(assignUpDate, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                .addComponent(assignName, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                                                                        .addComponent(assignStatus, javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                        .addComponent(assignGrade, javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                        .addComponent(assignCloseDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE))))
+                                                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                                                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                        .addGap(0, 0, Short.MAX_VALUE)))
+                                                                        .addGap(44, 44, 44)))))
                                         .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addContainerGap(45, Short.MAX_VALUE)
-                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                        .addComponent(jLabel7)
-                                                        .addGroup(jPanel2Layout.createSequentialGroup()
-                                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                        .addComponent(jLabel5)
-                                                                        .addComponent(jLabel8)
-                                                                        .addComponent(jLabel1))
-                                                                .addGap(47, 47, 47)
-                                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                        .addComponent(assignCloseDate, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                        .addComponent(assignGrade, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                        .addComponent(assignName, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)))
+                                                .addGap(102, 102, 102)
+                                                .addComponent(dropboxB, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(153, 153, 153)))
+
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                                 .addComponent(logoutB)
@@ -230,28 +276,40 @@ public class StudentCourseHome extends Page{
                                                         .addComponent(profNamefield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(profMessageB)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
+
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addComponent(logoutB))
                                         .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addGap(94, 94, 94)
-                                                .addComponent(jLabel4)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(jLabel7)
                                                 .addGap(52, 52, 52)
                                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(jLabel5)
-                                                        .addComponent(assignName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGap(18, 18, 18)
+                                                        .addComponent(assignName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jLabel5))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jLabel4)
+                                                .addGap(28, 28, 28)
                                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(jLabel8)
-                                                        .addComponent(assignCloseDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGap(18, 18, 18)
+                                                        .addComponent(assignUpDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jLabel6))
+                                                .addGap(28, 28, 28)
+                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(assignCloseDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jLabel8))
+                                                .addGap(31, 31, 31)
+                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(jLabel9)
+                                                        .addComponent(assignStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(30, 30, 30)
                                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                         .addComponent(jLabel1)
                                                         .addComponent(assignGrade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGap(51, 51, 51)
+                                                .addGap(28, 28, 28)
+                                                .addComponent(jLabel10)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
                                                 .addComponent(dropboxB)
-                                                .addGap(0, 0, Short.MAX_VALUE)))
+                                                .addGap(0, 84, Short.MAX_VALUE)))
                                 .addContainerGap())
         );
 
@@ -273,25 +331,51 @@ public class StudentCourseHome extends Page{
         pack();
     }// </editor-fold>
 
-
+    private void refreshAssignmentList()
+    {
+    	try
+    	{
+    		listmodel.clear();
+    		ServerMessage<Course> message = new ServerMessage<Course>(course, "GetActiveCourseAssignments");
+    		ServerMessage<?> recieved = studentGUI.getClient().communicate(message);
+    		ArrayList<?> list = (ArrayList<?>) recieved.getObject();
+    		for(int i = 0; i < list.size(); i++)
+	    	  {
+	    		  System.out.println(list.get(i));
+    			  listmodel.addElement((Assignment) list.get(i));
+	    	  }
+    	}
+    	catch(NullPointerException k)
+    	{
+    		assignmentList.clearSelection();
+    	}
+    }
 
     // Variables declaration - do not modify
     private javax.swing.JTextField assignCloseDate;
     private javax.swing.JTextField assignGrade;
     private javax.swing.JTextField assignName;
-    private javax.swing.JList<String> assignmentList;
+    private javax.swing.JTextField assignStatus;
+    private javax.swing.JTextField assignUpDate;
+    private DefaultListModel<Assignment> listmodel = new DefaultListModel<>();
+    private javax.swing.JList<Assignment> assignmentList = new JList<>(listmodel);
+    private javax.swing.JTextArea commentTextArea;
     private javax.swing.JButton dropboxB;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel header;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton logoutB;
     private javax.swing.JButton profMessageB;
     private javax.swing.JTextField profNamefield;

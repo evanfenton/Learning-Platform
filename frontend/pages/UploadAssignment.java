@@ -2,13 +2,17 @@ package FrontEnd.pages;
 
 import SharedDataObjects.Assignment;
 import SharedDataObjects.Course;
+import SharedDataObjects.Grade;
 import FrontEnd.ProfessorGUI;
 import SharedDataObjects.ServerMessage;
+import SharedDataObjects.Student;
+import SharedDataObjects.StudentEnrollment;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -89,6 +93,23 @@ public class UploadAssignment extends Page {
                     Assignment assignment = new Assignment(rand.nextInt(99999999)+1,course.getId(),filesplit[0],"path doesnt exist",dueDateInput.getText());
                     ServerMessage<Assignment> message = new ServerMessage<Assignment>(assignment, "Add");
                     professorGUI.getClient().communicate(message);
+					ServerMessage<Student> mes = new ServerMessage<Student>(new Student(), "GetAllStudents");
+                    ServerMessage<?> returned = professorGUI.getClient().communicate(mes);
+                    @SuppressWarnings("unchecked")
+					ArrayList <Student> students = (ArrayList<Student>) returned.getObject();
+                    for(int i = 0; i < students.size(); i++)
+                    {
+                    	StudentEnrollment enrollment = new StudentEnrollment(1, students.get(i).getId(), course.getId(), true);
+                    	ServerMessage<StudentEnrollment> message2 = new ServerMessage<StudentEnrollment>(enrollment, "CheckEnroll");
+                    	ServerMessage<?> response = professorGUI.getClient().communicate(message2);
+                    	enrollment = (StudentEnrollment) response.getObject();
+                    	if(response.getObject() != null)
+                    	{
+                    		Grade grade = new Grade(rand.nextInt(99999999)+1, 0, students.get(i).getId(), assignment.getId(), course.getId());
+                    		ServerMessage<Grade> message3 = new ServerMessage<Grade>(grade, "Add");
+                    		professorGUI.getClient().communicate(message3);
+                    	}
+                    }
                     professorGUI.addPage(new ProfCourseAssignments(professorGUI,course));
                     professorGUI.showPage();
                     setVisible(false);
