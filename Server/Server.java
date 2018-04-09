@@ -48,7 +48,7 @@ public class Server {
 			pool = Executors.newCachedThreadPool();
 			filemanager = new FileHelper();
 			database = new DatabaseHelper();
-			emailservice = new EmailHelper();
+			emailservice = new EmailHelper("","");
 			System.out.println("Server Started...");
 		}
 		catch(IOException e)

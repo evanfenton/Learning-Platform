@@ -578,5 +578,81 @@ public class DatabaseHelper {
         
         return null;
     }
+    synchronized public ArrayList<Grade> getStudentGrades(Student student, int profid) {
+		
+	    ArrayList<Course> courses = getProfsCourses(new Professor(profid,"","","",""));
+	    String sql = "SELECT * FROM " + "GradeTable" + " WHERE STUDENT_ID=" + student.getId();
+        ResultSet grade;
+        ArrayList<Grade> grades = new ArrayList<>();
+        try {
+            statement = jdbc_connection.prepareStatement(sql);
+            grade = statement.executeQuery(sql);
+            
+            while(grade.next()) {
+                grades.add(new Grade(grade.getInt("ID"),
+						grade.getInt("ASSIGNMENT_GRADE"), 
+						grade.getInt("STUDENT_ID"), 
+						grade.getInt("ASSIGN_ID"),
+						grade.getInt("COURSE_ID")
+						));	
+                
+            }
+            ArrayList<Grade> toReturn = new ArrayList<>();
+            for(int i = 0; i < grades.size(); i++)
+            {
+            	for(int j =0; j < courses.size(); j++)
+            	{
+            		if(grades.get(i).getCourse_id() == courses.get(j).getId()) {
+            			Assignment assigns = getAssignment(grades.get(i).getAssign_id());
+            			grades.get(i).setAssign_name(assigns.getTitle());
+            			toReturn.add(grades.get(i));
+            		}
+            	}
+            }
+            return toReturn;
+            
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;	}
+	synchronized public Assignment getAssignment(int id) {
+		String sql = "SELECT * FROM " + "AssignmentTable" + " WHERE ID=" + id;
+		ResultSet assignment;
+		try {
+			statement = jdbc_connection.prepareStatement(sql);
+			assignment = statement.executeQuery(sql);
+			if(assignment.next())
+			{
+				return new Assignment(assignment.getInt("ID"),
+                        assignment.getInt("COURSE_ID"),
+                        assignment.getString("TITLE"),
+                        assignment.getString("PATH"),
+                        assignment.getString("DUE_DATE"));
+					
+			}
+		return null;
+		} catch (SQLException e) { e.printStackTrace(); }
+	
+		return null;
+	}
+	/**
+	 * updates grade with id to new grade
+	 * @param id
+	 * @param grade
+	 */
+	synchronized public void updateGrade(int id, int grade)
+	{
+		String sql = "UPDATE " + "GradeTable" + " SET ASSIGNMENT_GRADE = '" +
+			 	grade + "' WHERE ID = " + id;
+		try {
+				statement = jdbc_connection.prepareStatement(sql);
+						statement.executeUpdate(sql);
+	
+			}
+		catch(SQLException e)
+			{
+				e.printStackTrace();
+			}
+	}
 	
 }

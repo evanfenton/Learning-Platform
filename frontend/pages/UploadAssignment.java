@@ -105,7 +105,7 @@ public class UploadAssignment extends Page {
                     	enrollment = (StudentEnrollment) response.getObject();
                     	if(response.getObject() != null)
                     	{
-                    		Grade grade = new Grade(rand.nextInt(99999999)+1, 0, students.get(i).getId(), assignment.getId(), course.getId());
+                    		Grade grade = new Grade(rand.nextInt(99999999)+1, 0, students.get(i).getId(), assignment.getId(), course.getId(), assignment.getTitle());
                     		ServerMessage<Grade> message3 = new ServerMessage<Grade>(grade, "Add");
                     		professorGUI.getClient().communicate(message3);
                     	}

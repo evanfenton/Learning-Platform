@@ -35,6 +35,7 @@ public class Grade implements Serializable {
 	 * course id of the assignment
 	 */
 	private int course_id;
+	private String assign_name;
 	/**
 	 * Constructor for the class
 	 * @param id of the student
@@ -42,6 +43,16 @@ public class Grade implements Serializable {
 	 * @param name of the student
 	 * @param assign name
 	 */
+	public Grade(int id, int grade, int sid, int assign, int course_id, String assignt)
+	{
+		this.setId(id);
+		this.grade = grade;
+		student_id = sid;
+		assign_id = assign;
+		this.setCourse_id(course_id);
+		setAssign_name(assignt);
+		
+	}
 	public Grade(int id, int grade, int sid, int assign, int course_id)
 	{
 		this.setId(id);
@@ -49,6 +60,13 @@ public class Grade implements Serializable {
 		student_id = sid;
 		assign_id = assign;
 		this.setCourse_id(course_id);
+		assign_name = "";
+		
+	}
+	
+	public String toString()
+	{
+		return "Assignment: " + assign_name + " Course: " + course_id; 
 	}
 	/**
 	 * getters and setters for the class
@@ -85,6 +103,12 @@ public class Grade implements Serializable {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public String getAssign_name() {
+		return assign_name;
+	}
+	public void setAssign_name(String assign_name) {
+		this.assign_name = assign_name;
 	}
 
 	

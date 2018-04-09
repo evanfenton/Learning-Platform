@@ -273,9 +273,6 @@ public class Worker implements Runnable {
 					Grade grade = (Grade) message.getObject();
 					database.addGrade(grade);
 					out.writeObject(null);
-					
-						
-					
 				}
                 /**
                  * professor sends an email to all students in course.
@@ -287,6 +284,26 @@ public class Worker implements Runnable {
                     
                     //UNFINISHED
                 }
+                /**
+                 * Sends an arraylist of grades that correspond to sent student and profID
+                 */
+                if(message.getObject().getClass().toString().contains("Student") && message.getMessage().contains("PGetStudentGrades"))
+                {
+                	String[] split = message.getMessage().split(" ");
+                	int profid = Integer.parseInt(split[1]);
+                	ArrayList<Grade> list = database.getStudentGrades((Student) message.getObject(), profid);
+					ServerMessage<ArrayList<Grade>> returnmessage = new ServerMessage<ArrayList<Grade>>(list, "");
+					out.writeObject(returnmessage);
+                }
+                if(message.getObject().getClass().toString().contains("Grade") && message.getMessage().contains("ChangeGrade"))
+                {
+                	String[] split = message.getMessage().split(" ");
+                	int newgrade = Integer.parseInt(split[1]);
+                	Grade grade = (Grade) message.getObject();
+                	database.updateGrade(grade.getId(), newgrade);
+                	out.writeObject(null);
+                }
+                
 			}
 		} 
 				
