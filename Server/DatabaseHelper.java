@@ -537,5 +537,46 @@ public class DatabaseHelper {
 		}
 		
 	}
+    
+    synchronized public ArrayList<Student> getCourseStudents(Course course) {
+        String sql = "SELECT * FROM " + "StudentEnrollmentTable" + " WHERE COURSE_ID=" + course.getId();
+        ResultSet students;
+        ArrayList<Student> studentList = new ArrayList<>();
+        try {
+            statement = jdbc_connection.prepareStatement(sql);
+            students = statement.executeQuery(sql);
+            
+            while(students.next()) {
+                studentList.add(getStudent(students.getInt("STUDENT_ID")));
+            }
+            
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return studentList;
+    }
+    
+    synchronized private Student getStudent(int id){
+        
+        String sql= "SELECT * FROM UserTable WHERE ID= "+id;
+        ResultSet student;
+        
+        try{
+            statement= jdbc_connection.prepareStatement(sql);
+            student= statement.executeQuery();
+            
+            return new Student(student.getInt("ID"),
+                               student.getString("PASSWORD"),
+                               student.getString("EMAIL"),
+                               student.getString("FIRSTNAME"),
+                               student.getString("LASTNAME"));
+            
+            
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
 	
 }

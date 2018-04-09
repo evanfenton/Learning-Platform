@@ -145,6 +145,15 @@ public class Worker implements Runnable {
 					ServerMessage<ArrayList<Student>> returnmessage = new ServerMessage<ArrayList<Student>>(list, "");
 					out.writeObject(returnmessage);
 				}
+                /**
+                 * Gets all students in a course from DB and returns them
+                 */
+                if(message.getObject().getClass().toString().contains("Course") && message.getMessage().equals("GetAllStudents"))
+                {
+                    ArrayList<Student> list = database.getCourseStudents((Course)message.getObject());
+                    ServerMessage<ArrayList<Student>> returnmessage = new ServerMessage<ArrayList<Student>>(list, "");
+                    out.writeObject(returnmessage);
+                }
 				/**
 				 * checks enrollment of a student
 				 */
@@ -268,6 +277,16 @@ public class Worker implements Runnable {
 						
 					
 				}
+                /**
+                 * professor sends an email to all students in course.
+                 */
+                if(message.getObject().getClass().toString().contains("Email") && message.getMessage().equals("Professor"))
+                {
+                    Email email= (Email)message.getObject();
+                    emailservice= new EmailHelper(null,null);
+                    
+                    //UNFINISHED
+                }
 			}
 		} 
 				
