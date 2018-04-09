@@ -30,5 +30,3 @@ public class StudentGUI extends PageNavigator{
     public void setStudent(Student student) {
         this.student = student;
     }
-
-}

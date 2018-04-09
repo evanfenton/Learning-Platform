@@ -2,10 +2,8 @@ package FrontEnd.pages;
 
 import FrontEnd.StudentGUI;
 import SharedDataObjects.Course;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 /**
  *
  * @author Evan
@@ -64,7 +62,7 @@ public class StudentCourseHome extends Page{
                 setVisible(false);
             }
         });
-
+      
 
     }
 
@@ -105,7 +103,7 @@ public class StudentCourseHome extends Page{
         jLabel11 = new javax.swing.JLabel();
         profNamefield = new javax.swing.JTextField();
         profMessageB = new javax.swing.JButton();
-
+      
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(java.awt.Color.pink);
@@ -239,6 +237,7 @@ public class StudentCourseHome extends Page{
                                                 .addGap(102, 102, 102)
                                                 .addComponent(dropboxB, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(153, 153, 153)))
+
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                                 .addComponent(logoutB)
@@ -272,6 +271,7 @@ public class StudentCourseHome extends Page{
                                                         .addComponent(profNamefield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(profMessageB)
+
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addComponent(logoutB))
                                         .addGroup(jPanel2Layout.createSequentialGroup()

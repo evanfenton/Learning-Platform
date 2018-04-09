@@ -23,6 +23,7 @@ public class Page extends javax.swing.JFrame{
             studentGUI= (StudentGUI) user;
             professorGUI= null;
         }
+
     }
 
     public Page(){
@@ -36,5 +37,9 @@ public class Page extends javax.swing.JFrame{
         else{
             return studentGUI;
         }
+    }
+
+    public StudentGUI getStudent() {
+        return student;
     }
 }

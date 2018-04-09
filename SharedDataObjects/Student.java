@@ -42,4 +42,5 @@ public class Student extends User {
 	public void setType(String type) {
 		this.type = type;
 	}
+
 }

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 
+
 /**
  *
  * @author Evan Mcphee
@@ -25,6 +26,7 @@ public class StudentHome extends Page {
         super(stu, false);
         initComponents();
         refreshCourseList();
+
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -65,6 +67,8 @@ public class StudentHome extends Page {
                 Course course = courseList.getSelectedValue();
                 getNavigator().addPage(new StudentCourseHome(stu,course));
                 getNavigator().showPage();
+
+        
                 setVisible(false);
             }
         });
@@ -101,7 +105,7 @@ public class StudentHome extends Page {
         jLabel2.setText("Your Courses:");
 
         courseList.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-     
+
 
         jScrollPane1.setViewportView(courseList);
 
@@ -212,6 +216,7 @@ public class StudentHome extends Page {
     // Variables declaration - do not modify
     private DefaultListModel<Course> listmodel = new DefaultListModel<>();
     private JList<Course> courseList = new JList<>(listmodel);
+
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
