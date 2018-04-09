@@ -76,7 +76,7 @@ public class UploadAssignment extends Page {
                         bos.read(content, 0, (int)length);
                         @SuppressWarnings("unchecked")
                         ServerMessage message = new ServerMessage(content,"FileUploadstr-1splitter".concat(fileinfo));
-                        professor.getClient().communicate(message);
+                        getNavigator().getClient().communicate(message);
                         
                     } catch (FileNotFoundException g) {
                         g.printStackTrace();

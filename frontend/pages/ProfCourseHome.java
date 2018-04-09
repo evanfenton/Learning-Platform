@@ -51,6 +51,7 @@ public class ProfCourseHome extends Page {
             java.util.logging.Logger.getLogger(ProfCourseHome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        gradesB.setVisible(false);
 
         /**
          * Logout button event handler, just terminates the program when pressed
@@ -221,7 +222,7 @@ public class ProfCourseHome extends Page {
 
         jPanel2.setBackground(java.awt.Color.orange);
 
-        
+
         jScrollPane1.setViewportView(studentsList);
 
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N

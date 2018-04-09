@@ -1,5 +1,13 @@
 package FrontEnd.pages;
 
+import FrontEnd.ProfessorGUI;
+import SharedDataObjects.Assignment;
+import SharedDataObjects.Course;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+
 /**
  *
  * @author Evan
@@ -9,7 +17,8 @@ public class ProfAssignmentDropBox extends Page{
     /**
      * Creates new form ProfAssignmentsDropBox
      */
-    public ProfAssignmentDropBox() {
+    public ProfAssignmentDropBox(ProfessorGUI prof, Course course, Assignment assignment) {
+        super(prof,true);
         initComponents();
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -33,6 +42,31 @@ public class ProfAssignmentDropBox extends Page{
             java.util.logging.Logger.getLogger(ProfAssignmentDropBox.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        courseHeader.setText(course.getName() + " " + course.getId());
+        assignmentHeader.setText(assignment.getTitle());
+        userHeader.setText("User: " + prof.getProfessor().getFirstname() + "  " + prof.getProfessor().getLastname());
+
+        /**
+         * Logout button event handler, just terminates the program when pressed
+         */
+        logoutB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+
+        /**
+         * Closes this frame and reopens the ProfCourseHome page
+         */
+        returnB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                professorGUI.addPage(new ProfCourseAssignments(prof,course));
+                professorGUI.showPage();
+                setVisible(false);
+            }
+        });
     }
 
     /**

@@ -6,8 +6,7 @@ import SharedDataObjects.ServerMessage;
 import SharedDataObjects.Student;
 import FrontEnd.ProfessorGUI;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
+import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
@@ -70,7 +69,13 @@ public class ProfCourseAssignments extends Page {
         dropboxB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                if(!assignmentList.isSelectionEmpty()) {
+                    professorGUI.addPage(new ProfAssignmentDropBox(prof, course, assignmentList.getSelectedValue()));
+                    professorGUI.showPage();
+                    setVisible(false);
+                } else{
+                    JPopupMenu popup = new JPopupMenu("Please Select an Assignment to view its dropbox");
+                }
             }
         });
 

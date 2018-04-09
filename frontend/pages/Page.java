@@ -39,7 +39,4 @@ public class Page extends javax.swing.JFrame{
         }
     }
 
-    public StudentGUI getStudent() {
-        return student;
-    }
 }
