@@ -90,14 +90,11 @@ public class ProfAssignmentDropBox extends Page{
         jLabel1 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
         downladB = new javax.swing.JButton();
         logoutB = new javax.swing.JButton();
         stuNameInfo = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         stuIDInfo = new javax.swing.JTextField();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        commentTextArea = new javax.swing.JTextArea();
         gradeField = new javax.swing.JTextField();
         updateGradeB = new javax.swing.JButton();
 
@@ -164,8 +161,6 @@ public class ProfAssignmentDropBox extends Page{
 
         jLabel11.setText("Grade:");
 
-        jLabel12.setText("Comments:");
-
         downladB.setText("Download Submission");
 
         logoutB.setText("Logout");
@@ -175,10 +170,6 @@ public class ProfAssignmentDropBox extends Page{
         jLabel13.setText("Student ID:");
 
         stuIDInfo.setEditable(false);
-
-        commentTextArea.setColumns(20);
-        commentTextArea.setRows(5);
-        jScrollPane2.setViewportView(commentTextArea);
 
         updateGradeB.setText("Update Grade");
 
@@ -216,15 +207,11 @@ public class ProfAssignmentDropBox extends Page{
                                                                                                 .addComponent(logoutB))
                                                                                         .addGroup(jPanel7Layout.createSequentialGroup()
                                                                                                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                                                        .addComponent(jLabel12)
-                                                                                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                                         .addGroup(jPanel7Layout.createSequentialGroup()
                                                                                                                 .addComponent(jLabel11)
                                                                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                                                                 .addComponent(gradeField, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                                                                        .addGroup(jPanel7Layout.createSequentialGroup()
-                                                                                                                .addGap(12, 12, 12)
-                                                                                                                .addComponent(updateGradeB)))
+                                                                                                        .addComponent(updateGradeB))
                                                                                                 .addGap(0, 0, Short.MAX_VALUE)))
                                                                                 .addContainerGap())))
                                                         .addGroup(jPanel7Layout.createSequentialGroup()
@@ -258,13 +245,9 @@ public class ProfAssignmentDropBox extends Page{
                                                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                         .addComponent(jLabel11)
                                                         .addComponent(gradeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jLabel12)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(updateGradeB)
-                                                .addGap(19, 19, 19)
+                                                .addGap(136, 136, 136)
                                                 .addComponent(logoutB)
                                                 .addGap(0, 0, Short.MAX_VALUE))
                                         .addComponent(jScrollPane1))
@@ -293,20 +276,17 @@ public class ProfAssignmentDropBox extends Page{
 
     // Variables declaration - do not modify
     private javax.swing.JLabel assignmentHeader;
-    private javax.swing.JTextArea commentTextArea;
     private javax.swing.JLabel courseHeader;
     private javax.swing.JButton downladB;
     private javax.swing.JTextField gradeField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton logoutB;
     private javax.swing.JButton returnB;
     private javax.swing.JTextField stuIDInfo;
@@ -316,4 +296,3 @@ public class ProfAssignmentDropBox extends Page{
     private javax.swing.JLabel userHeader;
     // End of variables declaration
 }
-
