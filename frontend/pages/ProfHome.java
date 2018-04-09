@@ -22,10 +22,10 @@ import java.util.ArrayList;
        * Creates new frame ProfHome
        */
       public ProfHome(ProfessorGUI prof) {
-          super(prof);
+          super(prof, true);
           initComponents();
           refreshCourseList();
-          userLabel.setText("User: " + prof.getProfessor().getFirstname() + "   " + prof.getProfessor().getLastname());
+          userLabel.setText("User: " + prof.getProfessor().getFirstname() + "  " + prof.getProfessor().getLastname());
           /* Set the Nimbus look and feel */
           //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
           /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -72,8 +72,8 @@ import java.util.ArrayList;
             	  if(courseList.getSelectedValue() != null)
             	  {
             		  Course selectedcourse = courseList.getSelectedValue();
-                	  professor.addPage(new ProfCourseHome(ProfHome.super.getProfessor(), selectedcourse));
-                	  professor.showPage();
+                	  professorGUI.addPage(new ProfCourseHome((ProfessorGUI) ProfHome.super.getNavigator(), selectedcourse));
+                	  professorGUI.showPage();
                       setVisible(false);
             	  }
             	  else
@@ -96,7 +96,7 @@ import java.util.ArrayList;
             	  Course selectedcourse = courseList.getSelectedValue();
             	  courseList.clearSelection();
             	  ServerMessage<Course> message = new ServerMessage<Course>(selectedcourse, "Activate"); 
-            	  professor.getClient().communicate(message);
+            	  professorGUI.getClient().communicate(message);
             	  refreshCourseList();
               }
           });
@@ -113,7 +113,7 @@ import java.util.ArrayList;
             	  Course selectedcourse = courseList.getSelectedValue();
             	  courseList.clearSelection();
             	  ServerMessage<Course> message = new ServerMessage<Course>(selectedcourse, "Deactivate"); 
-            	  professor.getClient().communicate(message);
+            	  professorGUI.getClient().communicate(message);
             	  refreshCourseList();
               }
           });
@@ -124,8 +124,8 @@ import java.util.ArrayList;
           addCourseB.addActionListener(new ActionListener() {
               @Override
               public void actionPerformed(ActionEvent e) {
-                  ProfHome.super.professor.addPage(new AddCourse(ProfHome.super.professor));
-                  ProfHome.super.professor.showPage();
+                  ProfHome.super.professorGUI.addPage(new AddCourse(ProfHome.super.professorGUI));
+                  ProfHome.super.professorGUI.showPage();
                   setVisible(false);
               }
           });
@@ -140,7 +140,7 @@ import java.util.ArrayList;
             	  Course selectedcourse = courseList.getSelectedValue();
             	  courseList.clearSelection();
             	  ServerMessage<Course> message = new ServerMessage<Course>(selectedcourse, "Delete");
-            	  professor.getClient().communicate(message);
+            	  professorGUI.getClient().communicate(message);
             	  refreshCourseList();
               }
           });
@@ -260,23 +260,20 @@ import java.util.ArrayList;
           jPanel1Layout.setHorizontalGroup(
                   jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                           .addGroup(jPanel1Layout.createSequentialGroup()
+                                  .addGap(407, 407, 407)
                                   .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                          .addGroup(jPanel1Layout.createSequentialGroup()
-                                                  .addGap(453, 453, 453)
-                                                  .addComponent(jLabel3))
-                                          .addGroup(jPanel1Layout.createSequentialGroup()
-                                                  .addGap(343, 343, 343)
-                                                  .addComponent(userLabel, GroupLayout.PREFERRED_SIZE, 342, GroupLayout.PREFERRED_SIZE)))
-                                  .addContainerGap(383, Short.MAX_VALUE))
+                                          .addComponent(userLabel, GroupLayout.PREFERRED_SIZE, 342, GroupLayout.PREFERRED_SIZE)
+                                          .addComponent(jLabel3))
+                                  .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
           );
           jPanel1Layout.setVerticalGroup(
                   jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                           .addGroup(GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                   .addGap(27, 27, 27)
                                   .addComponent(jLabel3)
-                                  .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                                  .addGap(18, 18, 18)
                                   .addComponent(userLabel, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
-                                  .addGap(25, 25, 25))
+                                  .addContainerGap(34, Short.MAX_VALUE))
           );
 
           GroupLayout layout = new GroupLayout(getContentPane());
@@ -303,8 +300,8 @@ import java.util.ArrayList;
     	  try
     	  {
 	    	  listmodel.clear();
-    		  ServerMessage<Professor> message = new ServerMessage<Professor>(professor.getProfessor(), "GetCourses");
-	    	  ServerMessage<?> recieved = professor.getClient().communicate(message);
+    		  ServerMessage<Professor> message = new ServerMessage<Professor>(professorGUI.getProfessor(), "GetCourses");
+	    	  ServerMessage<?> recieved = professorGUI.getClient().communicate(message);
 	    	  ArrayList<?> list = (ArrayList<?>) recieved.getObject();
 	    	  for(int i = 0; i < list.size(); i++)
 	    	  {

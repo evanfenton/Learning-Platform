@@ -6,8 +6,7 @@ import SharedDataObjects.ServerMessage;
 import SharedDataObjects.Student;
 import FrontEnd.ProfessorGUI;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
+import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
@@ -25,10 +24,10 @@ public class ProfCourseAssignments extends Page {
      * Creates new frame ProfCourseAssignments
      */
     public ProfCourseAssignments(ProfessorGUI prof, Course course) {
-        super(prof);
+        super(prof, true);
         initComponents();
         header.setText(course.getName() + " " + course.getId() + " - Assignments");
-        userLabel.setText("User: " + prof.getProfessor().getFirstname() + "   " + prof.getProfessor().getLastname());
+        userLabel.setText("User: " + prof.getProfessor().getFirstname() + "  " + prof.getProfessor().getLastname());
         this.course = course;
         refreshAssignmentList();
         /* Set the Nimbus look and feel */
@@ -65,13 +64,29 @@ public class ProfCourseAssignments extends Page {
         });
 
         /**
+         * Closes this frame and opens the dropbox frame for the currently selected assignment
+         */
+        dropboxB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!assignmentList.isSelectionEmpty()) {
+                    professorGUI.addPage(new ProfAssignmentDropBox(prof, course, assignmentList.getSelectedValue()));
+                    professorGUI.showPage();
+                    setVisible(false);
+                } else{
+                    JPopupMenu popup = new JPopupMenu("Please Select an Assignment to view its dropbox");
+                }
+            }
+        });
+
+        /**
          * Closes this frame and reopens the ProfCourseHome page
          */
         returnB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                professor.addPage(new ProfCourseHome(prof,course));
-                professor.showPage();
+                professorGUI.addPage(new ProfCourseHome(prof,course));
+                professorGUI.showPage();
                 setVisible(false);
             }
         });
@@ -83,7 +98,7 @@ public class ProfCourseAssignments extends Page {
             @Override
             public void actionPerformed(ActionEvent e) {
             	ServerMessage<Assignment> message = new ServerMessage<Assignment>(assignmentList.getSelectedValue(), "Activate");
-            	professor.getClient().communicate(message);
+            	professorGUI.getClient().communicate(message);
             	refreshAssignmentList();
             }
         });
@@ -95,7 +110,7 @@ public class ProfCourseAssignments extends Page {
             @Override
             public void actionPerformed(ActionEvent e) {
             	ServerMessage<Assignment> message = new ServerMessage<Assignment>(assignmentList.getSelectedValue(), "Deactivate");
-            	professor.getClient().communicate(message);
+            	professorGUI.getClient().communicate(message);
             	refreshAssignmentList();
             }
         });
@@ -130,7 +145,7 @@ public class ProfCourseAssignments extends Page {
             @Override
             public void actionPerformed(ActionEvent e) {
             	ServerMessage<Assignment> message = new ServerMessage<Assignment>(assignmentList.getSelectedValue(), "Delete");
-            	professor.getClient().communicate(message);
+            	professorGUI.getClient().communicate(message);
             	refreshAssignmentList();
             }
         });
@@ -141,8 +156,8 @@ public class ProfCourseAssignments extends Page {
         uploadAssignB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                professor.addPage(new UploadAssignment(prof,course));
-                professor.showPage();
+                professorGUI.addPage(new UploadAssignment(prof,course));
+                professorGUI.showPage();
                 setVisible(false);
             }
         });
@@ -380,7 +395,7 @@ public class ProfCourseAssignments extends Page {
     	{
     		listmodel.clear();
     		ServerMessage<Course> message = new ServerMessage<Course>(course, "GetCourseAssignments");
-    		ServerMessage<?> recieved = professor.getClient().communicate(message);
+    		ServerMessage<?> recieved = professorGUI.getClient().communicate(message);
     		ArrayList<?> list = (ArrayList<?>) recieved.getObject();
     		for(int i = 0; i < list.size(); i++)
 	    	  {

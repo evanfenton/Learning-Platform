@@ -24,11 +24,11 @@ public class ProfCourseHome extends Page {
      * Creates new frame ProfCourseHome
      */
     public ProfCourseHome(ProfessorGUI prof, Course course) {
-        super(prof);
+        super(prof, true);
         initComponents();
         refreshStudentList();
         courseNameHeader.setText(course.getName() + " " + course.getId());
-        userLabel.setText("User: " + prof.getProfessor().getFirstname() + "   " + prof.getProfessor().getLastname());
+        userLabel.setText("User: " + prof.getProfessor().getFirstname() + "  " + prof.getProfessor().getLastname());
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -51,6 +51,7 @@ public class ProfCourseHome extends Page {
             java.util.logging.Logger.getLogger(ProfCourseHome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        gradesB.setVisible(false);
 
         /**
          * Logout button event handler, just terminates the program when pressed
@@ -69,8 +70,8 @@ public class ProfCourseHome extends Page {
         returnB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                professor.addPage(new ProfHome(prof));
-                professor.showPage();
+                professorGUI.addPage(new ProfHome(prof));
+                professorGUI.showPage();
                 setVisible(false);
             }
         });
@@ -87,7 +88,7 @@ public class ProfCourseHome extends Page {
                 	int searchint = Integer.parseInt(searchstr);
                     // search db for student id
                     ServerMessage<Course> message= new ServerMessage<>(course, "SearchID "+ searchint);
-                    ServerMessage<?> returned= ProfCourseHome.super.getProfessor().getClient().communicate(message);
+                    ServerMessage<?> returned= ProfCourseHome.super.getNavigator().getClient().communicate(message);
                     listmodel.clear();
                     listmodel.addElement((Student) returned.getObject());
                     
@@ -95,7 +96,7 @@ public class ProfCourseHome extends Page {
                     //search db for student last name
                     String lastName = searchstr;
                     ServerMessage<Course> message= new ServerMessage<>(course, "SearchName "+ lastName);
-                    ServerMessage<?> returned= ProfCourseHome.super.getProfessor().getClient().communicate(message);
+                    ServerMessage<?> returned= ProfCourseHome.super.getNavigator().getClient().communicate(message);
                     ArrayList<?> students = (ArrayList<?>) returned.getObject();
                     listmodel.clear();
                     
@@ -125,8 +126,8 @@ public class ProfCourseHome extends Page {
         assignmentsB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                professor.addPage(new ProfCourseAssignments(professor,course));
-                professor.showPage();
+                professorGUI.addPage(new ProfCourseAssignments(professorGUI,course));
+                professorGUI.showPage();
                 setVisible(false);
             }
         });
@@ -139,10 +140,10 @@ public class ProfCourseHome extends Page {
             public void valueChanged(ListSelectionEvent e) {
                 //get Student object from page and open StudentInfo with it
                 Student student = studentsList.getSelectedValue();
-                StudentInfo studentinfopage = new StudentInfo(professor,course,student);
-                if(professor.getPageHolder().getClass() != studentinfopage.getClass()) {
-                    professor.addPage(new StudentInfo(professor, course, student));
-                    professor.showPage();
+                StudentInfo studentinfopage = new StudentInfo(professorGUI,course,student);
+                if(professorGUI.getPageHolder().getClass() != studentinfopage.getClass()) {
+                    professorGUI.addPage(new StudentInfo(professorGUI, course, student));
+                    professorGUI.showPage();
                 }
                 setVisible(false);
             }
@@ -193,36 +194,35 @@ public class ProfCourseHome extends Page {
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
+        jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(returnB)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addContainerGap()
-                                                .addComponent(returnB)
-                                                .addGap(183, 183, 183)
-                                                .addComponent(userLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(386, 386, 386)
-                                                .addComponent(courseNameHeader)))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(userLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(courseNameHeader))
+                                .addGap(350, 350, 350))
         );
         jPanel1Layout.setVerticalGroup(
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addContainerGap(36, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(returnB)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(courseNameHeader)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(userLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addContainerGap(30, Short.MAX_VALUE)
+                                .addComponent(courseNameHeader)
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(returnB, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(userLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(25, 25, 25))
         );
 
+
+
         jPanel2.setBackground(java.awt.Color.orange);
 
-        
+
         jScrollPane1.setViewportView(studentsList);
 
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
@@ -353,7 +353,7 @@ public class ProfCourseHome extends Page {
   	  {
 	    	  listmodel.clear();
 	    	  ServerMessage<Student> message = new ServerMessage<Student>(new Student(), "GetAllStudents");
-	    	  ServerMessage<?> recieved = professor.getClient().communicate(message);
+	    	  ServerMessage<?> recieved = professorGUI.getClient().communicate(message);
 	    	  ArrayList<?> list = (ArrayList<?>) recieved.getObject();
 	    	  for(int i = 0; i < list.size(); i++)
 	    	  {

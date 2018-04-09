@@ -15,6 +15,10 @@ public class Grade implements Serializable {
 	 */
 	private static final long serialVersionUID = 8743278324L;
 	/**
+	 * id of the grade.
+	 */
+	private int id;
+	/**
 	 * id of the student being graded
 	 */
 	private int student_id;
@@ -22,14 +26,15 @@ public class Grade implements Serializable {
 	 * the grade itself
 	 */
 	private int grade;
-	/**
-	 * name of the student being graded
-	 */
-	private String student_name;
+
 	/**
 	 * name of the assignment being graded
 	 */
-	private String assign_name;
+	private int  assign_id;
+	/**
+	 * course id of the assignment
+	 */
+	private int course_id;
 	/**
 	 * Constructor for the class
 	 * @param id of the student
@@ -37,12 +42,13 @@ public class Grade implements Serializable {
 	 * @param name of the student
 	 * @param assign name
 	 */
-	public Grade(int id, int grade, String name, String assign)
+	public Grade(int id, int grade, int sid, int assign, int course_id)
 	{
-		student_id = id;
+		this.setId(id);
 		this.grade = grade;
-		student_name = name;
-		assign_name = assign;
+		student_id = sid;
+		assign_id = assign;
+		this.setCourse_id(course_id);
 	}
 	/**
 	 * getters and setters for the class
@@ -62,21 +68,25 @@ public class Grade implements Serializable {
 	public void setGrade(int grade) {
 		this.grade = grade;
 	}
-
-	public String getStudent_name() {
-		return student_name;
+	public int getAssign_id() {
+		return assign_id;
+	}
+	public void setAssign_id(int assign_id) {
+		this.assign_id = assign_id;
+	}
+	public int getCourse_id() {
+		return course_id;
+	}
+	public void setCourse_id(int course_id) {
+		this.course_id = course_id;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public void setStudent_name(String student_name) {
-		this.student_name = student_name;
-	}
-
-	public String getAssign_name() {
-		return assign_name;
-	}
-
-	public void setAssign_name(String assign_name) {
-		this.assign_name = assign_name;
-	}
+	
 
 }

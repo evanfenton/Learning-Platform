@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Frame used to add course to professorGUI
+ * Frame used to add course to professorGUIGUI
  * @author Evan
  */
 public class AddCourse extends Page {
@@ -17,11 +17,11 @@ public class AddCourse extends Page {
      * Creates new frame AddCourse
      */
     public AddCourse(ProfessorGUI prof) {
-        super(prof);
+        super(prof, true);
         initComponents();
         profIDInput.setEditable(false);
         profIDInput.setText("" +prof.getProfessor().getId());
-        userLabel.setText("User: " + prof.getProfessor().getFirstname() + "    " + prof.getProfessor().getLastname());
+        userLabel.setText("User: " + prof.getProfessor().getFirstname() + "  " + prof.getProfessor().getLastname());
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -51,8 +51,8 @@ public class AddCourse extends Page {
         cancelB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AddCourse.super.professor.addPage(new ProfHome(AddCourse.super.professor));
-                AddCourse.super.professor.showPage();
+                AddCourse.super.professorGUI.addPage(new ProfHome(AddCourse.super.professorGUI));
+                AddCourse.super.professorGUI.showPage();
                 setVisible(false);
             }
         });
@@ -68,9 +68,9 @@ public class AddCourse extends Page {
                 String profID = profIDInput.getText();
                 Course course = new Course(Integer.parseInt(cnumb),Integer.parseInt(profID),cname);
                 ServerMessage<Course> message = new ServerMessage<Course>(course, "Add");
-                professor.getClient().communicate(message);
-                professor.addPage(new ProfHome(AddCourse.super.professor));
-                professor.showPage();
+                professorGUI.getClient().communicate(message);
+                professorGUI.addPage(new ProfHome(AddCourse.super.professorGUI));
+                professorGUI.showPage();
                 setVisible(false);
             }
         });
@@ -110,14 +110,12 @@ public class AddCourse extends Page {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(331, 331, 331)
-                                .addComponent(jLabel3)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(userLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(292, 292, 292))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(userLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel3))
+                                .addGap(247, 247, 247))
         );
         jPanel1Layout.setVerticalGroup(
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

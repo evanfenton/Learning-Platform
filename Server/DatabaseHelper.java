@@ -440,7 +440,7 @@ public class DatabaseHelper {
 	 * adds specific assignment
 	 * @param assignment
 	 */
-	public void addAssignment(Assignment assignment) {
+	synchronized public void addAssignment(Assignment assignment) {
 		int bit;
 		if(assignment.isActive())
 		{
@@ -458,6 +458,74 @@ public class DatabaseHelper {
 				bit + "', '" + 
 				assignment.getDue_date()
 				+ "'); ";
+		try{
+			
+			statement = jdbc_connection.prepareStatement(sql);
+			statement.executeUpdate(sql);
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+	}
+	synchronized public ArrayList<Course> getStudentsCourses(Student stud) {
+		String sql = "SELECT * FROM " + "StudentEnrollmentTable" + " WHERE STUDENT_ID=" + stud.getId();
+		ResultSet enrollments;
+		ResultSet course;
+		ArrayList<Course> courses = new ArrayList<Course>();
+		try {
+			statement = jdbc_connection.prepareStatement(sql);
+			enrollments = statement.executeQuery(sql);
+			while(enrollments.next())
+			{
+				sql = "SELECT * FROM " + "CourseTable" + " WHERE ID=" + enrollments.getInt("COURSE_ID") + " AND ACTIVE= b'1'";
+				statement = jdbc_connection.prepareStatement(sql);
+				course = statement.executeQuery(sql);
+				if(course.next())
+				{
+				courses.add(new Course(course.getInt("ID"),
+								course.getInt("PROF_ID"), 
+								course.getString("NAME"), 
+								course.getBoolean("ACTIVE") 
+								));			
+				}
+			}
+		return courses;
+		} catch (SQLException e) { e.printStackTrace(); }
+		return null;
+	}
+	synchronized public ArrayList<Assignment> getActiveCourseAssignments(Course course) {
+		String sql = "SELECT * FROM " + "AssignmentTable" + " WHERE COURSE_ID=" + course.getId() + " AND ACTIVE= b'1'";
+		ResultSet assignment;
+		ArrayList<Assignment> assignments = new ArrayList<Assignment>();
+		try {
+			statement = jdbc_connection.prepareStatement(sql);
+			assignment = statement.executeQuery(sql);
+			while(assignment.next())
+			{
+				
+				assignments.add(new Assignment(assignment.getInt("ID"),
+								assignment.getInt("COURSE_ID"), 
+								assignment.getString("TITLE"), 
+								assignment.getString("PATH"),
+								assignment.getBoolean("ACTIVE"),
+								assignment.getString("DUE_DATE")
+								));			
+			}
+		return assignments;
+		} catch (SQLException e) { e.printStackTrace(); }
+	
+		return null;
+	}
+	synchronized public void addGrade(Grade grade) {
+		
+		String sql = "INSERT INTO " + "GradeTable" +
+				" VALUES ( " + grade.getId() + ", '" + 
+				grade.getAssign_id()+ "', '" + 
+				grade.getStudent_id() + "', '" + 
+				grade.getCourse_id() + "', '" + 
+				grade.getGrade() + "'); ";
 		try{
 			
 			statement = jdbc_connection.prepareStatement(sql);

@@ -20,9 +20,9 @@ public class StudentInfo extends Page {
      * Creates new form StudentInfo
      */
     public StudentInfo(ProfessorGUI prof, Course course, Student student) {
-        super(prof);
+        super(prof, true);
         initComponents();
-        userLabel.setText("User: " + prof.getProfessor().getFirstname() + "   " + prof.getProfessor().getLastname());
+        userLabel.setText("User: " + prof.getProfessor().getFirstname() + "  " + prof.getProfessor().getLastname());
         header.setText(student.getFirstname() + " " + student.getLastname() + " " + student.getId());
         fName.setText(student.getFirstname());
         lName.setText(student.getLastname());
@@ -30,7 +30,7 @@ public class StudentInfo extends Page {
         cAVG.setText(("Calculate student average"));
         StudentEnrollment enrollment = new StudentEnrollment(1,student.getId(), course.getId(),true);
         ServerMessage<StudentEnrollment> message = new ServerMessage<StudentEnrollment>(enrollment, "CheckEnroll");
-        ServerMessage<?> enrolled = professor.getClient().communicate(message);
+        ServerMessage<?> enrolled = professorGUI.getClient().communicate(message);
         
  
         if(enrolled.getObject() != null)
@@ -78,8 +78,8 @@ public class StudentInfo extends Page {
         returnB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                professor.addPage(new ProfCourseHome(professor,course));
-                professor.showPage();
+                professorGUI.addPage(new ProfCourseHome(professorGUI,course));
+                professorGUI.showPage();
                 setVisible(false);
             }
         });
@@ -97,7 +97,7 @@ public class StudentInfo extends Page {
                 									student.getId(),
                 									course.getId(), true);
                 	ServerMessage<StudentEnrollment> message = new ServerMessage<StudentEnrollment> (enrollment, "Enroll");
-                	professor.getClient().communicate(message);
+                	professorGUI.getClient().communicate(message);
                 	courseStatus.setText("Enrolled");
                 }
                 
@@ -117,7 +117,7 @@ public class StudentInfo extends Page {
                 									student.getId(),
                 									course.getId(), false);
                 	ServerMessage<StudentEnrollment> message = new ServerMessage<StudentEnrollment> (enrollment, "Unenroll");
-                	professor.getClient().communicate(message);
+                	professorGUI.getClient().communicate(message);
                 	courseStatus.setText("Not Enrolled");
                 }
             }
@@ -144,16 +144,12 @@ public class StudentInfo extends Page {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
         selGrade = new javax.swing.JTextField();
         fName = new javax.swing.JTextField();
         lName = new javax.swing.JTextField();
         stuID = new javax.swing.JTextField();
         cAVG = new javax.swing.JTextField();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        selComment = new javax.swing.JTextArea();
         changeGradeB = new javax.swing.JButton();
-        cancelSelB = new javax.swing.JButton();
         unEnrollB = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
         courseStatus = new javax.swing.JTextField();
@@ -167,12 +163,6 @@ public class StudentInfo extends Page {
 
         jPanel2.setBackground(java.awt.Color.orange);
 
-        fName.setEditable(false);
-        lName.setEditable(false);
-        stuID.setEditable(false);
-        cAVG.setEditable(false);
-        courseStatus.setEditable(false);
-
         logoutB.setText("Logout");
 
         jLabel2.setText("First Name:");
@@ -184,7 +174,7 @@ public class StudentInfo extends Page {
         jLabel6.setText("Current AVG:");
 
         gradesList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Add Grades Here" };
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
@@ -198,19 +188,21 @@ public class StudentInfo extends Page {
 
         jLabel9.setText("Grade:");
 
-        jLabel10.setText("Comments:");
+        fName.setEditable(false);
 
-        selComment.setColumns(20);
-        selComment.setRows(5);
-        jScrollPane2.setViewportView(selComment);
+        lName.setEditable(false);
+
+        stuID.setEditable(false);
+
+        cAVG.setEditable(false);
 
         changeGradeB.setText("Change Grade");
-
-        cancelSelB.setText("Cancel");
 
         unEnrollB.setText("UnEnroll");
 
         jLabel11.setText("Course Status:");
+
+        courseStatus.setEditable(false);
 
         enrollB.setText("Enroll");
 
@@ -228,47 +220,39 @@ public class StudentInfo extends Page {
                                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addComponent(jLabel7)
                                                         .addGroup(jPanel2Layout.createSequentialGroup()
-                                                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 663, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                        .addComponent(jLabel2)
+                                                                                        .addComponent(jLabel4)
+                                                                                        .addComponent(jLabel5)
+                                                                                        .addComponent(jLabel6)
+                                                                                        .addComponent(jLabel11))
+                                                                                .addGap(36, 36, 36)
+                                                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                        .addComponent(cAVG, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                                                                .addComponent(fName)
+                                                                                                .addComponent(lName, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
+                                                                                                .addComponent(stuID, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                                                                                .addComponent(courseStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                .addGap(49, 49, 49)
+                                                                                                .addComponent(enrollB)
+                                                                                                .addGap(18, 18, 18)
+                                                                                                .addComponent(unEnrollB)))
+                                                                                .addGap(208, 208, 208))
+                                                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 663, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                 .addGap(47, 47, 47)
                                                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                        .addComponent(jLabel10)
                                                                         .addComponent(jLabel8)
                                                                         .addGroup(jPanel2Layout.createSequentialGroup()
                                                                                 .addComponent(jLabel9)
                                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                                                .addComponent(selGrade, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                                                .addComponent(unEnrollB)
-                                                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                        .addGroup(jPanel2Layout.createSequentialGroup()
-                                                                                                .addComponent(changeGradeB)
-                                                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                                                .addComponent(cancelSelB)))))))
-                                                .addGap(0, 32, Short.MAX_VALUE))
-                                        .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addGap(31, 31, 31)
-                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jLabel2)
-                                                        .addComponent(jLabel4)
-                                                        .addComponent(jLabel5)
-                                                        .addComponent(jLabel6)
-                                                        .addComponent(jLabel11))
-                                                .addGap(36, 36, 36)
-                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addGroup(jPanel2Layout.createSequentialGroup()
-                                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                        .addComponent(cAVG, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                        .addComponent(courseStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                                .addGap(0, 0, Short.MAX_VALUE))
-                                                        .addGroup(jPanel2Layout.createSequentialGroup()
-                                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                                        .addComponent(fName)
-                                                                        .addComponent(lName, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
-                                                                        .addComponent(stuID, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                .addComponent(enrollB)
-                                                                .addGap(157, 157, 157)))))
+                                                                                .addComponent(selGrade, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addGap(18, 18, 18)
+                                                                                .addComponent(changeGradeB)))))
+                                                .addGap(0, 13, Short.MAX_VALUE)))
                                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -278,12 +262,10 @@ public class StudentInfo extends Page {
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel2)
                                         .addComponent(fName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
+                                .addGap(21, 21, 21)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel4)
-                                        .addComponent(lName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(enrollB)
-                                        .addComponent(unEnrollB))
+                                        .addComponent(lName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel5)
@@ -294,11 +276,13 @@ public class StudentInfo extends Page {
                                         .addComponent(cAVG, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addGap(10, 10, 10)
+                                                .addGap(7, 7, 7)
                                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                         .addComponent(jLabel11)
-                                                        .addComponent(courseStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGap(36, 36, 36)
+                                                        .addComponent(courseStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(enrollB)
+                                                        .addComponent(unEnrollB))
+                                                .addGap(33, 33, 33)
                                                 .addComponent(jLabel7)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -311,16 +295,9 @@ public class StudentInfo extends Page {
                                                 .addGap(18, 18, 18)
                                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                         .addComponent(jLabel9)
-                                                        .addComponent(selGrade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jLabel10)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(37, 37, 37)
-                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(changeGradeB)
-                                                        .addComponent(cancelSelB))
-                                                .addGap(85, 85, 85))))
+                                                        .addComponent(selGrade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(changeGradeB))
+                                                .addGap(268, 268, 268))))
         );
 
         jPanel1.setBackground(java.awt.Color.pink);
@@ -378,15 +355,16 @@ public class StudentInfo extends Page {
         pack();
     }// </editor-fold>
 
+
+
+
     // Variables declaration - do not modify
     private javax.swing.JTextField cAVG;
-    private javax.swing.JButton cancelSelB;
     private javax.swing.JButton changeGradeB;
     private javax.swing.JTextField courseStatus;
     private javax.swing.JButton enrollB;
     private javax.swing.JTextField fName;
     private javax.swing.JList<String> gradesList;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel header;
@@ -399,11 +377,9 @@ public class StudentInfo extends Page {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField lName;
     private javax.swing.JButton logoutB;
     private javax.swing.JButton returnB;
-    private javax.swing.JTextArea selComment;
     private javax.swing.JTextField selGrade;
     private javax.swing.JTextField stuID;
     private javax.swing.JButton unEnrollB;
