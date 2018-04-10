@@ -4,6 +4,10 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import SharedDataObjects.Assignment;
+import SharedDataObjects.ServerMessage;
+
+import java.io.*;
 import java.sql.Struct;
 
 /**
@@ -63,5 +67,22 @@ public class FileHelper {
         } catch(IOException e){
             e.printStackTrace();
         }
+    }
+
+    public ServerMessage getAssignmentFile(Assignment assignment){
+        File filetosend = new File(serverfilepath+assignment.getTitle()+assignment.getPath());
+        long length = filetosend.length();
+        byte[] content = new byte[(int) length]; // Converting Long to Int
+        try {
+            FileInputStream fis = new FileInputStream(filetosend);
+            BufferedInputStream bos = new BufferedInputStream(fis);
+            bos.read(content, 0, (int)length);
+        } catch (FileNotFoundException g) {
+            g.printStackTrace();
+        } catch(IOException f){
+            f.printStackTrace();
+        }
+        ServerMessage returnmessage = new ServerMessage(content,assignment.getTitle()+assignment.getPath());
+        return returnmessage;
     }
 }

@@ -1,5 +1,6 @@
 package Server;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -369,6 +370,13 @@ public class Worker implements Runnable {
 					byte[] input = (byte[]) message.getObject();
 					filemanager.uploadSubmission(input,message.getMessage());
 					out.writeObject(null);
+				}
+				/**
+				 * For students to download assignments
+				 */
+				if(message.getMessage().contains("DownloadAssignment")){
+					ServerMessage returnmessage = filemanager.getAssignmentFile((Assignment) message.getObject());
+					out.writeObject(returnmessage);
 				}
 				/**
 				 * adds submission to database
