@@ -779,4 +779,22 @@ public class DatabaseHelper {
         }
         return null;	
 	}
+	public void updateSubmissionGrade(Submission sub, int newGrade) {
+		String sql = "UPDATE " + "GradeTable" + " SET ASSIGNMENT_GRADE = '" +
+			 	newGrade + "' WHERE ASSIGN_ID = " + sub.getAssign_id() + " AND STUDENT_ID="
+			 	+ sub.getStudent_id();
+		try {
+				statement = jdbc_connection.prepareStatement(sql);
+				statement.executeUpdate(sql);
+				String sql2 = "UPDATE " + "SubmissionTable" + " SET SUBMISSION_GRADE = '" +
+					 	newGrade + "' WHERE ID = " + sub.getId() ;
+				statement = jdbc_connection.prepareStatement(sql2);
+				statement.executeUpdate(sql2);
+			}
+		catch(SQLException e)
+			{
+				e.printStackTrace();
+			}
+		
+	}
 }

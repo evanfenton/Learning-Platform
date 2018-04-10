@@ -79,6 +79,14 @@ public class ProfAssignmentDropBox extends Page{
             }
         });
         
+        updateGradeB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ServerMessage<Submission> message = new ServerMessage<Submission>(subList.getSelectedValue(), "UpdateSubmissionGrade " + gradeField.getText());
+                professorGUI.getClient().communicate(message);
+            }
+        });
+        
         subList.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
