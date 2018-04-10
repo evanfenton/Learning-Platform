@@ -131,6 +131,17 @@ public class ProfCourseHome extends Page {
                 setVisible(false);
             }
         });
+        
+        /**
+         * Open a new message frame
+         */
+        messageB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                professorGUI.addPage( new ProfEmail(professorGUI, course));
+                professorGUI.showPage();
+            }
+        });
 
         /**
          * Reads which student from the selection model was pressed on and opens a StudentInfo frame with that students information
