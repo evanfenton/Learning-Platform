@@ -69,8 +69,6 @@ public class UploadAssignment extends Page {
                 if(true){
                     File filetosend = fileChooser.getSelectedFile();
                     String fileinfo = filetosend.getName();
-                    System.out.println(fileinfo);
-                    System.out.println(filetosend.toPath());
                     //Start of code to send file, provided by ENSF409 instructor
                     long length = filetosend.length();
                     byte[] content = new byte[(int) length]; // Converting Long to Int
@@ -88,7 +86,6 @@ public class UploadAssignment extends Page {
                         f.printStackTrace();
                     }
                     String [] filesplit = fileinfo.split("\\.(?=[^\\.]+$)");
-                    System.out.println(filesplit[0]);
                     Random rand = new Random();
                     Assignment assignment = new Assignment(rand.nextInt(99999999)+1,course.getId(),filesplit[0],"path doesnt exist",dueDateInput.getText());
                     ServerMessage<Assignment> message = new ServerMessage<Assignment>(assignment, "Add");

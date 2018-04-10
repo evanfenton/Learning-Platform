@@ -3,9 +3,13 @@ package FrontEnd.pages;
 import FrontEnd.StudentGUI;
 import SharedDataObjects.Assignment;
 import SharedDataObjects.Course;
+import SharedDataObjects.ServerMessage;
+import SharedDataObjects.Submission;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
+import java.util.Random;
 
 /**
  *
@@ -65,6 +69,44 @@ public class StudentAssignmentDropBox extends Page {
                 studentGUI.addPage(new StudentCourseHome(studentGUI,course));
                 studentGUI.showPage();
                 setVisible(false);
+            }
+        });
+
+        /**
+         * uploads a submission to the server
+         */
+        uploadB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (fileChooser.getSelectedFile() != null) {
+                    File filetosend = fileChooser.getSelectedFile();
+                    String fileinfo = filetosend.getName();
+                    //Start of code to send file, provided by ENSF409 instructor
+                    long length = filetosend.length();
+                    byte[] content = new byte[(int) length]; // Converting Long to Int
+                    System.out.println("test");
+
+                    try {
+                        FileInputStream fis = new FileInputStream(filetosend);
+                        BufferedInputStream bos = new BufferedInputStream(fis);
+                        bos.read(content, 0, (int) length);
+                        ServerMessage message = new ServerMessage(content, "Submissionstr-1splitter".concat(fileinfo));
+                        getNavigator().getClient().communicate(message);
+
+                    } catch (FileNotFoundException g) {
+                        g.printStackTrace();
+                    } catch (IOException f) {
+                        f.printStackTrace();
+                    }
+                    String[] filesplit = fileinfo.split("\\.(?=[^\\.]+$)");
+                    Random rand = new Random();
+                    Submission sub = new Submission(rand.nextInt(99999999) + 1, assignment.getId(), stu.getStudent().getId(), "Server Path", filesplit[0], "timestamp");
+                    ServerMessage<Submission> message = new ServerMessage<>(sub, "Add");
+                    studentGUI.getClient().communicate(message);
+                    studentGUI.addPage(new StudentCourseHome(stu,course));
+                    studentGUI.showPage();
+                    setVisible(false);
+                }
             }
         });
     }

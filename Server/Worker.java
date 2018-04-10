@@ -361,6 +361,25 @@ public class Worker implements Runnable {
                 	out.writeObject(returnMessage);
                 	
                 }
+				/**
+				 * For student uploading a submission
+				 */
+				if(message.getMessage().contains("Submission"))
+				{
+					byte[] input = (byte[]) message.getObject();
+					filemanager.uploadSubmission(input,message.getMessage());
+					out.writeObject(null);
+				}
+				/**
+				 * adds submission to database
+				 */
+				if(message.getObject().getClass().toString().contains("Submission") && message.getMessage().equals("Add"))
+				{
+					Submission sub = (Submission) message.getObject();
+					System.out.println("sub received");
+					//database.addSubmission(sub);
+					out.writeObject(null);
+				}
                 
 			}
 		} 
