@@ -149,18 +149,6 @@ public class ProfCourseHome extends Page {
             }
         });
 
-        /**
-         * opens the frame for sending an Email to all students in the course
-         */
-        messageB.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                professorGUI.addPage(new Messenger());
-                professorGUI.showPage();
-                setVisible(false);
-            }
-        });
-
         
     }
 
