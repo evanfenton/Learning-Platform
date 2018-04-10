@@ -19,7 +19,7 @@ public class LoginWindow extends JFrame{
 	private static final long serialVersionUID = 1231231L;
 	private JTextField userIDInput;
     private JPasswordField passwordInput;
-    private JLabel idLabel, passwordLabel;
+    private JLabel idLabel, passwordLabel, messageLabel;
     private JButton loginButton, cancelButton;
     private JPanel fields, buttons;
     private Client client;
@@ -28,8 +28,8 @@ public class LoginWindow extends JFrame{
      */
     public LoginWindow(){
         super();
-        client = new Client("localhost", 9091);
-        setLayout(new GridLayout(2,1));
+        client = new Client("localhost", 9090);
+        setLayout(new GridLayout(3,1));
         setTitle("Login");
         setSize(300, 150);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -44,6 +44,7 @@ public class LoginWindow extends JFrame{
 
         fillPanels();
 
+        add(messageLabel);
         add(fields);
         add(buttons);
 
@@ -57,9 +58,11 @@ public class LoginWindow extends JFrame{
     private void initializeLabels(){
         idLabel= new JLabel("User ID");
         passwordLabel= new JLabel("Password");
+        messageLabel= new JLabel("Please login with a valid Gmail account");
 
         idLabel.setHorizontalAlignment(SwingConstants.CENTER);
         passwordLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
     }
 
     private void initializeButtons(){

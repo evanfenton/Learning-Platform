@@ -48,7 +48,7 @@ public class Server {
 			pool = Executors.newCachedThreadPool();
 			filemanager = new FileHelper();
 			database = new DatabaseHelper();
-			emailservice = new EmailHelper();
+			emailservice = new EmailHelper("","");
 			System.out.println("Server Started...");
 		}
 		catch(IOException e)
@@ -82,9 +82,8 @@ public class Server {
 	 * server startup
 	 */
 	public static void main(String[] args) {
-		Server server = new Server(9091);
+		Server server = new Server(9090);
 		server.run();
-
 	}
 
 }

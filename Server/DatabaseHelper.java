@@ -537,5 +537,264 @@ public class DatabaseHelper {
 		}
 		
 	}
+    
+    /**
+     * gets all students enrolled in a course
+     * @param course
+     */
+    synchronized public ArrayList<Student> getCourseStudents(Course course) {
+        String sql = "SELECT * FROM StudentEnrollmentTable WHERE COURSE_ID= " + course.getId()+";";
+        ResultSet students;
+        ArrayList<Student> studentList = new ArrayList<>();
+        try {
+            statement = jdbc_connection.prepareStatement(sql);
+            students = statement.executeQuery(sql);
+            
+            while(students.next()) {
+                studentList.add(searchCourseByID(students.getInt("STUDENT_ID")));
+            }
+            
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return studentList;
+    }
+    
+    synchronized public Student getStudent(int id){
+        
+        String sql= "SELECT * FROM UserTable WHERE ID= "+id;
+        ResultSet student;
+        
+        try{
+            statement= jdbc_connection.prepareStatement(sql);
+            student= statement.executeQuery(sql);
+            if(student.next())
+            {
+            return new Student(student.getInt("ID"),
+            				   student.getString("FIRSTNAME"),
+                               student.getString("LASTNAME"),           
+                               student.getString("EMAIL"),
+                               student.getString("PASSWORD"));
+            }
+            
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
+    synchronized public ArrayList<Grade> getStudentGrades(Student student, int profid) {
+		
+	    ArrayList<Course> courses = getProfsCourses(new Professor(profid,"","","",""));
+	    String sql = "SELECT * FROM " + "GradeTable" + " WHERE STUDENT_ID=" + student.getId();
+        ResultSet grade;
+        ArrayList<Grade> grades = new ArrayList<>();
+        try {
+            statement = jdbc_connection.prepareStatement(sql);
+            grade = statement.executeQuery(sql);
+            
+            while(grade.next()) {
+                grades.add(new Grade(grade.getInt("ID"),
+						grade.getInt("ASSIGNMENT_GRADE"), 
+						grade.getInt("STUDENT_ID"), 
+						grade.getInt("ASSIGN_ID"),
+						grade.getInt("COURSE_ID")
+						));	
+                
+            }
+            ArrayList<Grade> toReturn = new ArrayList<>();
+            for(int i = 0; i < grades.size(); i++)
+            {
+            	for(int j =0; j < courses.size(); j++)
+            	{
+            		if(grades.get(i).getCourse_id() == courses.get(j).getId()) {
+            			Assignment assigns = getAssignment(grades.get(i).getAssign_id());
+            			grades.get(i).setAssign_name(assigns.getTitle());
+            			toReturn.add(grades.get(i));
+            		}
+            	}
+            }
+            return toReturn;
+            
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;	}
+	synchronized public Assignment getAssignment(int id) {
+		String sql = "SELECT * FROM " + "AssignmentTable" + " WHERE ID=" + id;
+		ResultSet assignment;
+		try {
+			statement = jdbc_connection.prepareStatement(sql);
+			assignment = statement.executeQuery(sql);
+			if(assignment.next())
+			{
+				return new Assignment(assignment.getInt("ID"),
+                        assignment.getInt("COURSE_ID"),
+                        assignment.getString("TITLE"),
+                        assignment.getString("PATH"),
+                        assignment.getString("DUE_DATE"));
+					
+			}
+		return null;
+		} catch (SQLException e) { e.printStackTrace(); }
 	
+		return null;
+	}
+	/**
+	 * updates grade with id to new grade
+	 * @param id
+	 * @param grade
+	 */
+	synchronized public void updateGrade(int id, int grade)
+	{
+		String sql = "UPDATE " + "GradeTable" + " SET ASSIGNMENT_GRADE = '" +
+			 	grade + "' WHERE ID = " + id;
+		try {
+				statement = jdbc_connection.prepareStatement(sql);
+						statement.executeUpdate(sql);
+	
+			}
+		catch(SQLException e)
+			{
+				e.printStackTrace();
+			}
+	}
+	 synchronized public ArrayList<Grade> getStudentGrades(Student student) {
+			
+		  
+		    String sql = "SELECT * FROM " + "GradeTable" + " WHERE STUDENT_ID=" + student.getId();
+	        ResultSet grade;
+	        ArrayList<Grade> grades = new ArrayList<>();
+	        try {
+	            statement = jdbc_connection.prepareStatement(sql);
+	            grade = statement.executeQuery(sql);
+	            
+	            while(grade.next()) {
+	                grades.add(new Grade(grade.getInt("ID"),
+							grade.getInt("ASSIGNMENT_GRADE"), 
+							grade.getInt("STUDENT_ID"), 
+							grade.getInt("ASSIGN_ID"),
+							grade.getInt("COURSE_ID")
+							));	
+	                
+	            }
+	            
+	            return grades;
+	            
+	        }catch (SQLException e){
+	            e.printStackTrace();
+	        }
+	        return null;	
+	 }
+	synchronized public Professor getProf(Assignment assign) {
+		String sql = "SELECT * FROM " + "CourseTable" + " WHERE ID=" + assign.getCourse_id();
+		ResultSet course;
+		try {
+			statement = jdbc_connection.prepareStatement(sql);
+			course = statement.executeQuery(sql);
+			if(course.next())
+			{
+				String sql2 = "SELECT * FROM " + "UserTable" + " WHERE ID=" + course.getInt("PROF_ID");
+				ResultSet prof;
+				statement = jdbc_connection.prepareStatement(sql2);
+				prof = statement.executeQuery(sql2);
+				if(prof.next())
+				{
+					return new Professor(prof.getInt("ID"),
+	                        prof.getString("FIRSTNAME"),
+	                        prof.getString("LASTNAME"),
+	                        prof.getString("EMAIL"),
+	                        prof.getString("PASSWORD"));
+				}
+			}
+		} catch (SQLException e) { e.printStackTrace(); }
+	
+		return null;
+	}
+
+	synchronized public Professor getCoursesProf(Course course){
+		String sql = "SELECT * FROM " + "UserTable" + " WHERE ID=" + course.getProf_id();
+		ResultSet prof;
+		try {
+			statement = jdbc_connection.prepareStatement(sql);
+			prof = statement.executeQuery(sql);
+			if(prof.next()) {
+
+				return new Professor(prof.getInt("ID"),
+						prof.getString("FIRSTNAME"),
+						prof.getString("LASTNAME"),
+						prof.getString("EMAIL"),
+						prof.getString("PASSWORD"));
+
+			}
+		} catch (SQLException e) { e.printStackTrace(); }
+
+		return null;
+	}
+	synchronized public void addSubmission(Submission sub) {
+		String sql = "INSERT INTO " + "SubmissionTable" +
+				" VALUES ( " + sub.getId() + ", '" + 
+				sub.getAssign_id() + "', '" + 
+				sub.getStudent_id() + "', '" + 
+				sub.getPath() + "', '" + 
+				sub.getTitle() + "', '" + 
+				sub.getGrade() + "', '" + 
+				sub.getComment() + "', '" + 
+				sub.getTimestamp() +
+				  "'); ";
+		try{
+			
+			statement = jdbc_connection.prepareStatement(sql);
+			statement.executeUpdate(sql);
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+	}
+	synchronized public ArrayList<Submission> getSubmissions(Assignment assign) {
+		String sql = "SELECT * FROM " + "SubmissionTable" + " WHERE ASSIGN_ID=" + assign.getId();
+        ResultSet submission;
+        ArrayList<Submission> submissions = new ArrayList<>();
+        try {
+            statement = jdbc_connection.prepareStatement(sql);
+            submission = statement.executeQuery(sql);
+            
+            while(submission.next()) {
+                submissions.add(new Submission(submission.getInt("ID"),
+						submission.getInt("ASSIGN_ID"), 
+						submission.getInt("STUDENT_ID"), 
+						submission.getString("PATH"),
+						submission.getString("TITLE"),
+						submission.getString("TIMESTAMP")
+						));	
+                
+            }
+            
+            return submissions;
+            
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;	
+	}
+	public void updateSubmissionGrade(Submission sub, int newGrade) {
+		String sql = "UPDATE " + "GradeTable" + " SET ASSIGNMENT_GRADE = '" +
+			 	newGrade + "' WHERE ASSIGN_ID = " + sub.getAssign_id() + " AND STUDENT_ID="
+			 	+ sub.getStudent_id();
+		try {
+				statement = jdbc_connection.prepareStatement(sql);
+				statement.executeUpdate(sql);
+				String sql2 = "UPDATE " + "SubmissionTable" + " SET SUBMISSION_GRADE = '" +
+					 	newGrade + "' WHERE ID = " + sub.getId() ;
+				statement = jdbc_connection.prepareStatement(sql2);
+				statement.executeUpdate(sql2);
+			}
+		catch(SQLException e)
+			{
+				e.printStackTrace();
+			}
+		
+	}
 }

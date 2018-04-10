@@ -69,8 +69,6 @@ public class UploadAssignment extends Page {
                 if(true){
                     File filetosend = fileChooser.getSelectedFile();
                     String fileinfo = filetosend.getName();
-                    System.out.println(fileinfo);
-                    System.out.println(filetosend.toPath());
                     //Start of code to send file, provided by ENSF409 instructor
                     long length = filetosend.length();
                     byte[] content = new byte[(int) length]; // Converting Long to Int
@@ -88,7 +86,6 @@ public class UploadAssignment extends Page {
                         f.printStackTrace();
                     }
                     String [] filesplit = fileinfo.split("\\.(?=[^\\.]+$)");
-                    System.out.println(filesplit[0]);
                     Random rand = new Random();
                     Assignment assignment = new Assignment(rand.nextInt(99999999)+1,course.getId(),filesplit[0],"path doesnt exist",dueDateInput.getText());
                     ServerMessage<Assignment> message = new ServerMessage<Assignment>(assignment, "Add");
@@ -105,7 +102,7 @@ public class UploadAssignment extends Page {
                     	enrollment = (StudentEnrollment) response.getObject();
                     	if(response.getObject() != null)
                     	{
-                    		Grade grade = new Grade(rand.nextInt(99999999)+1, 0, students.get(i).getId(), assignment.getId(), course.getId());
+                    		Grade grade = new Grade(rand.nextInt(99999999)+1, 0, students.get(i).getId(), assignment.getId(), course.getId(), assignment.getTitle());
                     		ServerMessage<Grade> message3 = new ServerMessage<Grade>(grade, "Add");
                     		professorGUI.getClient().communicate(message3);
                     	}

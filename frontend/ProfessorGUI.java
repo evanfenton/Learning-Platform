@@ -15,7 +15,7 @@ public class ProfessorGUI extends PageNavigator {
 
     public ProfessorGUI(User prof, Client client){
         super(null, client);
-        professor = new Professor(prof.getId(),prof.getFirstname(),prof.getLastname(),prof.getEmail(),prof.getType());
+        professor = new Professor(prof.getId(),prof.getFirstname(),prof.getLastname(),prof.getEmail(),prof.getLogininfo().getPassword());
         isProfessor = true;
         addPage(new ProfHome(this));
         showPage();

@@ -264,10 +264,143 @@ public class Worker implements Runnable {
 					Grade grade = (Grade) message.getObject();
 					database.addGrade(grade);
 					out.writeObject(null);
-					
-						
-					
 				}
+                /**
+                 * Send an email to all students in a course
+                 */
+                if(message.getObject().getClass().toString().contains("CourseEmail") && message.getMessage().equals("AllStudents"))
+                {
+                    CourseEmail courseEmail= (CourseEmail) message.getObject();
+                    ArrayList<Student> list = database.getCourseStudents(courseEmail.getCourse());
+                    
+                    ArrayList<String> recipients= new ArrayList<>();
+                    
+                    for(int i=0; i< list.size(); i++){
+                        recipients.add(list.get(i).getEmail());
+                    }
+                    
+                    Email email= courseEmail.getEmail();
+                    email.setTo(recipients);
+                    emailservice= new EmailHelper(email.getFrom(),email.getFromPassword());
+                    emailservice.sendEmail(email);
+                    out.writeObject(null);
+                }
+				/**
+				 * Send an email to professor of course
+				 */
+				if(message.getObject().getClass().toString().contains("CourseEmail") && message.getMessage().equals("ToProfessor"))
+				{
+					CourseEmail courseEmail= (CourseEmail) message.getObject();
+					Professor prof = database.getCoursesProf(courseEmail.getCourse());
+
+					ArrayList<String> recipients= new ArrayList<>();
+
+					recipients.add(prof.getEmail());
+
+					Email email= courseEmail.getEmail();
+					email.setTo(recipients);
+					emailservice= new EmailHelper(email.getFrom(),email.getFromPassword());
+					emailservice.sendEmail(email);
+					out.writeObject(null);
+				}
+                /**
+                 * Sends an arraylist of grades that correspond to sent student and profID
+                 */
+                if(message.getObject().getClass().toString().contains("Student") && message.getMessage().contains("PGetStudentGrades"))
+                {
+                	String[] split = message.getMessage().split(" ");
+                	int profid = Integer.parseInt(split[1]);
+                	ArrayList<Grade> list = database.getStudentGrades((Student) message.getObject(), profid);
+					ServerMessage<ArrayList<Grade>> returnmessage = new ServerMessage<ArrayList<Grade>>(list, "");
+					out.writeObject(returnmessage);
+                }
+               /**
+                * changes a specific grade.
+                */
+                if(message.getObject().getClass().toString().contains("Grade") && message.getMessage().contains("ChangeGrade"))
+                {
+                	String[] split = message.getMessage().split(" ");
+                	int newgrade = Integer.parseInt(split[1]);
+                	Grade grade = (Grade) message.getObject();
+                	database.updateGrade(grade.getId(), newgrade);
+                	out.writeObject(null);
+                }
+                /**
+                 * gets all of a students grades.
+                 */
+                if(message.getObject().getClass().toString().contains("Student") && message.getMessage().equals("GetGrades"))
+                {
+                	ArrayList<Grade> list = database.getStudentGrades((Student) message.getObject());
+                	ServerMessage<ArrayList<Grade>> returnmessage = new ServerMessage<ArrayList<Grade>>(list, "");
+					out.writeObject(returnmessage);
+                }
+                /**
+                 * gets prof for a certain assignment
+                 * BUGGY. Some reason the tostring for an assign object in all
+                 * tested instances is an EMAIL?
+                 */
+                if(message.getMessage().equals("GetProf"))
+                {
+                	Assignment assign = (Assignment) message.getObject();
+                	Professor prof = database.getProf(assign);
+                	ServerMessage<Professor> returnmessage = new ServerMessage<Professor>(prof,"");
+                	out.writeObject(returnmessage);
+                }
+                
+                if(message.getObject().getClass().toString().contains("Course") && message.getMessage().equals("Professor")){
+
+                	Course course= (Course) message.getObject();
+                	String profEmail= database.getCoursesProf(course).getEmail();
+                	ServerMessage<?> returnMessage= new ServerMessage<>(null, profEmail);
+                	out.writeObject(returnMessage);
+				}
+                if(message.getObject().getClass().toString().contains("Course") && message.getMessage().equals("ProfessorName")){
+                	Course course= (Course) message.getObject();
+                	String name = database.getCoursesProf(course).getFirstname() + " " + database.getCoursesProf(course).getLastname();
+                	ServerMessage<?> returnMessage= new ServerMessage<>(null, name);
+                	out.writeObject(returnMessage);
+                	
+                }
+				/**
+				 * For student uploading a submission
+				 */
+				if(message.getMessage().contains("Submission")&& message.getMessage().contains("Submissionstr-1splitter"))
+				{
+					byte[] input = (byte[]) message.getObject();
+					filemanager.uploadSubmission(input,message.getMessage());
+					out.writeObject(null);
+				}
+				/**
+				 * adds submission to database
+				 */
+				if(message.getObject().getClass().toString().contains("Submission") && message.getMessage().equals("Add"))
+				{
+					Submission sub = (Submission) message.getObject();
+					database.addSubmission(sub);
+					out.writeObject(null);
+				}
+				if(message.getObject().getClass().toString().contains("Assignment") && message.getMessage().equals("GetSubmissions"))
+				{
+					Assignment assign = (Assignment) message.getObject();
+					ArrayList<Submission> list = database.getSubmissions(assign);
+					ServerMessage<ArrayList<Submission>> returnMessage= new ServerMessage<>(list, "");
+					out.writeObject(returnMessage);
+				}
+				if(message.getObject().getClass().toString().contains("Submission") && message.getMessage().equals("GetStudentName"))
+				{
+					Submission sub = (Submission) message.getObject();
+					int stuid = sub.getStudent_id();
+					ServerMessage<?> returnmessage = new ServerMessage<>(null, database.getStudent(stuid).getFirstname() + " " + database.getStudent(stuid).getLastname());
+					out.writeObject(returnmessage);
+				}
+				if(message.getObject().getClass().toString().contains("Submission") && message.getMessage().contains("UpdateSubmissionGrade"))
+				{
+					Submission sub = (Submission) message.getObject();
+					String [] split = message.getMessage().split(" ");
+					database.updateSubmissionGrade(sub, Integer.parseInt(split[1]));
+					out.writeObject(null);
+				}
+                
 			}
 		} 
 				

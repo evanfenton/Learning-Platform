@@ -1,6 +1,7 @@
 package FrontEnd.pages;
 
 import SharedDataObjects.Course;
+import SharedDataObjects.Grade;
 import SharedDataObjects.ServerMessage;
 import SharedDataObjects.Student;
 import SharedDataObjects.StudentEnrollment;
@@ -8,26 +9,52 @@ import FrontEnd.ProfessorGUI;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Random;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
  * @author Evan Mcphee
  */
 public class StudentInfo extends Page {
-
+	
+	private Student student;
     /**
      * Creates new form StudentInfo
      */
     public StudentInfo(ProfessorGUI prof, Course course, Student student) {
         super(prof, true);
+        this.student = student;
         initComponents();
+        refreshGradeList();
+        int sum = 0;
+        int average;
+        int count = 0;;
+        for(int i = 0; i < listmodel.size(); i++)
+        {
+        	Grade grade = listmodel.getElementAt(i);
+        	sum += grade.getGrade();
+        	count++;
+        }
+        try
+        {
+        	average = sum/count;
+        }
+        catch(ArithmeticException e)
+        {
+        	average = 0;
+        }
         userLabel.setText("User: " + prof.getProfessor().getFirstname() + "  " + prof.getProfessor().getLastname());
         header.setText(student.getFirstname() + " " + student.getLastname() + " " + student.getId());
         fName.setText(student.getFirstname());
         lName.setText(student.getLastname());
         stuID.setText(Integer.toString(student.getId()));
-        cAVG.setText(("Calculate student average"));
+        cAVG.setText((""+average));
         StudentEnrollment enrollment = new StudentEnrollment(1,student.getId(), course.getId(),true);
         ServerMessage<StudentEnrollment> message = new ServerMessage<StudentEnrollment>(enrollment, "CheckEnroll");
         ServerMessage<?> enrolled = professorGUI.getClient().communicate(message);
@@ -122,7 +149,29 @@ public class StudentInfo extends Page {
                 }
             }
         });
+        /**
+         * list selection listener for the page.
+         */
+        gradesList.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                //get Student object from page and open StudentInfo with it
+                Grade grade = gradesList.getSelectedValue();
+                selGrade.setText("" +grade.getGrade());
+              
+            }
+        });
+        
+        changeGradeB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ServerMessage<Grade> message = new ServerMessage<Grade>(gradesList.getSelectedValue(), "ChangeGrade " + selGrade.getText());
+                professorGUI.getClient().communicate(message);
+            }
+        });
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -140,7 +189,6 @@ public class StudentInfo extends Page {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        gradesList = new javax.swing.JList<>();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -173,11 +221,6 @@ public class StudentInfo extends Page {
 
         jLabel6.setText("Current AVG:");
 
-        gradesList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane1.setViewportView(gradesList);
 
         jLabel7.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
@@ -356,7 +399,24 @@ public class StudentInfo extends Page {
     }// </editor-fold>
 
 
-
+    private void refreshGradeList()
+    {
+  	  try
+  	  {
+	    	  listmodel.clear();
+	    	  ServerMessage<Student> message = new ServerMessage<Student>(student, "PGetStudentGrades " + professorGUI.getProfessor().getId());
+	    	  ServerMessage<?> recieved = professorGUI.getClient().communicate(message);
+	    	  ArrayList<?> list = (ArrayList<?>) recieved.getObject();
+	    	  for(int i = 0; i < list.size(); i++)
+	    	  {
+	    		  listmodel.addElement((Grade) list.get(i));
+	    	  }
+  	  }
+  	  catch(NullPointerException k)
+  	  {
+  		  gradesList.clearSelection();
+  	  }
+    }
 
     // Variables declaration - do not modify
     private javax.swing.JTextField cAVG;
@@ -364,7 +424,8 @@ public class StudentInfo extends Page {
     private javax.swing.JTextField courseStatus;
     private javax.swing.JButton enrollB;
     private javax.swing.JTextField fName;
-    private javax.swing.JList<String> gradesList;
+    private DefaultListModel<Grade> listmodel = new DefaultListModel<>();
+    private JList<Grade> gradesList = new JList<>(listmodel);
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel header;
