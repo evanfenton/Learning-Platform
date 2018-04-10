@@ -20,6 +20,10 @@ public class Email implements Serializable{
 	 * who the email is from
 	 */
 	private String from;
+    /**
+     * email account password of sender
+     */
+    private String fromPassword;
 	/**
 	 * whom the email is to
 	 * can be more than 1 person.
@@ -40,9 +44,10 @@ public class Email implements Serializable{
 	 * @param subject
 	 * @param content
 	 */
-	public Email(String from, ArrayList<String> to, String subject, String content)
+	public Email(String from, String fPass, ArrayList<String> to, String subject, String content)
 	{
 		this.from = from;
+        fromPassword= fPass;
 		this.to = to;
 		this.content = content;
 		this.subject = subject;
@@ -74,5 +79,8 @@ public class Email implements Serializable{
 	public void setContent(String content) {
 		this.content = content;
 	}
+    public String getFromPassword(){
+        return fromPassword;
+    }
 	 
 }

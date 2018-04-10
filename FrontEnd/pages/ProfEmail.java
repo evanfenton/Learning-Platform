@@ -1,27 +1,30 @@
 package FrontEnd.pages;
 
 import FrontEnd.ProfessorGUI;
-import SharedDataObjects.Course;
-import SharedDataObjects.Email;
-import SharedDataObjects.ServerMessage;
-import SharedDataObjects.Student;
+import SharedDataObjects.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 /*
+* Basic email page used for testing email functionality
+* Should be switched out for a better version!
+* Also, there doesn't need to be separate prof and student
+* email gui's since there's just a subject and content
+*
 * @author Evan Fenton
 * */
 public class ProfEmail extends Page{
 
+    //components
     private JTextField subject;
     private JTextArea content;
     private JButton send, cancel;
     private JPanel buttons, text;
 
+    //constructor with action listeners
     public ProfEmail(ProfessorGUI profGUI, Course course){
 
         super(profGUI, true);
@@ -36,29 +39,33 @@ public class ProfEmail extends Page{
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                ServerMessage<Course> getStudents= new ServerMessage<>(course, "Students");
-                ArrayList<Student> students= (ArrayList<Student>) profGUI.getClient().communicate(getStudents).getObject();
-                ArrayList<String> recipients= new ArrayList<>();
+                Email email= new Email(profGUI.getProfessor().getEmail(),
+                        profGUI.getProfessor().getLogininfo().getPassword(),
+                        null, subject.getText(), content.getText());
 
-                for(int i=0; i< students.size(); i++){
-                    recipients.add(students.get(i).getEmail());
-                }
+                System.out.println(profGUI.getProfessor().getLogininfo().getPassword());
 
-                Email email= new Email(profGUI.getProfessor().getEmail(), recipients, subject.getText(), content.getText());
-                ServerMessage<Email> emailMessage= new ServerMessage<>(email, "Professor");
+                CourseEmail courseEmail= new CourseEmail(course, email);
+
+                ServerMessage<CourseEmail> emailMessage= new ServerMessage<>(courseEmail, "AllStudents");
                 profGUI.getClient().communicate(emailMessage);
+
+                setVisible(false);
+                dispose();
             }
         });
 
         cancel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                setVisible(false);
+                dispose();
             }
         });
 
     }
 
+    //initialize components
     private void initComponents(){
         subject= new JTextField();
 
@@ -75,6 +82,8 @@ public class ProfEmail extends Page{
         text.setLayout(new GridLayout(1,2));
     }
 
+    //add the components to their respective panels and
+    //finally, the panels to the frame
     private void addComponents(){
         text.add(new JLabel("Subject"));
         text.add(subject);

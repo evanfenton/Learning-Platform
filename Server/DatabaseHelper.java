@@ -538,8 +538,12 @@ public class DatabaseHelper {
 		
 	}
     
+    /**
+     * gets all students enrolled in a course
+     * @param course
+     */
     synchronized public ArrayList<Student> getCourseStudents(Course course) {
-        String sql = "SELECT * FROM " + "StudentEnrollmentTable" + " WHERE COURSE_ID=" + course.getId();
+        String sql = "SELECT * FROM StudentEnrollmentTable WHERE COURSE_ID= " + course.getId()+";";
         ResultSet students;
         ArrayList<Student> studentList = new ArrayList<>();
         try {
@@ -547,7 +551,7 @@ public class DatabaseHelper {
             students = statement.executeQuery(sql);
             
             while(students.next()) {
-                studentList.add(getStudent(students.getInt("STUDENT_ID")));
+                studentList.add(searchCourseByID(students.getInt("STUDENT_ID")));
             }
             
         }catch (SQLException e){
