@@ -296,6 +296,9 @@ public class Worker implements Runnable {
 					ServerMessage<ArrayList<Grade>> returnmessage = new ServerMessage<ArrayList<Grade>>(list, "");
 					out.writeObject(returnmessage);
                 }
+               /**
+                * changes a specific grade.
+                */
                 if(message.getObject().getClass().toString().contains("Grade") && message.getMessage().contains("ChangeGrade"))
                 {
                 	String[] split = message.getMessage().split(" ");
@@ -303,6 +306,27 @@ public class Worker implements Runnable {
                 	Grade grade = (Grade) message.getObject();
                 	database.updateGrade(grade.getId(), newgrade);
                 	out.writeObject(null);
+                }
+                /**
+                 * gets all of a students grades.
+                 */
+                if(message.getObject().getClass().toString().contains("Student") && message.getMessage().equals("GetGrades"))
+                {
+                	ArrayList<Grade> list = database.getStudentGrades((Student) message.getObject());
+                	ServerMessage<ArrayList<Grade>> returnmessage = new ServerMessage<ArrayList<Grade>>(list, "");
+					out.writeObject(returnmessage);
+                }
+                /**
+                 * gets prof for a certain assignment
+                 * BUGGY. Some reason the tostring for an assign object in all
+                 * tested instances is an EMAIL?
+                 */
+                if(message.getMessage().equals("GetProf"))
+                {
+                	Assignment assign = (Assignment) message.getObject();
+                	Professor prof = database.getProf(assign);
+                	ServerMessage<Professor> returnmessage = new ServerMessage<Professor>(prof,"");
+                	out.writeObject(returnmessage);
                 }
                 
 			}

@@ -41,7 +41,14 @@ public class StudentInfo extends Page {
         	sum += grade.getGrade();
         	count++;
         }
-        average = sum/count;
+        try
+        {
+        	average = sum/count;
+        }
+        catch(ArithmeticException e)
+        {
+        	average = 0;
+        }
         userLabel.setText("User: " + prof.getProfessor().getFirstname() + "  " + prof.getProfessor().getLastname());
         header.setText(student.getFirstname() + " " + student.getLastname() + " " + student.getId());
         fName.setText(student.getFirstname());

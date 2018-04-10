@@ -658,5 +658,56 @@ public class DatabaseHelper {
 				e.printStackTrace();
 			}
 	}
+	 synchronized public ArrayList<Grade> getStudentGrades(Student student) {
+			
+		  
+		    String sql = "SELECT * FROM " + "GradeTable" + " WHERE STUDENT_ID=" + student.getId();
+	        ResultSet grade;
+	        ArrayList<Grade> grades = new ArrayList<>();
+	        try {
+	            statement = jdbc_connection.prepareStatement(sql);
+	            grade = statement.executeQuery(sql);
+	            
+	            while(grade.next()) {
+	                grades.add(new Grade(grade.getInt("ID"),
+							grade.getInt("ASSIGNMENT_GRADE"), 
+							grade.getInt("STUDENT_ID"), 
+							grade.getInt("ASSIGN_ID"),
+							grade.getInt("COURSE_ID")
+							));	
+	                
+	            }
+	            
+	            return grades;
+	            
+	        }catch (SQLException e){
+	            e.printStackTrace();
+	        }
+	        return null;	
+	 }
+	synchronized public Professor getProf(Assignment assign) {
+		String sql = "SELECT * FROM " + "CourseTable" + " WHERE ID=" + assign.getCourse_id();
+		ResultSet course;
+		try {
+			statement = jdbc_connection.prepareStatement(sql);
+			course = statement.executeQuery(sql);
+			if(course.next())
+			{
+				String sql2 = "SELECT * FROM " + "UserTable" + " WHERE ID=" + course.getInt("PROF_ID");
+				ResultSet prof;
+				statement = jdbc_connection.prepareStatement(sql2);
+				prof = statement.executeQuery(sql2);
+				if(prof.next())
+				{
+					return new Professor(prof.getInt("ID"),
+	                        prof.getString("FIRSTNAME"),
+	                        prof.getString("LASTNAME"),
+	                        prof.getString("EMAIL"),
+	                        prof.getString("PASSWORD"));
+				}
+			}
+		} catch (SQLException e) { e.printStackTrace(); }
 	
+		return null;
+	}
 }
