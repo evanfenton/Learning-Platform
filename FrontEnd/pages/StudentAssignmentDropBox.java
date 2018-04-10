@@ -89,6 +89,7 @@ public class StudentAssignmentDropBox extends Page {
         fileChooser = new javax.swing.JFileChooser();
         uploadB = new javax.swing.JButton();
         closeDateInfo = new javax.swing.JTextField();
+        downloadB = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -112,9 +113,9 @@ public class StudentAssignmentDropBox extends Page {
                         .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(jPanel6Layout.createSequentialGroup()
-                                                .addGap(170, 170, 170)
+                                                .addGap(191, 191, 191)
                                                 .addComponent(courseHeader)
-                                                .addGap(39, 39, 39)
+                                                .addGap(18, 18, 18)
                                                 .addComponent(assignmentHeader))
                                         .addGroup(jPanel6Layout.createSequentialGroup()
                                                 .addContainerGap()
@@ -144,9 +145,11 @@ public class StudentAssignmentDropBox extends Page {
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel1.setText("DropBox Close Date:");
 
-        uploadB.setText("Upload");
+        uploadB.setText("Upload Assignment");
 
         closeDateInfo.setEditable(false);
+
+        downloadB.setText("Download Assignment");
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -158,34 +161,34 @@ public class StudentAssignmentDropBox extends Page {
                                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addComponent(logoutB))
                                         .addGroup(jPanel7Layout.createSequentialGroup()
-                                                .addGap(102, 102, 102)
-                                                .addComponent(jLabel1)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(closeDateInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(0, 0, Short.MAX_VALUE)))
+                                                .addContainerGap()
+                                                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabel1)
+                                                        .addComponent(closeDateInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(downloadB))
+                                                .addGap(50, 50, 50)
+                                                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                        .addComponent(uploadB)
+                                                        .addComponent(fileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addContainerGap())
-                        .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addGap(81, 81, 81)
-                                .addComponent(fileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(46, 46, 46)
-                                .addComponent(uploadB)
-                                .addContainerGap(54, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
                 jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addGap(35, 35, 35)
-                                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel1)
-                                        .addComponent(closeDateInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(jPanel7Layout.createSequentialGroup()
-                                                .addGap(18, 18, 18)
-                                                .addComponent(fileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addContainerGap()
+                                                .addComponent(fileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(jPanel7Layout.createSequentialGroup()
-                                                .addGap(153, 153, 153)
-                                                .addComponent(uploadB)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addGap(26, 26, 26)
+                                                .addComponent(jLabel1)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(closeDateInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(downloadB)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(uploadB)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
                                 .addComponent(logoutB)
                                 .addGap(10, 10, 10))
         );
@@ -214,6 +217,7 @@ public class StudentAssignmentDropBox extends Page {
     private javax.swing.JLabel assignmentHeader;
     private javax.swing.JTextField closeDateInfo;
     private javax.swing.JLabel courseHeader;
+    private javax.swing.JButton downloadB;
     private javax.swing.JFileChooser fileChooser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel6;

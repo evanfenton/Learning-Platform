@@ -37,9 +37,9 @@ public class StudentCourseHome extends Page{
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
@@ -49,7 +49,7 @@ public class StudentCourseHome extends Page{
             java.util.logging.Logger.getLogger(StudentCourseHome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(StudentCourseHome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(StudentCourseHome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
@@ -121,7 +121,18 @@ public class StudentCourseHome extends Page{
                 }
             }
         });
-      
+
+        /**
+         * opens up StudentAssignmentDropBox frame for the current course and closes this frame
+         */
+        dropboxB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                studentGUI.addPage(new StudentAssignmentDropBox(stu,assignmentList.getSelectedValue(),course));
+                studentGUI.showPage();
+                setVisible(false);
+            }
+        });
 
     }
 
@@ -359,34 +370,34 @@ public class StudentCourseHome extends Page{
     }
 
     // Variables declaration - do not modify
-    private javax.swing.JTextField assignCloseDate;
-    private javax.swing.JTextField assignGrade;
-    private javax.swing.JTextField assignName;
-    private javax.swing.JTextField assignStatus;
-    private javax.swing.JTextField assignUpDate;
+    private JTextField assignCloseDate;
+    private JTextField assignGrade;
+    private JTextField assignName;
+    private JTextField assignStatus;
+    private JTextField assignUpDate;
     private DefaultListModel<Assignment> listmodel = new DefaultListModel<>();
     private JList<Assignment> assignmentList = new JList<>(listmodel);
-    private javax.swing.JTextArea commentTextArea;
-    private javax.swing.JButton dropboxB;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel header;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JButton logoutB;
-    private javax.swing.JButton profMessageB;
-    private javax.swing.JTextField profNamefield;
-    private javax.swing.JButton returnB;
-    private javax.swing.JLabel userLabel;
+    private JTextArea commentTextArea;
+    private JButton dropboxB;
+    private JLabel jLabel1;
+    private JLabel jLabel10;
+    private JLabel jLabel11;
+    private JLabel jLabel2;
+    private JLabel header;
+    private JLabel jLabel4;
+    private JLabel jLabel5;
+    private JLabel jLabel6;
+    private JLabel jLabel7;
+    private JLabel jLabel8;
+    private JLabel jLabel9;
+    private JPanel jPanel1;
+    private JPanel jPanel2;
+    private JScrollPane jScrollPane1;
+    private JScrollPane jScrollPane2;
+    private JButton logoutB;
+    private JButton profMessageB;
+    private JTextField profNamefield;
+    private JButton returnB;
+    private JLabel userLabel;
     // End of variables declaration
 }
