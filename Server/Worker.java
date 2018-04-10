@@ -346,7 +346,7 @@ public class Worker implements Runnable {
                 	ServerMessage<Professor> returnmessage = new ServerMessage<Professor>(prof,"");
                 	out.writeObject(returnmessage);
                 }
-
+                
                 if(message.getObject().getClass().toString().contains("Course") && message.getMessage().equals("Professor")){
 
                 	Course course= (Course) message.getObject();
@@ -354,6 +354,13 @@ public class Worker implements Runnable {
                 	ServerMessage<?> returnMessage= new ServerMessage<>(null, profEmail);
                 	out.writeObject(returnMessage);
 				}
+                if(message.getObject().getClass().toString().contains("Course") && message.getMessage().equals("ProfessorName")){
+                	Course course= (Course) message.getObject();
+                	String name = database.getCoursesProf(course).getFirstname() + " " + database.getCoursesProf(course).getLastname();
+                	ServerMessage<?> returnMessage= new ServerMessage<>(null, name);
+                	out.writeObject(returnMessage);
+                	
+                }
                 
 			}
 		} 
