@@ -393,6 +393,13 @@ public class Worker implements Runnable {
 					ServerMessage<?> returnmessage = new ServerMessage<>(null, database.getStudent(stuid).getFirstname() + " " + database.getStudent(stuid).getLastname());
 					out.writeObject(returnmessage);
 				}
+				if(message.getObject().getClass().toString().contains("Submission") && message.getMessage().contains("UpdateSubmissionGrade"))
+				{
+					Submission sub = (Submission) message.getObject();
+					String [] split = message.getMessage().split(" ");
+					database.updateSubmissionGrade(sub, Integer.parseInt(split[1]));
+					out.writeObject(null);
+				}
                 
 			}
 		} 
