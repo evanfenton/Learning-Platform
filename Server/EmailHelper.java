@@ -70,7 +70,7 @@ public class EmailHelper {
     * */
     private Session newSession(){
 
-        return Session.getInstance(properties, new javax.mail.Authenticator(){
+        return Session.getInstance(properties, new Authenticator(){
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(senderEmail, senderPassword);
