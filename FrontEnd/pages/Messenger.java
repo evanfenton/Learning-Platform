@@ -1,7 +1,15 @@
 package FrontEnd.pages;
 
 import FrontEnd.ProfessorGUI;
+import FrontEnd.StudentGUI;
 import FrontEnd.components.PageNavigator;
+import SharedDataObjects.CourseEmail;
+import SharedDataObjects.Email;
+import SharedDataObjects.ServerMessage;
+import SharedDataObjects.Course;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  *
@@ -12,8 +20,8 @@ public class Messenger extends Page {
     /**
      * Creates new form Messenger
      */
-    public Messenger() {
-        super();
+    public Messenger(PageNavigator userGUI, Course course, boolean isProf) {
+        super(userGUI, isProf);
         initComponents();
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -37,6 +45,30 @@ public class Messenger extends Page {
             java.util.logging.Logger.getLogger(Messenger.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+
+        sendB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if(isProfessor){
+                    ProfessorGUI profGUI= (ProfessorGUI) userGUI;
+                    sendEmail(profGUI, course);
+                }
+                else{
+                    StudentGUI studentGUI= (StudentGUI) userGUI;
+                    sendEmail(studentGUI, course);
+                }
+
+                exitMessenger(course);
+            }
+        });
+
+        cancelB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                exitMessenger(course);
+            }
+        });
     }
 
     /**
@@ -197,7 +229,47 @@ public class Messenger extends Page {
         pack();
     }// </editor-fold>
 
+    private void sendEmail(ProfessorGUI profGUI, Course course){
 
+        Email email= new Email(profGUI.getProfessor().getEmail(),
+                profGUI.getProfessor().getLogininfo().getPassword(),
+                null, subjectText.getText(), bodyText.getText());
+
+        System.out.println(profGUI.getProfessor().getLogininfo().getPassword());
+
+        CourseEmail courseEmail= new CourseEmail(course, email);
+
+        ServerMessage<CourseEmail> emailMessage= new ServerMessage<>(courseEmail, "AllStudents");
+        profGUI.getClient().communicate(emailMessage);
+    }
+
+    private void sendEmail(StudentGUI studentGUI, Course course){
+
+        Email email= new Email(studentGUI.getStudent().getEmail(),
+                studentGUI.getStudent().getLogininfo().getPassword(),
+                null, subjectText.getText(), bodyText.getText());
+
+        System.out.println(studentGUI.getStudent().getLogininfo().getPassword());
+
+        CourseEmail courseEmail= new CourseEmail(course, email);
+
+        ServerMessage<CourseEmail> emailMessage= new ServerMessage<>(courseEmail, "ToProfessor");
+        studentGUI.getClient().communicate(emailMessage);
+    }
+
+    private void exitMessenger(Course course){
+
+        if(isProfessor){
+            Messenger.super.professorGUI.addPage(new ProfCourseHome(Messenger.super.professorGUI, course));
+            Messenger.super.professorGUI.showPage();
+        }
+        else{
+            Messenger.super.studentGUI.addPage(new StudentCourseHome(Messenger.super.studentGUI, course));
+            Messenger.super.studentGUI.showPage();
+        }
+
+        setVisible(false);
+    }
 
     // Variables declaration - do not modify
     private javax.swing.JTextArea bodyText;

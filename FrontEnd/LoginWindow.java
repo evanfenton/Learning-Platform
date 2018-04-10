@@ -28,10 +28,10 @@ public class LoginWindow extends JFrame{
      */
     public LoginWindow(){
         super();
-        client = new Client("localhost", 9091);
-        setLayout(new GridLayout(2,1));
+        client = new Client("localhost", 9090);
+        setLayout(new GridLayout(3,1));
         setTitle("Login");
-        setSize(500, 150);
+        setSize(300, 150);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         initializeButtons();

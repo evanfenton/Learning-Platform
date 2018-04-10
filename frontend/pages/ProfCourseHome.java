@@ -138,8 +138,9 @@ public class ProfCourseHome extends Page {
         messageB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                professorGUI.addPage( new ProfEmail(professorGUI, course));
+                professorGUI.addPage( new Messenger(professorGUI, course, true));
                 professorGUI.showPage();
+                setVisible(false);
             }
         });
 

@@ -36,7 +36,7 @@ public class DatabaseHelper {
 	private String 
 		connectionInfo = "jdbc:mysql://localhost:3306/LearningPlatform"  ,
 			  login          = "root",
-			  password       = "password";
+			  password       = "cappuccino7";
 	
 	/**
 	 * Gets the connection to the jdbc
@@ -708,6 +708,26 @@ public class DatabaseHelper {
 			}
 		} catch (SQLException e) { e.printStackTrace(); }
 	
+		return null;
+	}
+
+	synchronized public Professor getCoursesProf(Course course){
+		String sql = "SELECT * FROM " + "UserTable" + " WHERE ID=" + course.getProf_id();
+		ResultSet prof;
+		try {
+			statement = jdbc_connection.prepareStatement(sql);
+			prof = statement.executeQuery(sql);
+			if(prof.next()) {
+
+				return new Professor(prof.getInt("ID"),
+						prof.getString("FIRSTNAME"),
+						prof.getString("LASTNAME"),
+						prof.getString("EMAIL"),
+						prof.getString("PASSWORD"));
+
+			}
+		} catch (SQLException e) { e.printStackTrace(); }
+
 		return null;
 	}
 }

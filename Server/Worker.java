@@ -285,6 +285,24 @@ public class Worker implements Runnable {
                     emailservice.sendEmail(email);
                     out.writeObject(null);
                 }
+				/**
+				 * Send an email to professor of course
+				 */
+				if(message.getObject().getClass().toString().contains("CourseEmail") && message.getMessage().equals("ToProfessor"))
+				{
+					CourseEmail courseEmail= (CourseEmail) message.getObject();
+					Professor prof = database.getCoursesProf(courseEmail.getCourse());
+
+					ArrayList<String> recipients= new ArrayList<>();
+
+					recipients.add(prof.getEmail());
+
+					Email email= courseEmail.getEmail();
+					email.setTo(recipients);
+					emailservice= new EmailHelper(email.getFrom(),email.getFromPassword());
+					emailservice.sendEmail(email);
+					out.writeObject(null);
+				}
                 /**
                  * Sends an arraylist of grades that correspond to sent student and profID
                  */

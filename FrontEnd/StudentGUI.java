@@ -13,7 +13,7 @@ public class StudentGUI extends PageNavigator {
     public StudentGUI(User stud, Client client) {
 
         super(null, client);
-        student = new Student(stud.getId(), stud.getFirstname(), stud.getLastname(), stud.getEmail(), stud.getType());
+        student = new Student(stud.getId(), stud.getFirstname(), stud.getLastname(), stud.getEmail(), stud.getLogininfo().getPassword());
         isProfessor = false;
         addPage(new StudentHome(this));
         showPage();
