@@ -46,6 +46,15 @@ public class Messenger extends Page {
         }
         //</editor-fold>
 
+        if(isProfessor) {
+            fromField.setText(((ProfessorGUI) userGUI).getProfessor().getEmail());
+            toField.setText(course.getName()+ " "+ course.getId()+ " students");
+        }
+        else {
+            fromField.setText(((StudentGUI) userGUI).getStudent().getEmail());
+            toField.setText(userGUI.getClient().communicate(new ServerMessage<Course>(course, "Professor")).getMessage());
+        }
+
         sendB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
