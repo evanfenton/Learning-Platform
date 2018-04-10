@@ -376,8 +376,7 @@ public class Worker implements Runnable {
 				if(message.getObject().getClass().toString().contains("Submission") && message.getMessage().equals("Add"))
 				{
 					Submission sub = (Submission) message.getObject();
-					System.out.println("sub received");
-					//database.addSubmission(sub);
+					database.addSubmission(sub);
 					out.writeObject(null);
 				}
                 

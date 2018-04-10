@@ -730,4 +730,26 @@ public class DatabaseHelper {
 
 		return null;
 	}
+	public void addSubmission(Submission sub) {
+		String sql = "INSERT INTO " + "SubmissionTable" +
+				" VALUES ( " + sub.getId() + ", '" + 
+				sub.getAssign_id() + "', '" + 
+				sub.getStudent_id() + "', '" + 
+				sub.getPath() + "', '" + 
+				sub.getTitle() + "', '" + 
+				sub.getGrade() + "', '" + 
+				sub.getComment() + "', '" + 
+				sub.getTimestamp() +
+				  "'); ";
+		try{
+			
+			statement = jdbc_connection.prepareStatement(sql);
+			statement.executeUpdate(sql);
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+	}
 }
