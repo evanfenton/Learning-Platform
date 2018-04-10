@@ -560,21 +560,22 @@ public class DatabaseHelper {
         return studentList;
     }
     
-    synchronized private Student getStudent(int id){
+    synchronized public Student getStudent(int id){
         
         String sql= "SELECT * FROM UserTable WHERE ID= "+id;
         ResultSet student;
         
         try{
             statement= jdbc_connection.prepareStatement(sql);
-            student= statement.executeQuery();
-            
+            student= statement.executeQuery(sql);
+            if(student.next())
+            {
             return new Student(student.getInt("ID"),
-                               student.getString("PASSWORD"),
+            				   student.getString("FIRSTNAME"),
+                               student.getString("LASTNAME"),           
                                student.getString("EMAIL"),
-                               student.getString("FIRSTNAME"),
-                               student.getString("LASTNAME"));
-            
+                               student.getString("PASSWORD"));
+            }
             
         }catch (SQLException e){
             e.printStackTrace();
@@ -730,7 +731,7 @@ public class DatabaseHelper {
 
 		return null;
 	}
-	public void addSubmission(Submission sub) {
+	synchronized public void addSubmission(Submission sub) {
 		String sql = "INSERT INTO " + "SubmissionTable" +
 				" VALUES ( " + sub.getId() + ", '" + 
 				sub.getAssign_id() + "', '" + 
@@ -751,5 +752,31 @@ public class DatabaseHelper {
 			e.printStackTrace();
 		}
 		
+	}
+	synchronized public ArrayList<Submission> getSubmissions(Assignment assign) {
+		String sql = "SELECT * FROM " + "SubmissionTable" + " WHERE ASSIGN_ID=" + assign.getId();
+        ResultSet submission;
+        ArrayList<Submission> submissions = new ArrayList<>();
+        try {
+            statement = jdbc_connection.prepareStatement(sql);
+            submission = statement.executeQuery(sql);
+            
+            while(submission.next()) {
+                submissions.add(new Submission(submission.getInt("ID"),
+						submission.getInt("ASSIGN_ID"), 
+						submission.getInt("STUDENT_ID"), 
+						submission.getString("PATH"),
+						submission.getString("TITLE"),
+						submission.getString("TIMESTAMP")
+						));	
+                
+            }
+            
+            return submissions;
+            
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;	
 	}
 }

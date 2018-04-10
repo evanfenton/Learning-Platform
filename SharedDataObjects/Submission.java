@@ -68,6 +68,10 @@ public class Submission implements Serializable {
 		this.timestamp = timestamp;
 		grade = 0;
 	}
+	public String toString()
+	{
+		return title;
+	}
 	/**
 	 * getters and setters for the class
 	 */

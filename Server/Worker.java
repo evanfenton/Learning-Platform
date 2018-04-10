@@ -364,7 +364,7 @@ public class Worker implements Runnable {
 				/**
 				 * For student uploading a submission
 				 */
-				if(message.getMessage().contains("Submission"))
+				if(message.getMessage().contains("Submission")&& message.getMessage().contains("Submissionstr-1splitter"))
 				{
 					byte[] input = (byte[]) message.getObject();
 					filemanager.uploadSubmission(input,message.getMessage());
@@ -378,6 +378,20 @@ public class Worker implements Runnable {
 					Submission sub = (Submission) message.getObject();
 					database.addSubmission(sub);
 					out.writeObject(null);
+				}
+				if(message.getObject().getClass().toString().contains("Assignment") && message.getMessage().equals("GetSubmissions"))
+				{
+					Assignment assign = (Assignment) message.getObject();
+					ArrayList<Submission> list = database.getSubmissions(assign);
+					ServerMessage<ArrayList<Submission>> returnMessage= new ServerMessage<>(list, "");
+					out.writeObject(returnMessage);
+				}
+				if(message.getObject().getClass().toString().contains("Submission") && message.getMessage().equals("GetStudentName"))
+				{
+					Submission sub = (Submission) message.getObject();
+					int stuid = sub.getStudent_id();
+					ServerMessage<?> returnmessage = new ServerMessage<>(null, database.getStudent(stuid).getFirstname() + " " + database.getStudent(stuid).getLastname());
+					out.writeObject(returnmessage);
 				}
                 
 			}
