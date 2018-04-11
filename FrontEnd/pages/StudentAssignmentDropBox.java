@@ -101,7 +101,7 @@ public class StudentAssignmentDropBox extends Page {
                     }
                     String[] filesplit = fileinfo.split("\\.(?=[^\\.]+$)");
                     Random rand = new Random();
-                    Submission sub = new Submission(rand.nextInt(99999999) + 1, assignment.getId(), stu.getStudent().getId(), "Server Path", filesplit[0], "timestamp");
+                    Submission sub = new Submission(rand.nextInt(99999999) + 1, assignment.getId(), stu.getStudent().getId(), "."+filesplit[1], filesplit[0], "timestamp");
                     ServerMessage<Submission> message = new ServerMessage<>(sub, "Add");
                     studentGUI.getClient().communicate(message);
                     studentGUI.addPage(new StudentCourseHome(stu,course));

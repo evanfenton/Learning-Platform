@@ -408,6 +408,11 @@ public class Worker implements Runnable {
 					database.updateSubmissionGrade(sub, Integer.parseInt(split[1]));
 					out.writeObject(null);
 				}
+				if(message.getObject().getClass().toString().contains("Submission") && message.getMessage().equals("DownloadSubmission"))
+				{
+					ServerMessage returnmessage = filemanager.getSubmissionFile((Submission) message.getObject());
+					out.writeObject(returnmessage);
+				}
                 
 			}
 		} 

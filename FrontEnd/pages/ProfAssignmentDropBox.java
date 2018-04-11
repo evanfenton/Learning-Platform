@@ -9,9 +9,14 @@ import SharedDataObjects.Submission;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
 import javax.swing.JList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -105,7 +110,45 @@ public class ProfAssignmentDropBox extends Page{
                 }
             }
         });
+        
+        downladB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                        int option = fileChooser.showDialog(null,
+                                "Select Directory");
+                        File f = null;
+                        if (option == JFileChooser.APPROVE_OPTION) {
+                            f = fileChooser.getSelectedFile();
+                            // if the user accidently click a file, then select the parent directory.
+                            if (!f.isDirectory()) {
+                                f = f.getParentFile();
+                            }
+                        }
+                        String path = f.getAbsolutePath();
+                        ServerMessage<Submission> message = new ServerMessage<Submission>(subList.getSelectedValue(),"DownloadSubmission");
+                        ServerMessage<?> returnedmessage = getNavigator().getClient().communicate(message);
+                        File newFile = new File(path.concat("//"+returnedmessage.getMessage()));
+                        System.out.println(newFile.getAbsolutePath());
+                    try{
+                        if(!newFile.exists())
+                            newFile.createNewFile();
+                        FileOutputStream writer = new FileOutputStream(newFile);
+                        BufferedOutputStream bos = new BufferedOutputStream(writer);
+                        bos.write((byte []) returnedmessage.getObject());
+                        bos.close();
+                    } catch(IOException g){
+                        g.printStackTrace();
+                    }
+                professorGUI.addPage(new ProfCourseHome(prof,course));
+                professorGUI.showPage();
+                setVisible(false);
+                }
+
+        });
     }
+    
+    
     
 
     /**
@@ -116,7 +159,7 @@ public class ProfAssignmentDropBox extends Page{
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
-
+    	fileChooser = new javax.swing.JFileChooser();
         jPanel6 = new javax.swing.JPanel();
         returnB = new javax.swing.JButton();
         userHeader = new javax.swing.JLabel();
@@ -344,7 +387,7 @@ public class ProfAssignmentDropBox extends Page{
     private javax.swing.JTextField stuNameInfo;
     private DefaultListModel<Submission> listmodel = new DefaultListModel<>();
     private JList<Submission> subList = new JList<>(listmodel);
-
+    private javax.swing.JFileChooser fileChooser;
     private javax.swing.JButton updateGradeB;
     private javax.swing.JLabel userHeader;
     // End of variables declaration
