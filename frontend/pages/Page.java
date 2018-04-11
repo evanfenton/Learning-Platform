@@ -9,10 +9,26 @@ import FrontEnd.components.PageNavigator;
  */
 public class Page extends javax.swing.JFrame{
 
+    /**
+     * boolean flag to keep track of user privileges
+     */
     protected boolean isProfessor;
+
+    /**
+     * professor user that is accessing pages
+     */
     protected ProfessorGUI professorGUI;
+
+    /**
+     * Student user that is accessing pages
+     */
     protected StudentGUI studentGUI;
 
+    /**
+     * Ctor, used by the pages in the program to get access to PageNavigator and Client
+     * @param user  Current user
+     * @param isProf    boolean flag for if the user has prof or student privileges
+     */
     public Page(PageNavigator user, boolean isProf){
         isProfessor= isProf;
         if(isProfessor) {
@@ -26,10 +42,19 @@ public class Page extends javax.swing.JFrame{
 
     }
 
+    /**
+     * Default Ctor
+     */
     public Page(){
-        //default ctor for inheritance for now
+        isProfessor = false;
+        professorGUI = null;
+        studentGUI = null;
     }
 
+    /**
+     * Returns the current user page navigator
+     * @return
+     */
     public PageNavigator getNavigator() {
         if(isProfessor) {
             return professorGUI;

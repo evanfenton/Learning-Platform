@@ -8,23 +8,34 @@ import javax.mail.internet.MimeMessage;
 import java.util.ArrayList;
 import java.util.Properties;
 
-/*
+/**
 * used to send emails between users
 * but can only send from gmail accounts
 * @author Evan Fenton
-* */
+*
+ */
 public class EmailHelper {
 
-    //email of person sending message (gmail account)
+    /**
+     *  email of person sending message (gmail account)
+     */
     private String senderEmail;
 
-    //email account password
+    /**
+     * email account password
+     */
     private String senderPassword;
 
-    //properties of the email
+    /**
+     * properties of the email
+     */
     private Properties properties;
 
-    //constructor
+    /**
+     * Ctor that sets up the information needed to send emails
+     * @param sEmail
+     * @param sPassword
+     */
     public EmailHelper(String sEmail, String sPassword){
         senderEmail= sEmail;
         senderPassword= sPassword;
@@ -37,10 +48,10 @@ public class EmailHelper {
 
     }
 
-    /*
+    /**
     * send an email
     * @param email to send
-    * */
+    */
     public void sendEmail(Email email){
 
         try{
@@ -64,7 +75,7 @@ public class EmailHelper {
 
     }
 
-    /*
+    /**
     * authenticates the sender's gmail account, and creates a new session
     * @return session created
     * */

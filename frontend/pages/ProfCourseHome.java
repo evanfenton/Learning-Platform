@@ -55,7 +55,6 @@ public class ProfCourseHome extends Page {
 
         /**
          * Logout button event handler, just terminates the program when pressed
-         * we should probably make it have an are you sure popup just in case
          */
         logoutB.addActionListener(new ActionListener() {
             @Override
@@ -121,7 +120,7 @@ public class ProfCourseHome extends Page {
         });
 
         /**
-         * Open ProfCourseAssignment frame
+         * Open ProfCourseAssignment frame and close this frame
          */
         assignmentsB.addActionListener(new ActionListener() {
             @Override
@@ -133,7 +132,7 @@ public class ProfCourseHome extends Page {
         });
         
         /**
-         * Open a new message frame
+         * Open a new message frame and close this frame
          */
         messageB.addActionListener(new ActionListener() {
             @Override
@@ -359,6 +358,9 @@ public class ProfCourseHome extends Page {
         pack();
     }// </editor-fold>
 
+    /**
+     * refreshes the student list with current info from the database
+     */
     private void refreshStudentList()
     {
   	  try
