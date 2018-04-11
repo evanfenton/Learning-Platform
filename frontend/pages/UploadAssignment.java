@@ -87,7 +87,7 @@ public class UploadAssignment extends Page {
                     }
                     String [] filesplit = fileinfo.split("\\.(?=[^\\.]+$)");
                     Random rand = new Random();
-                    Assignment assignment = new Assignment(rand.nextInt(99999999)+1,course.getId(),filesplit[0],"path doesnt exist",dueDateInput.getText());
+                    Assignment assignment = new Assignment(rand.nextInt(99999999)+1,course.getId(),filesplit[0],"." + filesplit[1],dueDateInput.getText());
                     ServerMessage<Assignment> message = new ServerMessage<Assignment>(assignment, "Add");
                     professorGUI.getClient().communicate(message);
 					ServerMessage<Student> mes = new ServerMessage<Student>(new Student(), "GetAllStudents");

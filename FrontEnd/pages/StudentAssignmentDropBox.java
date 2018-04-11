@@ -6,6 +6,7 @@ import SharedDataObjects.Course;
 import SharedDataObjects.ServerMessage;
 import SharedDataObjects.Submission;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -84,7 +85,7 @@ public class StudentAssignmentDropBox extends Page {
                     //Start of code to send file, provided by ENSF409 instructor
                     long length = filetosend.length();
                     byte[] content = new byte[(int) length]; // Converting Long to Int
-                    System.out.println("test");
+
 
                     try {
                         FileInputStream fis = new FileInputStream(filetosend);
@@ -100,7 +101,7 @@ public class StudentAssignmentDropBox extends Page {
                     }
                     String[] filesplit = fileinfo.split("\\.(?=[^\\.]+$)");
                     Random rand = new Random();
-                    Submission sub = new Submission(rand.nextInt(99999999) + 1, assignment.getId(), stu.getStudent().getId(), "Server Path", filesplit[0], "timestamp");
+                    Submission sub = new Submission(rand.nextInt(99999999) + 1, assignment.getId(), stu.getStudent().getId(), "."+filesplit[1], filesplit[0], "timestamp");
                     ServerMessage<Submission> message = new ServerMessage<>(sub, "Add");
                     studentGUI.getClient().communicate(message);
                     studentGUI.addPage(new StudentCourseHome(stu,course));
@@ -108,6 +109,46 @@ public class StudentAssignmentDropBox extends Page {
                     setVisible(false);
                 }
             }
+        });
+
+        /**
+         * Downloads the file to the directory chosen in the filechooser popup after the button press
+         * NOTE: we need assignment objects to be stored with the path as their extension
+         */
+        downloadB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                        int option = fileChooser.showDialog(null,
+                                "Select Directory");
+                        File f = null;
+                        if (option == JFileChooser.APPROVE_OPTION) {
+                            f = fileChooser.getSelectedFile();
+                            // if the user accidently click a file, then select the parent directory.
+                            if (!f.isDirectory()) {
+                                f = f.getParentFile();
+                            }
+                        }
+                        String path = f.getAbsolutePath();
+                        ServerMessage message = new ServerMessage(assignment,"DownloadAssignment");
+                        ServerMessage returnedmessage = getNavigator().getClient().communicate(message);
+                        File newFile = new File(path.concat("//"+returnedmessage.getMessage()));
+                        System.out.println(newFile.getAbsolutePath());
+                    try{
+                        if(!newFile.exists())
+                            newFile.createNewFile();
+                        FileOutputStream writer = new FileOutputStream(newFile);
+                        BufferedOutputStream bos = new BufferedOutputStream(writer);
+                        bos.write((byte []) returnedmessage.getObject());
+                        bos.close();
+                    } catch(IOException g){
+                        g.printStackTrace();
+                    }
+                studentGUI.addPage(new StudentCourseHome(stu,course));
+                studentGUI.showPage();
+                setVisible(false);
+                }
+
         });
     }
 

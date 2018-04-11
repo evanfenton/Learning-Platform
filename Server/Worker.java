@@ -1,5 +1,6 @@
 package Server;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -371,6 +372,13 @@ public class Worker implements Runnable {
 					out.writeObject(null);
 				}
 				/**
+				 * For students to download assignments
+				 */
+				if(message.getMessage().contains("DownloadAssignment")){
+					ServerMessage returnmessage = filemanager.getAssignmentFile((Assignment) message.getObject());
+					out.writeObject(returnmessage);
+				}
+				/**
 				 * adds submission to database
 				 */
 				if(message.getObject().getClass().toString().contains("Submission") && message.getMessage().equals("Add"))
@@ -399,6 +407,11 @@ public class Worker implements Runnable {
 					String [] split = message.getMessage().split(" ");
 					database.updateSubmissionGrade(sub, Integer.parseInt(split[1]));
 					out.writeObject(null);
+				}
+				if(message.getObject().getClass().toString().contains("Submission") && message.getMessage().equals("DownloadSubmission"))
+				{
+					ServerMessage returnmessage = filemanager.getSubmissionFile((Submission) message.getObject());
+					out.writeObject(returnmessage);
 				}
                 
 			}
