@@ -469,6 +469,12 @@ public class DatabaseHelper {
 		}
 		
 	}
+
+	/**
+	 * Returns an array list of the courses matching the passed student arguments courses
+	 * @param stud
+	 * @return
+	 */
 	synchronized public ArrayList<Course> getStudentsCourses(Student stud) {
 		String sql = "SELECT * FROM " + "StudentEnrollmentTable" + " WHERE STUDENT_ID=" + stud.getId();
 		ResultSet enrollments;
@@ -495,6 +501,12 @@ public class DatabaseHelper {
 		} catch (SQLException e) { e.printStackTrace(); }
 		return null;
 	}
+
+	/**
+	 * Returns an array list of assignments matching with the course argument passed to it
+	 * @param course
+	 * @return
+	 */
 	synchronized public ArrayList<Assignment> getActiveCourseAssignments(Course course) {
 		String sql = "SELECT * FROM " + "AssignmentTable" + " WHERE COURSE_ID=" + course.getId() + " AND ACTIVE= b'1'";
 		ResultSet assignment;
@@ -518,6 +530,11 @@ public class DatabaseHelper {
 	
 		return null;
 	}
+
+	/**
+	 * Adds the passed argument Grade to the sql database
+	 * @param grade
+	 */
 	synchronized public void addGrade(Grade grade) {
 		
 		String sql = "INSERT INTO " + "GradeTable" +
@@ -559,8 +576,13 @@ public class DatabaseHelper {
         }
         return studentList;
     }
-    
-    synchronized public Student getStudent(int id){
+
+	/**
+	 * returns the student matching the passed argument id
+	 * @param id
+	 * @return
+	 */
+	synchronized public Student getStudent(int id){
         
         String sql= "SELECT * FROM UserTable WHERE ID= "+id;
         ResultSet student;
@@ -583,7 +605,14 @@ public class DatabaseHelper {
         
         return null;
     }
-    synchronized public ArrayList<Grade> getStudentGrades(Student student, int profid) {
+
+	/**
+	 * returns the grades matching with the student and prof arguments passed to it
+	 * @param student
+	 * @param profid
+	 * @return
+	 */
+	synchronized public ArrayList<Grade> getStudentGrades(Student student, int profid) {
 		
 	    ArrayList<Course> courses = getProfsCourses(new Professor(profid,"","","",""));
 	    String sql = "SELECT * FROM " + "GradeTable" + " WHERE STUDENT_ID=" + student.getId();
@@ -620,6 +649,12 @@ public class DatabaseHelper {
             e.printStackTrace();
         }
         return null;	}
+
+	/**
+	 * returns the assignment matching with the passed id argument
+	 * @param id
+	 * @return
+	 */
 	synchronized public Assignment getAssignment(int id) {
 		String sql = "SELECT * FROM " + "AssignmentTable" + " WHERE ID=" + id;
 		ResultSet assignment;
@@ -640,6 +675,7 @@ public class DatabaseHelper {
 	
 		return null;
 	}
+
 	/**
 	 * updates grade with id to new grade
 	 * @param id
@@ -659,6 +695,12 @@ public class DatabaseHelper {
 				e.printStackTrace();
 			}
 	}
+
+	/**
+	 * Returns the grades matching with the student argument passed to it
+	 * @param student
+	 * @return
+	 */
 	 synchronized public ArrayList<Grade> getStudentGrades(Student student) {
 			
 		  
@@ -686,6 +728,12 @@ public class DatabaseHelper {
 	        }
 	        return null;	
 	 }
+
+	/**
+	 * returns the prof who created the assignment passed to it
+	 * @param assign
+	 * @return
+	 */
 	synchronized public Professor getProf(Assignment assign) {
 		String sql = "SELECT * FROM " + "CourseTable" + " WHERE ID=" + assign.getCourse_id();
 		ResultSet course;
@@ -712,6 +760,11 @@ public class DatabaseHelper {
 		return null;
 	}
 
+	/**
+	 * returns the prof who created the course argument passed to it
+	 * @param course
+	 * @return
+	 */
 	synchronized public Professor getCoursesProf(Course course){
 		String sql = "SELECT * FROM " + "UserTable" + " WHERE ID=" + course.getProf_id();
 		ResultSet prof;
@@ -731,6 +784,11 @@ public class DatabaseHelper {
 
 		return null;
 	}
+
+	/**
+	 * adds the argument submission to the sql database
+	 * @param sub
+	 */
 	synchronized public void addSubmission(Submission sub) {
 		String sql = "INSERT INTO " + "SubmissionTable" +
 				" VALUES ( " + sub.getId() + ", '" + 
@@ -753,6 +811,12 @@ public class DatabaseHelper {
 		}
 		
 	}
+
+	/**
+	 * returns an array list of the submissions matching with the argument Assignment passed to it
+	 * @param assign
+	 * @return
+	 */
 	synchronized public ArrayList<Submission> getSubmissions(Assignment assign) {
 		String sql = "SELECT * FROM " + "SubmissionTable" + " WHERE ASSIGN_ID=" + assign.getId();
         ResultSet submission;
@@ -779,6 +843,12 @@ public class DatabaseHelper {
         }
         return null;	
 	}
+
+	/**
+	 * updates the grade for the assignment in the database that the submission argument matches with
+	 * @param sub
+	 * @param newGrade
+	 */
 	public void updateSubmissionGrade(Submission sub, int newGrade) {
 		String sql = "UPDATE " + "GradeTable" + " SET ASSIGNMENT_GRADE = '" +
 			 	newGrade + "' WHERE ASSIGN_ID = " + sub.getAssign_id() + " AND STUDENT_ID="

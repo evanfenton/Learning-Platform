@@ -22,11 +22,15 @@ public class FileHelper {
 	 */
     private String serverfilepath;
 
+    /**
+     * Ctor, sets the path on the server for all files
+     */
     public FileHelper(){
         serverfilepath = "D:\\Users\\Gibson\\Desktop\\Project\\"; //Change this to your file path used to save server files
     }
+
     /**
-     * uploads file to server
+     * writes assignment file to serverfilepath location
      * @param input
      * @param message
      */
@@ -50,6 +54,11 @@ public class FileHelper {
         }
     }
 
+    /**
+     * writes submission file to serverfilepath location
+     * @param input
+     * @param message
+     */
     public void uploadSubmission(byte [] input, String message){
         String [] splitmessage = message.split("str-1splitter");
         System.out.println(splitmessage[0]);
@@ -70,6 +79,11 @@ public class FileHelper {
         }
     }
 
+    /**
+     * gets the file associated with the passed Assignment argument and returns it inside a server message
+     * @param assignment
+     * @return
+     */
     public ServerMessage getAssignmentFile(Assignment assignment){
         File filetosend = new File(serverfilepath+assignment.getTitle()+assignment.getPath());
         long length = filetosend.length();
@@ -86,6 +100,12 @@ public class FileHelper {
         ServerMessage returnmessage = new ServerMessage(content,assignment.getTitle()+assignment.getPath());
         return returnmessage;
     }
+
+    /**
+     * gets the file associated with the passed Submission argument and returns it in a server message
+     * @param submission
+     * @return
+     */
 	public ServerMessage getSubmissionFile(Submission submission) {
 		File filetosend = new File(serverfilepath+ submission.getTitle()+submission.getPath());
         long length = filetosend.length();

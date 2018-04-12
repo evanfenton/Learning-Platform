@@ -337,8 +337,6 @@ public class Worker implements Runnable {
                 }
                 /**
                  * gets prof for a certain assignment
-                 * BUGGY. Some reason the tostring for an assign object in all
-                 * tested instances is an EMAIL?
                  */
                 if(message.getMessage().equals("GetProf"))
                 {
@@ -347,14 +345,19 @@ public class Worker implements Runnable {
                 	ServerMessage<Professor> returnmessage = new ServerMessage<Professor>(prof,"");
                 	out.writeObject(returnmessage);
                 }
-                
-                if(message.getObject().getClass().toString().contains("Course") && message.getMessage().equals("Professor")){
+				/**
+				 * gets the email for the prof of the course sent to it
+				 */
+				if(message.getObject().getClass().toString().contains("Course") && message.getMessage().equals("Professor")){
 
                 	Course course= (Course) message.getObject();
                 	String profEmail= database.getCoursesProf(course).getEmail();
                 	ServerMessage<?> returnMessage= new ServerMessage<>(null, profEmail);
                 	out.writeObject(returnMessage);
 				}
+				/**
+				 * gets the name of the prof of the course sent to it
+				 */
                 if(message.getObject().getClass().toString().contains("Course") && message.getMessage().equals("ProfessorName")){
                 	Course course= (Course) message.getObject();
                 	String name = database.getCoursesProf(course).getFirstname() + " " + database.getCoursesProf(course).getLastname();
@@ -387,6 +390,9 @@ public class Worker implements Runnable {
 					database.addSubmission(sub);
 					out.writeObject(null);
 				}
+				/**
+				 * gets an array list of submissions for the assignment passed to it
+				 */
 				if(message.getObject().getClass().toString().contains("Assignment") && message.getMessage().equals("GetSubmissions"))
 				{
 					Assignment assign = (Assignment) message.getObject();
@@ -394,6 +400,9 @@ public class Worker implements Runnable {
 					ServerMessage<ArrayList<Submission>> returnMessage= new ServerMessage<>(list, "");
 					out.writeObject(returnMessage);
 				}
+				/**
+				 * gets the name of the student who created the submission passed to it
+				 */
 				if(message.getObject().getClass().toString().contains("Submission") && message.getMessage().equals("GetStudentName"))
 				{
 					Submission sub = (Submission) message.getObject();
@@ -401,6 +410,9 @@ public class Worker implements Runnable {
 					ServerMessage<?> returnmessage = new ServerMessage<>(null, database.getStudent(stuid).getFirstname() + " " + database.getStudent(stuid).getLastname());
 					out.writeObject(returnmessage);
 				}
+				/**
+				 * updates the grade for the submission passed to it
+				 */
 				if(message.getObject().getClass().toString().contains("Submission") && message.getMessage().contains("UpdateSubmissionGrade"))
 				{
 					Submission sub = (Submission) message.getObject();
@@ -408,6 +420,9 @@ public class Worker implements Runnable {
 					database.updateSubmissionGrade(sub, Integer.parseInt(split[1]));
 					out.writeObject(null);
 				}
+				/**
+				 * sends the file associated with the submission passed to it back to the client
+				 */
 				if(message.getObject().getClass().toString().contains("Submission") && message.getMessage().equals("DownloadSubmission"))
 				{
 					ServerMessage returnmessage = filemanager.getSubmissionFile((Submission) message.getObject());

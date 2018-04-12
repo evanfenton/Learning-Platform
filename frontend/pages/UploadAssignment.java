@@ -22,7 +22,7 @@ import java.util.Random;
 public class UploadAssignment extends Page {
 
     /**
-     * Creates new form UploadAssignment
+     * Creates new frame UploadAssignment
      */
     public UploadAssignment(ProfessorGUI prof, Course course) {
         super(prof, true);
@@ -63,6 +63,10 @@ public class UploadAssignment extends Page {
             }
         });
 
+        /**
+         * Creates a new assignment and sends the selected file to the server and an object of type assignment with the due date stored with it
+         * also sets the grade for all students in that course to 0 for the current assignment effectively creating a grade object for it.
+         */
         createB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
