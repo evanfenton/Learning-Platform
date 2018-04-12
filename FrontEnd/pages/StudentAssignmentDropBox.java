@@ -49,7 +49,7 @@ public class StudentAssignmentDropBox extends Page {
         courseHeader.setText(course.getName() + " " + course.getId());
         assignmentHeader.setText(assignment.getTitle());
         closeDateInfo.setText(assignment.getDue_date());
-        userHeader.setText(stu.getStudent().getFirstname() + "  " + stu.getStudent().getLastname());
+        userHeader.setText(stu.getStudent().getFirstname() + " " + stu.getStudent().getLastname());
 
         /**
          * logout button event handler, just terminates the program

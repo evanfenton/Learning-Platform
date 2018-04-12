@@ -4,6 +4,7 @@ import SharedDataObjects.Course;
 import SharedDataObjects.ServerMessage;
 import FrontEnd.ProfessorGUI;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -21,7 +22,7 @@ public class AddCourse extends Page {
         initComponents();
         profIDInput.setEditable(false);
         profIDInput.setText("" +prof.getProfessor().getId());
-        userLabel.setText("User: " + prof.getProfessor().getFirstname() + "  " + prof.getProfessor().getLastname());
+        userLabel.setText("User:  " + prof.getProfessor().getFirstname() + " " + prof.getProfessor().getLastname());
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -65,13 +66,24 @@ public class AddCourse extends Page {
             public void actionPerformed(ActionEvent e) {
                 String cname = courseNameInput.getText();
                 String cnumb = courseNumberInput.getText();
-                String profID = profIDInput.getText();
-                Course course = new Course(Integer.parseInt(cnumb),Integer.parseInt(profID),cname);
-                ServerMessage<Course> message = new ServerMessage<Course>(course, "Add");
-                professorGUI.getClient().communicate(message);
-                professorGUI.addPage(new ProfHome(AddCourse.super.professorGUI));
-                professorGUI.showPage();
-                setVisible(false);
+
+                if(checkCourseID(cnumb)) {
+                    if (checkCourseName(cname)) {
+                        String profID = profIDInput.getText();
+                        Course course = new Course(Integer.parseInt(cnumb), Integer.parseInt(profID), cname);
+                        ServerMessage<Course> message = new ServerMessage<Course>(course, "Add");
+                        professorGUI.getClient().communicate(message);
+                        professorGUI.addPage(new ProfHome(AddCourse.super.professorGUI));
+                        professorGUI.showPage();
+                        setVisible(false);
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(new JPanel(), "Please enter a course name in the format: AAAA");
+                    }
+                }
+                else{
+                    JOptionPane.showMessageDialog(new JPanel(), "Please enter a course number in the format: 111");
+                }
             }
         });
     }
@@ -208,6 +220,38 @@ public class AddCourse extends Page {
 
         pack();
     }// </editor-fold>
+
+    /**
+     * check that the given course id is valid
+     */
+    private boolean checkCourseID(String id){
+
+        if(id.length()!=3){ return false; }
+
+        for(int i=0; i<id.length(); i++){
+            if(id.charAt(i) > '9' || id.charAt(i) < '0'){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * check that the given course name is valid
+     */
+    private boolean checkCourseName(String name){
+
+        if(name.length()!=4){ return false; }
+
+        for(int i=0; i<name.length(); i++){
+            if(name.charAt(i) > 'Z' || name.charAt(i) < 'A'){
+                return false;
+            }
+        }
+
+        return true;
+    }
 
 
     // Variables declaration - do not modify

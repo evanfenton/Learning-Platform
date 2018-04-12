@@ -9,8 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
+import javax.swing.*;
 
 
 /**
@@ -49,7 +48,7 @@ public class StudentHome extends Page {
             java.util.logging.Logger.getLogger(StudentHome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        userLabel.setText("User: " + studentGUI.getStudent().getFirstname()  + "  " + studentGUI.getStudent().getLastname());
+        userLabel.setText("User:  " + studentGUI.getStudent().getFirstname()  + " " + studentGUI.getStudent().getLastname());
 
         /**
          * logout button event handler, just terminates the program
@@ -65,11 +64,15 @@ public class StudentHome extends Page {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Course course = courseList.getSelectedValue();
-                getNavigator().addPage(new StudentCourseHome(stu,course));
-                getNavigator().showPage();
 
-        
-                setVisible(false);
+                if(course != null) {
+                    getNavigator().addPage(new StudentCourseHome(stu, course));
+                    getNavigator().showPage();
+                    setVisible(false);
+                }
+                else{
+                    JOptionPane.showMessageDialog(new JPanel(), "No Course Selected");
+                }
             }
         });
 

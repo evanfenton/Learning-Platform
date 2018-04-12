@@ -27,7 +27,7 @@ public class UploadAssignment extends Page {
     public UploadAssignment(ProfessorGUI prof, Course course) {
         super(prof, true);
         initComponents();
-        userLabel.setText("User: " + prof.getProfessor().getFirstname() + "  " + prof.getProfessor().getLastname());
+        userLabel.setText("User:  " + prof.getProfessor().getFirstname() + " " + prof.getProfessor().getLastname());
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -70,57 +70,82 @@ public class UploadAssignment extends Page {
         createB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(true){
+                if(checkDate()){
                     File filetosend = fileChooser.getSelectedFile();
-                    String fileinfo = filetosend.getName();
-                    //Start of code to send file, provided by ENSF409 instructor
-                    long length = filetosend.length();
-                    byte[] content = new byte[(int) length]; // Converting Long to Int
-                    try {
-                        FileInputStream fis = new FileInputStream(filetosend);
-                        BufferedInputStream bos = new BufferedInputStream(fis);
-                        bos.read(content, 0, (int)length);
+
+                    if(filetosend != null) {
+                        String fileinfo = filetosend.getName();
+                        //Start of code to send file, provided by ENSF409 instructor
+                        long length = filetosend.length();
+                        byte[] content = new byte[(int) length]; // Converting Long to Int
+                        try {
+                            FileInputStream fis = new FileInputStream(filetosend);
+                            BufferedInputStream bos = new BufferedInputStream(fis);
+                            bos.read(content, 0, (int) length);
+                            @SuppressWarnings("unchecked")
+                            ServerMessage message = new ServerMessage(content, "FileUploadstr-1splitter".concat(fileinfo));
+                            getNavigator().getClient().communicate(message);
+
+                        } catch (FileNotFoundException g) {
+                            g.printStackTrace();
+                        } catch (IOException f) {
+                            f.printStackTrace();
+                        }
+                        String[] filesplit = fileinfo.split("\\.(?=[^\\.]+$)");
+                        Random rand = new Random();
+                        Assignment assignment = new Assignment(rand.nextInt(99999999) + 1, course.getId(), filesplit[0], "." + filesplit[1], dueDateInput.getText());
+                        ServerMessage<Assignment> message = new ServerMessage<Assignment>(assignment, "Add");
+                        professorGUI.getClient().communicate(message);
+                        ServerMessage<Student> mes = new ServerMessage<Student>(new Student(), "GetAllStudents");
+                        ServerMessage<?> returned = professorGUI.getClient().communicate(mes);
                         @SuppressWarnings("unchecked")
-                        ServerMessage message = new ServerMessage(content,"FileUploadstr-1splitter".concat(fileinfo));
-                        getNavigator().getClient().communicate(message);
-                        
-                    } catch (FileNotFoundException g) {
-                        g.printStackTrace();
-                    } catch(IOException f){
-                        f.printStackTrace();
+                        ArrayList<Student> students = (ArrayList<Student>) returned.getObject();
+                        for (int i = 0; i < students.size(); i++) {
+                            StudentEnrollment enrollment = new StudentEnrollment(1, students.get(i).getId(), course.getId(), true);
+                            ServerMessage<StudentEnrollment> message2 = new ServerMessage<StudentEnrollment>(enrollment, "CheckEnroll");
+                            ServerMessage<?> response = professorGUI.getClient().communicate(message2);
+                            enrollment = (StudentEnrollment) response.getObject();
+                            if (response.getObject() != null) {
+                                Grade grade = new Grade(rand.nextInt(99999999) + 1, 0, students.get(i).getId(), assignment.getId(), course.getId(), assignment.getTitle());
+                                ServerMessage<Grade> message3 = new ServerMessage<Grade>(grade, "Add");
+                                professorGUI.getClient().communicate(message3);
+                            }
+                        }
+                        professorGUI.addPage(new ProfCourseAssignments(professorGUI, course));
+                        professorGUI.showPage();
+                        setVisible(false);
                     }
-                    String [] filesplit = fileinfo.split("\\.(?=[^\\.]+$)");
-                    Random rand = new Random();
-                    Assignment assignment = new Assignment(rand.nextInt(99999999)+1,course.getId(),filesplit[0],"." + filesplit[1],dueDateInput.getText());
-                    ServerMessage<Assignment> message = new ServerMessage<Assignment>(assignment, "Add");
-                    professorGUI.getClient().communicate(message);
-					ServerMessage<Student> mes = new ServerMessage<Student>(new Student(), "GetAllStudents");
-                    ServerMessage<?> returned = professorGUI.getClient().communicate(mes);
-                    @SuppressWarnings("unchecked")
-					ArrayList <Student> students = (ArrayList<Student>) returned.getObject();
-                    for(int i = 0; i < students.size(); i++)
-                    {
-                    	StudentEnrollment enrollment = new StudentEnrollment(1, students.get(i).getId(), course.getId(), true);
-                    	ServerMessage<StudentEnrollment> message2 = new ServerMessage<StudentEnrollment>(enrollment, "CheckEnroll");
-                    	ServerMessage<?> response = professorGUI.getClient().communicate(message2);
-                    	enrollment = (StudentEnrollment) response.getObject();
-                    	if(response.getObject() != null)
-                    	{
-                    		Grade grade = new Grade(rand.nextInt(99999999)+1, 0, students.get(i).getId(), assignment.getId(), course.getId(), assignment.getTitle());
-                    		ServerMessage<Grade> message3 = new ServerMessage<Grade>(grade, "Add");
-                    		professorGUI.getClient().communicate(message3);
-                    	}
+                    else{
+                        JOptionPane.showMessageDialog(new JPanel(), "No file selected");
                     }
-                    professorGUI.addPage(new ProfCourseAssignments(professorGUI,course));
-                    professorGUI.showPage();
-                    setVisible(false);
+                }
+                else{
+                    JOptionPane.showMessageDialog(new JPanel(), "The due date must be valid and of the format:\n"+
+                            "MM/DD/YYYY");
+                    dueDateInput.setText("");
                 }
             }
         });
 
+    }
 
+    /**
+     * check that the given date is valid
+     */
+    private boolean checkDate(){
+        String date= dueDateInput.getText();
 
+        if(date == null){ return false; }
 
+        String [] dateFields= date.split("/");
+
+        if(dateFields[0].compareTo("12")>0 || dateFields[0].compareTo("1")<0){ return false; }
+
+        else if(dateFields[1].compareTo("31")>0 || dateFields[1].compareTo("1")<0){ return false; }
+
+        else if(dateFields[2].compareTo("2018") != 0){ return false; }
+
+        else { return true; }
     }
 
     /**

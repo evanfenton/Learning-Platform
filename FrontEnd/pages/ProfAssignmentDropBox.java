@@ -15,9 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JFileChooser;
-import javax.swing.JList;
+import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -63,7 +61,7 @@ public class ProfAssignmentDropBox extends Page{
         //</editor-fold>
         courseHeader.setText(course.getName() + " " + course.getId());
         assignmentHeader.setText(assignment.getTitle());
-        userHeader.setText("User: " + prof.getProfessor().getFirstname() + "  " + prof.getProfessor().getLastname());
+        userHeader.setText("User:  " + prof.getProfessor().getFirstname() + " " + prof.getProfessor().getLastname());
 
         /**
          * Logout button event handler, just terminates the program when pressed
@@ -93,8 +91,16 @@ public class ProfAssignmentDropBox extends Page{
         updateGradeB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ServerMessage<Submission> message = new ServerMessage<Submission>(subList.getSelectedValue(), "UpdateSubmissionGrade " + gradeField.getText());
-                professorGUI.getClient().communicate(message);
+                String grade= gradeField.getText();
+
+                if(checkGrade(grade)) {
+                    ServerMessage<Submission> message = new ServerMessage<Submission>(subList.getSelectedValue(), "UpdateSubmissionGrade " + grade);
+                    professorGUI.getClient().communicate(message);
+                }
+                else{
+                    JOptionPane.showMessageDialog(new JPanel(), "Invalid grade input");
+                    gradeField.setText("");
+                }
             }
         });
 
@@ -123,7 +129,7 @@ public class ProfAssignmentDropBox extends Page{
         /**
          * Downloads the currently selected submission from server
          */
-        downladB.addActionListener(new ActionListener() {
+        downloadB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -181,7 +187,7 @@ public class ProfAssignmentDropBox extends Page{
         jLabel1 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        downladB = new javax.swing.JButton();
+        downloadB = new javax.swing.JButton();
         logoutB = new javax.swing.JButton();
         stuNameInfo = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
@@ -248,7 +254,7 @@ public class ProfAssignmentDropBox extends Page{
 
         jLabel11.setText("Grade:");
 
-        downladB.setText("Download Submission");
+        downloadB.setText("Download Submission");
 
         logoutB.setText("Logout");
 
@@ -284,7 +290,7 @@ public class ProfAssignmentDropBox extends Page{
                                                                                                 .addContainerGap(20, Short.MAX_VALUE))
                                                                                         .addGroup(jPanel7Layout.createSequentialGroup()
                                                                                                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                                                                        .addComponent(downladB)
+                                                                                                        .addComponent(downloadB)
                                                                                                         .addComponent(stuIDInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                                                 .addGap(0, 20, Short.MAX_VALUE))))
                                                                         .addGroup(jPanel7Layout.createSequentialGroup()
@@ -327,7 +333,7 @@ public class ProfAssignmentDropBox extends Page{
                                                         .addComponent(stuIDInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(jLabel13))
                                                 .addGap(18, 18, 18)
-                                                .addComponent(downladB)
+                                                .addComponent(downloadB)
                                                 .addGap(80, 80, 80)
                                                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                         .addComponent(jLabel11)
@@ -381,10 +387,26 @@ public class ProfAssignmentDropBox extends Page{
   	  }
     }
 
+    /**
+     * check that the given grade is valid
+     */
+    private boolean checkGrade(String grade){
+
+        if(grade == null || grade.length()>3){ return false; }
+
+        if(grade.length()==3 && (grade.charAt(0)!= '1' || grade.charAt(1)!='0' || grade.charAt(2)!= '0')){ return false; }
+
+        for(int i=0; i< grade.length(); i++){
+            if(grade.charAt(i)>'9' || grade.charAt(i)<'0'){ return false; }
+        }
+
+        return true;
+    }
+
     // Variables declaration - do not modify
     private javax.swing.JLabel assignmentHeader;
     private javax.swing.JLabel courseHeader;
-    private javax.swing.JButton downladB;
+    private javax.swing.JButton downloadB;
     private javax.swing.JTextField gradeField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

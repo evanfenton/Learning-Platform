@@ -25,7 +25,7 @@ import java.util.ArrayList;
           super(prof, true);
           initComponents();
           refreshCourseList();
-          userLabel.setText("User: " + prof.getProfessor().getFirstname() + "  " + prof.getProfessor().getLastname());
+          userLabel.setText("User:  " + prof.getProfessor().getFirstname() + " " + prof.getProfessor().getLastname());
           /* Set the Nimbus look and feel */
           //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
           /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -88,11 +88,24 @@ import java.util.ArrayList;
           activateCourseB.addActionListener(new ActionListener() {
               @Override
               public void actionPerformed(ActionEvent e) {
-            	  Course selectedcourse = courseList.getSelectedValue();
-            	  courseList.clearSelection();
-            	  ServerMessage<Course> message = new ServerMessage<Course>(selectedcourse, "Activate"); 
-            	  professorGUI.getClient().communicate(message);
-            	  refreshCourseList();
+                  if(courseList.getSelectedValue() != null) {
+
+                      Course selectedcourse = courseList.getSelectedValue();
+
+                      if(!selectedcourse.isActive()) {
+                          courseList.clearSelection();
+                          ServerMessage<Course> message = new ServerMessage<Course>(selectedcourse, "Activate");
+                          professorGUI.getClient().communicate(message);
+                          refreshCourseList();
+                      }
+                      else{
+                          JOptionPane.showMessageDialog(new JPanel(), "The course is already active");
+                      }
+                  }
+                  else
+                  {
+                      JOptionPane.showMessageDialog(new JPanel(), "No Course Selected");
+                  }
               }
           });
 
@@ -102,11 +115,23 @@ import java.util.ArrayList;
           deActivateCourseB.addActionListener(new ActionListener() {
               @Override
               public void actionPerformed(ActionEvent e) {
-            	  Course selectedcourse = courseList.getSelectedValue();
-            	  courseList.clearSelection();
-            	  ServerMessage<Course> message = new ServerMessage<Course>(selectedcourse, "Deactivate"); 
-            	  professorGUI.getClient().communicate(message);
-            	  refreshCourseList();
+                  if(courseList.getSelectedValue() != null) {
+                      Course selectedcourse = courseList.getSelectedValue();
+
+                      if(selectedcourse.isActive()) {
+                          courseList.clearSelection();
+                          ServerMessage<Course> message = new ServerMessage<Course>(selectedcourse, "Deactivate");
+                          professorGUI.getClient().communicate(message);
+                          refreshCourseList();
+                      }
+                      else{
+                          JOptionPane.showMessageDialog(new JPanel(), "The course is already inactive");
+                      }
+                  }
+            	  else
+                  {
+                      JOptionPane.showMessageDialog(new JPanel(), "No Course Selected");
+                  }
               }
           });
 
@@ -128,11 +153,17 @@ import java.util.ArrayList;
           removeCourseB.addActionListener(new ActionListener() {
               @Override
               public void actionPerformed(ActionEvent e) {
-            	  Course selectedcourse = courseList.getSelectedValue();
-            	  courseList.clearSelection();
-            	  ServerMessage<Course> message = new ServerMessage<Course>(selectedcourse, "Delete");
-            	  professorGUI.getClient().communicate(message);
-            	  refreshCourseList();
+                  if(courseList.getSelectedValue() != null) {
+                      Course selectedcourse = courseList.getSelectedValue();
+                      courseList.clearSelection();
+                      ServerMessage<Course> message = new ServerMessage<Course>(selectedcourse, "Delete");
+                      professorGUI.getClient().communicate(message);
+                      refreshCourseList();
+                  }
+                  else
+                  {
+                      JOptionPane.showMessageDialog(new JPanel(), "No Course Selected");
+                  }
               }
           });
 

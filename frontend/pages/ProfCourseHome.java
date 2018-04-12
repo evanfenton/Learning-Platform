@@ -6,8 +6,8 @@ import SharedDataObjects.ServerMessage;
 import SharedDataObjects.Student;
 import FrontEnd.ProfessorGUI;
 import SharedDataObjects.Student;
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
+
+import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
@@ -28,7 +28,7 @@ public class ProfCourseHome extends Page {
         initComponents();
         refreshStudentList();
         courseNameHeader.setText(course.getName() + " " + course.getId());
-        userLabel.setText("User: " + prof.getProfessor().getFirstname() + "  " + prof.getProfessor().getLastname());
+        userLabel.setText("User:  " + prof.getProfessor().getFirstname() + " " + prof.getProfessor().getLastname());
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -52,6 +52,7 @@ public class ProfCourseHome extends Page {
         }
         //</editor-fold>
         gradesB.setVisible(false);
+        searchDropDown.setSelectedIndex(0);
 
         /**
          * Logout button event handler, just terminates the program when pressed
@@ -83,26 +84,36 @@ public class ProfCourseHome extends Page {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String searchstr = searchParameter.getText();
-                if(searchDropDown.getSelectedItem().equals("Student ID")){
-                	int searchint = Integer.parseInt(searchstr);
-                    // search db for student id
-                    ServerMessage<Course> message= new ServerMessage<>(course, "SearchID "+ searchint);
-                    ServerMessage<?> returned= ProfCourseHome.super.getNavigator().getClient().communicate(message);
-                    listmodel.clear();
-                    listmodel.addElement((Student) returned.getObject());
-                    
-                } else {
-                    //search db for student last name
-                    String lastName = searchstr;
-                    ServerMessage<Course> message= new ServerMessage<>(course, "SearchName "+ lastName);
-                    ServerMessage<?> returned= ProfCourseHome.super.getNavigator().getClient().communicate(message);
-                    ArrayList<?> students = (ArrayList<?>) returned.getObject();
-                    listmodel.clear();
-                    
-                    for(int i = 0; i < students.size(); i++)
-                    {
-                    	listmodel.addElement((Student) students.get(i));
+
+                if(!searchstr.equals("") && !searchDropDown.getSelectedItem().equals("Choose one...")) {
+                    if (searchDropDown.getSelectedItem().equals("Student ID")) {
+                        if(checkId(searchstr)) {
+                            int searchint = Integer.parseInt(searchstr);
+                            // search db for student id
+                            ServerMessage<Course> message = new ServerMessage<>(course, "SearchID " + searchint);
+                            ServerMessage<?> returned = ProfCourseHome.super.getNavigator().getClient().communicate(message);
+                            listmodel.clear();
+                            listmodel.addElement((Student) returned.getObject());
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(new JPanel(), "Please enter a valid ID number.");
+                        }
+
+                    } else {
+                        //search db for student last name
+                        String lastName = searchstr;
+                        ServerMessage<Course> message = new ServerMessage<>(course, "SearchName " + lastName);
+                        ServerMessage<?> returned = ProfCourseHome.super.getNavigator().getClient().communicate(message);
+                        ArrayList<?> students = (ArrayList<?>) returned.getObject();
+                        listmodel.clear();
+
+                        for (int i = 0; i < students.size(); i++) {
+                            listmodel.addElement((Student) students.get(i));
+                        }
                     }
+                }
+                else{
+                    JOptionPane.showMessageDialog(new JPanel(), "Please select which parameter to search by\nand enter a name or ID number.");
                 }
             }
 
@@ -115,6 +126,7 @@ public class ProfCourseHome extends Page {
             @Override
             public void actionPerformed(ActionEvent e) {
                 searchParameter.setText(null);
+                searchDropDown.setSelectedIndex(0);
                 refreshStudentList();
             }
         });
@@ -242,7 +254,7 @@ public class ProfCourseHome extends Page {
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel4.setText("Search Students:");
 
-        searchDropDown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Student ID", "Last Name"}));
+        searchDropDown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Choose one...","Student ID", "Last Name"}));
 
 
         jLabel5.setText("Search By:");
@@ -378,6 +390,20 @@ public class ProfCourseHome extends Page {
   	  {
   		  studentsList.clearSelection();
   	  }
+    }
+
+    /**
+     * check that the given string can be an id number
+     */
+    private boolean checkId(String searchFor){
+
+        for(int i=0; i< searchFor.length(); i++){
+            if(searchFor.charAt(i) > '9' || searchFor.charAt(i) < '0'){
+                return false;
+            }
+        }
+
+        return true;
     }
     
     // Variables declaration - do not modify

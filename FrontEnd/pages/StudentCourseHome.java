@@ -56,7 +56,7 @@ public class StudentCourseHome extends Page{
             java.util.logging.Logger.getLogger(StudentCourseHome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        userLabel.setText("User: " + studentGUI.getStudent().getFirstname()  + "  " + studentGUI.getStudent().getLastname());
+        userLabel.setText("User:  " + studentGUI.getStudent().getFirstname()  + " " + studentGUI.getStudent().getLastname());
         header.setText(course.getName() + " " + course.getId());
 
         /**
@@ -131,9 +131,16 @@ public class StudentCourseHome extends Page{
         dropboxB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                studentGUI.addPage(new StudentAssignmentDropBox(stu,assignmentList.getSelectedValue(),course));
-                studentGUI.showPage();
-                setVisible(false);
+                Assignment assign= assignmentList.getSelectedValue();
+
+                if(assign != null) {
+                    studentGUI.addPage(new StudentAssignmentDropBox(stu, assign, course));
+                    studentGUI.showPage();
+                    setVisible(false);
+                }
+                else{
+                    JOptionPane.showMessageDialog(new JPanel(), "No Assignment Selected");
+                }
             }
         });
 

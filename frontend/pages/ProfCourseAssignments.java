@@ -27,7 +27,7 @@ public class ProfCourseAssignments extends Page {
         super(prof, true);
         initComponents();
         header.setText(course.getName() + " " + course.getId() + " - Assignments");
-        userLabel.setText("User: " + prof.getProfessor().getFirstname() + "  " + prof.getProfessor().getLastname());
+        userLabel.setText("User:  " + prof.getProfessor().getFirstname() + " " + prof.getProfessor().getLastname());
         this.course = course;
         refreshAssignmentList();
         /* Set the Nimbus look and feel */
@@ -74,7 +74,7 @@ public class ProfCourseAssignments extends Page {
                     professorGUI.showPage();
                     setVisible(false);
                 } else{
-                    JOptionPane.showMessageDialog(new JFrame(), "Please Select an assignment");
+                    JOptionPane.showMessageDialog(new JFrame(), "No Assignment Selected");
                 }
             }
         });
@@ -97,9 +97,22 @@ public class ProfCourseAssignments extends Page {
         activateAssignmentB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	ServerMessage<Assignment> message = new ServerMessage<Assignment>(assignmentList.getSelectedValue(), "Activate");
-            	professorGUI.getClient().communicate(message);
-            	refreshAssignmentList();
+
+                if(assignmentList.getSelectedValue() != null) {
+
+                    if(assignStatus.getText().equals("Inactive")) {
+                        ServerMessage<Assignment> message = new ServerMessage<Assignment>(assignmentList.getSelectedValue(), "Activate");
+                        professorGUI.getClient().communicate(message);
+                        refreshAssignmentList();
+                        assignStatus.setText("Active");
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(new JPanel(), "The assignment is already active");
+                    }
+                }
+                else{
+                    JOptionPane.showMessageDialog(new JPanel(), "No Assignment Selected");
+                }
             }
         });
 
@@ -109,9 +122,21 @@ public class ProfCourseAssignments extends Page {
         deActivateAssignmentB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	ServerMessage<Assignment> message = new ServerMessage<Assignment>(assignmentList.getSelectedValue(), "Deactivate");
-            	professorGUI.getClient().communicate(message);
-            	refreshAssignmentList();
+                if(assignmentList.getSelectedValue() != null) {
+
+                    if(assignStatus.getText().equals("Active")) {
+                        ServerMessage<Assignment> message = new ServerMessage<Assignment>(assignmentList.getSelectedValue(), "Deactivate");
+                        professorGUI.getClient().communicate(message);
+                        refreshAssignmentList();
+                        assignStatus.setText("Inactive");
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(new JPanel(), "The assignment is already inactive");
+                    }
+                }
+                else{
+                    JOptionPane.showMessageDialog(new JPanel(), "No Assignment Selected");
+                }
             }
         });
 
@@ -144,9 +169,14 @@ public class ProfCourseAssignments extends Page {
         removeAssignB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	ServerMessage<Assignment> message = new ServerMessage<Assignment>(assignmentList.getSelectedValue(), "Delete");
-            	professorGUI.getClient().communicate(message);
-            	refreshAssignmentList();
+                if(assignmentList.getSelectedValue() != null) {
+                    ServerMessage<Assignment> message = new ServerMessage<Assignment>(assignmentList.getSelectedValue(), "Delete");
+                    professorGUI.getClient().communicate(message);
+                    refreshAssignmentList();
+                }
+                else {
+                    JOptionPane.showMessageDialog(new JPanel(), "No Assignment Selected");
+                }
             }
         });
 

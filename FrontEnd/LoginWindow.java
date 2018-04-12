@@ -1,15 +1,13 @@
 package FrontEnd;
 
 import javax.swing.*;
-
 import SharedDataObjects.LoginInfo;
 import SharedDataObjects.ServerMessage;
 import SharedDataObjects.User;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
+
 
 /**
  * @author Evan Fenton
@@ -21,7 +19,7 @@ public class LoginWindow extends JFrame{
     private JPasswordField passwordInput;
     private JLabel idLabel, passwordLabel, messageLabel;
     private JButton loginButton, cancelButton;
-    private JPanel fields, buttons;
+    private JPanel field1, field2, buttons, message;
     private Client client;
     /**
      * Creates the login window with client connection.
@@ -29,9 +27,10 @@ public class LoginWindow extends JFrame{
     public LoginWindow(){
         super();
         client = new Client("localhost", 9090);
-        setLayout(new GridLayout(3,1));
-        setTitle("Login");
-        setSize(300, 150);
+        setLayout(new GridLayout(4,1));
+        setTitle("User Login");
+        setSize(430, 200);
+
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         initializeButtons();
@@ -44,21 +43,22 @@ public class LoginWindow extends JFrame{
 
         fillPanels();
 
-        add(messageLabel);
-        add(fields);
+        add(message);
+        add(field1);
+        add(field2);
         add(buttons);
 
         setLocationRelativeTo(null);
 
         setVisible(true);
-        
-        
     }
 
     private void initializeLabels(){
         idLabel= new JLabel("User ID");
         passwordLabel= new JLabel("Password");
         messageLabel= new JLabel("Please login with a valid Gmail account");
+
+        messageLabel.setFont(new Font(null, Font.BOLD, 14 ));
 
         idLabel.setHorizontalAlignment(SwingConstants.CENTER);
         passwordLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -76,23 +76,38 @@ public class LoginWindow extends JFrame{
     }
 
     private void initializePanels(){
-        fields= new JPanel();
+        field1= new JPanel();
+        field2= new JPanel();
         buttons= new JPanel();
+        message= new JPanel();
 
-        fields.setLayout(new GridLayout(2,2));
+        field1.setBackground(Color.orange);
+        field2.setBackground(Color.orange);
+        buttons.setBackground(Color.orange);
+        message.setBackground(Color.pink);
+
+        field1.setLayout(new GridLayout(1,2));
+        field2.setLayout(new GridLayout(1,2));
         buttons.setLayout(new FlowLayout());
+
+        field1.setBorder(BorderFactory.createMatteBorder(10,10,5,10, Color.orange));
+        field2.setBorder(BorderFactory.createMatteBorder(7,10,8,10, Color.orange));
+        message.setBorder(BorderFactory.createMatteBorder(0,0,5,0, UIManager.getColor("Panel.background")));
     }
 
     private void fillPanels(){
-        fields.add(idLabel);
-        fields.add(userIDInput);
-        fields.add(passwordLabel);
-        fields.add(passwordInput);
+        field1.add(idLabel);
+        field1.add(userIDInput);
+        field2.add(passwordLabel);
+        field2.add(passwordInput);
 
         buttons.add(loginButton);
         buttons.add(cancelButton);
+
+        message.add(messageLabel);
     }
 
+    // register the two button listeners
     private void registerListeners(ActionListener loginListener, ActionListener cancelListener){
         loginButton.addActionListener(loginListener);
         cancelButton.addActionListener(cancelListener);

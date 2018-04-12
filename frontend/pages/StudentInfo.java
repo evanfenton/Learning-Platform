@@ -12,8 +12,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
+import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -52,7 +51,7 @@ public class StudentInfo extends Page {
         {
         	average = 0;
         }
-        userLabel.setText("User: " + prof.getProfessor().getFirstname() + "  " + prof.getProfessor().getLastname());
+        userLabel.setText("User:  " + prof.getProfessor().getFirstname() + " " + prof.getProfessor().getLastname());
         header.setText(student.getFirstname() + " " + student.getLastname() + " " + student.getId());
         fName.setText(student.getFirstname());
         lName.setText(student.getLastname());
@@ -172,8 +171,19 @@ public class StudentInfo extends Page {
         changeGradeB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ServerMessage<Grade> message = new ServerMessage<Grade>(gradesList.getSelectedValue(), "ChangeGrade " + selGrade.getText());
-                professorGUI.getClient().communicate(message);
+                String gradeInput= selGrade.getText();
+
+                if(checkGrade(gradeInput)) {
+                    Grade grade= gradesList.getSelectedValue();
+                    ServerMessage<Grade> message = new ServerMessage<Grade>(grade, "ChangeGrade " + gradeInput);
+                    professorGUI.getClient().communicate(message);
+                    listmodel.set(gradesList.getSelectedIndex(), new Grade(grade.getId(),Integer.parseInt(gradeInput),
+                            grade.getStudent_id(), grade.getAssign_id(), grade.getCourse_id(), grade.getAssign_name()));
+                }
+                else{
+                    JOptionPane.showMessageDialog(new JPanel(), "Invalid grade input");
+                    selGrade.setText("");
+                }
             }
         });
     }
@@ -424,6 +434,22 @@ public class StudentInfo extends Page {
   	  {
   		  gradesList.clearSelection();
   	  }
+    }
+
+    /**
+     * check that the given grade is valid
+     */
+    private boolean checkGrade(String grade){
+
+        if(grade == null || grade.length()>3){ return false; }
+
+        if(grade.length()==3 && (grade.charAt(0)!= '1' || grade.charAt(1)!='0' || grade.charAt(2)!= '0')){ return false; }
+
+        for(int i=0; i< grade.length(); i++){
+            if(grade.charAt(i)>'9' || grade.charAt(i)<'0'){ return false; }
+        }
+
+        return true;
     }
 
     // Variables declaration - do not modify
