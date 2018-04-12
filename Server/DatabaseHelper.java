@@ -36,7 +36,7 @@ public class DatabaseHelper {
 	private String 
 		connectionInfo = "jdbc:mysql://localhost:3306/LearningPlatform"  ,
 			  login          = "root",
-			  password       = "password";
+			  password       = "cappuccino7";
 	
 	/**
 	 * Gets the connection to the jdbc

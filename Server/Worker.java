@@ -98,7 +98,7 @@ public class Worker implements Runnable {
 				{
 					LoginInfo info = (LoginInfo) message.getObject();
 					User user = database.LoginUser(info);
-					if(user.getLogininfo().getPassword().equals(info.getPassword()))
+					if(user != null && user.getLogininfo().getPassword().equals(info.getPassword()) && user.getLogininfo().getUsername().equals(info.getUsername()))
 					{
 						ServerMessage<User> returnmessage = new ServerMessage<User>(user, "");
 						out.writeObject(returnmessage);
